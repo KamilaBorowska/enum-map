@@ -5,7 +5,7 @@ authors = ["Konrad Borowski <konrad@borowski.pw>"]
 repository = "https://github.com/xfix/enum-map"
 license = "MIT/Apache-2.0"
 description = "Macros 1.1 implementation of #[derive(EnumMap)]"
-tags = ["no_std", "enum"]
+keywords = ["no_std", "enum"]
 
 [badges]
 travis-ci = { repository = "xfix/enum-map" }
