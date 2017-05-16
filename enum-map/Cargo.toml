@@ -1,0 +1,7 @@
+[package]
+name = "enum-map"
+version = "0.1.0"
+authors = ["Konrad Borowski <konrad@borowski.pw>"]
+
+[dev-dependencies]
+enum-map-derive = { version = "0.1.0", path = "../enum-map-derive" }
