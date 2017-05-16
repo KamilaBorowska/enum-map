@@ -4,6 +4,11 @@ version = "0.1.0"
 authors = ["Konrad Borowski <konrad@borowski.pw>"]
 repository = "https://github.com/xfix/enum-map"
 license = "MIT/Apache-2.0"
+description = "A library providing enum map providing type safe enum array"
+tags = ["no_std", "enum"]
+
+[badges]
+travis-ci = { repository = "xfix/enum-map" }
 
 [dev-dependencies]
 enum-map-derive = { version = "0.1.0", path = "../enum-map-derive" }
