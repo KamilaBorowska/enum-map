@@ -1,0 +1,5 @@
+[workspace]
+members = [
+    "enum-map",
+    "enum-map-derive",
+]
