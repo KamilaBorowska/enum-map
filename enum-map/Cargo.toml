@@ -11,5 +11,9 @@ categories = ["data-structures", "no-std"]
 [badges]
 travis-ci = { repository = "xfix/enum-map" }
 
+[dependencies]
+serde = { version = "1.0.0", optional = true, features = ["derive"] }
+
 [dev-dependencies]
 enum-map-derive = { version = "0.1.0", path = "../enum-map-derive" }
+serde_test = "1.0.5"

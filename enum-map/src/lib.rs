@@ -6,6 +6,13 @@
 #![no_std]
 #![deny(missing_docs)]
 
+#[cfg(feature = "serde")]
+#[macro_use]
+extern crate serde;
+
+#[cfg(feature = "serde")]
+use serde::{Serialize, Deserialize};
+
 use core::hash::{Hash, Hasher};
 use core::iter::Enumerate;
 use core::marker::PhantomData;
@@ -56,6 +63,8 @@ pub trait Internal<V>: Sized {
 /// }
 /// ```
 #[derive(Debug)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "serde", serde(bound(serialize = "K::Array: Serialize", deserialize = "K::Array: Deserialize<'de>")))]
 pub struct EnumMap<K: Internal<V>, V> {
     array: K::Array,
 }
