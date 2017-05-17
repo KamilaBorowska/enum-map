@@ -263,6 +263,14 @@ impl<'a, K: Internal<V>, V> Iterator for Iter<'a, K, V> {
     }
 }
 
+impl<'a, K: Internal<V>, V> DoubleEndedIterator for Iter<'a, K, V> {
+    fn next_back(&mut self) -> Option<Self::Item> {
+        self.iterator
+            .next_back()
+            .map(|(index, item)| (K::from_usize(index), item))
+    }
+}
+
 impl<'a, K: Internal<V>, V> ExactSizeIterator for Iter<'a, K, V> {}
 
 impl<'a, K: Internal<V>, V> IntoIterator for &'a EnumMap<K, V> {
@@ -319,6 +327,14 @@ impl<'a, K: Internal<V>, V> Iterator for IterMut<'a, K, V> {
 
     fn size_hint(&self) -> (usize, Option<usize>) {
         self.iterator.size_hint()
+    }
+}
+
+impl<'a, K: Internal<V>, V> DoubleEndedIterator for IterMut<'a, K, V> {
+    fn next_back(&mut self) -> Option<Self::Item> {
+        self.iterator
+            .next_back()
+            .map(|(index, item)| (K::from_usize(index), item))
     }
 }
 
