@@ -71,7 +71,7 @@ pub struct EnumMap<K: Internal<V>, V> {
 }
 
 impl<K: Internal<V>, V> EnumMap<K, V> {
-    /// Retrusn number of elements in enum map.
+    /// Returns number of elements in enum map.
     pub fn len(&self) -> usize {
         K::slice(&self.array).len()
     }
