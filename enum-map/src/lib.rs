@@ -65,6 +65,11 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
     pub fn iter(&self) -> Iter<K, V> {
         self.into_iter()
     }
+
+    /// Returns a mutable iterator over enum map.
+    pub fn iter_mut(&mut self) -> IterMut<K, V> {
+        self.into_iter()
+    }
 }
 
 impl<F: Fn(K) -> V, K: Internal<V>, V> From<F> for EnumMap<K, V> {
