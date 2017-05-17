@@ -11,7 +11,7 @@ extern crate serde_test;
 
 use serde_test::{Token, assert_tokens};
 
-#[derive(Debug, EnumMap, Serialize)]
+#[derive(Debug, EnumMap, Deserialize, Serialize)]
 enum Example {
     A,
     B,
@@ -21,14 +21,16 @@ enum Example {
 fn serialization() {
     let map = enum_map! { Example::A => 5, Example::B => 10 };
     assert_tokens(&map,
-                  &[Token::Struct {
-                        name: "EnumMap",
-                        len: 1,
+                  &[Token::Map { len: Some(2) },
+                    Token::UnitVariant {
+                        name: "Example",
+                        variant: "A",
                     },
-                    Token::Str("array"),
-                    Token::Tuple { len: 2 },
                     Token::I32(5),
+                    Token::UnitVariant {
+                        name: "Example",
+                        variant: "B",
+                    },
                     Token::I32(10),
-                    Token::TupleEnd,
-                    Token::StructEnd]);
+                    Token::MapEnd]);
 }

@@ -7,12 +7,15 @@
 #![deny(missing_docs)]
 
 #[cfg(feature = "serde")]
-#[macro_use]
 extern crate serde;
 
 #[cfg(feature = "serde")]
-use serde::{Serialize, Deserialize};
+use serde::ser::{Serialize, Serializer, SerializeMap};
+#[cfg(feature = "serde")]
+use serde::de::{self, Deserialize, Deserializer, Error, MapAccess};
 
+#[cfg(feature = "serde")]
+use core::fmt;
 use core::hash::{Hash, Hasher};
 use core::iter::Enumerate;
 use core::marker::PhantomData;
@@ -27,7 +30,7 @@ pub trait Internal<V>: Sized {
     fn slice_mut(&mut Self::Array) -> &mut [V];
     fn from_usize(usize) -> Self;
     fn to_usize(self) -> usize;
-    fn from_function<F: Fn(Self) -> V>(F) -> Self::Array;
+    fn from_function<F: FnMut(Self) -> V>(F) -> Self::Array;
 }
 
 /// An enum mapping.
@@ -63,13 +66,16 @@ pub trait Internal<V>: Sized {
 /// }
 /// ```
 #[derive(Debug)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[cfg_attr(feature = "serde", serde(bound(serialize = "K::Array: Serialize", deserialize = "K::Array: Deserialize<'de>")))]
 pub struct EnumMap<K: Internal<V>, V> {
     array: K::Array,
 }
 
 impl<K: Internal<V>, V> EnumMap<K, V> {
+    /// Retrusn number of elements in enum map.
+    pub fn len(&self) -> usize {
+        K::slice(&self.array).len()
+    }
+
     /// Returns an iterator over enum map.
     pub fn iter(&self) -> Iter<K, V> {
         self.into_iter()
@@ -81,7 +87,7 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
     }
 }
 
-impl<F: Fn(K) -> V, K: Internal<V>, V> From<F> for EnumMap<K, V> {
+impl<F: FnMut(K) -> V, K: Internal<V>, V> From<F> for EnumMap<K, V> {
     fn from(f: F) -> Self {
         EnumMap { array: K::from_function(f) }
     }
@@ -314,5 +320,54 @@ impl<'a, K: Internal<V>, V> IntoIterator for &'a mut EnumMap<K, V> {
             _phantom: PhantomData,
             iterator: K::slice_mut(&mut self.array).iter_mut().enumerate(),
         }
+    }
+}
+
+#[cfg(feature = "serde")]
+impl<K: Internal<V> + Serialize, V: Serialize> Serialize for EnumMap<K, V> {
+    fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        let mut map = serializer.serialize_map(Some(self.len()))?;
+        for (key, value) in self {
+            map.serialize_entry(&key, value)?;
+        }
+        map.end()
+    }
+}
+
+#[cfg(feature = "serde")]
+impl<'de, K, V> Deserialize<'de> for EnumMap<K, V>
+    where K: Internal<V> + Internal<Option<V>> + Deserialize<'de>,
+          V: Deserialize<'de>
+{
+    fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        deserializer.deserialize_map(Visitor(PhantomData))
+    }
+}
+
+#[cfg(feature = "serde")]
+struct Visitor<K: Internal<V>, V>(PhantomData<EnumMap<K, V>>);
+
+#[cfg(feature = "serde")]
+impl<'de, K, V> de::Visitor<'de> for Visitor<K, V>
+    where K: Internal<V> + Internal<Option<V>> + Deserialize<'de>,
+          V: Deserialize<'de>
+{
+    type Value = EnumMap<K, V>;
+
+    fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        write!(formatter, "map")
+    }
+
+    fn visit_map<M: MapAccess<'de>>(self, mut access: M) -> Result<Self::Value, M::Error> {
+        let mut entries = EnumMap::from(|_| None);
+        while let Some((key, value)) = access.next_entry()? {
+            entries[key] = Some(value);
+        }
+        for (_, value) in &entries {
+            if value.is_none() {
+                return Err(M::Error::custom("key not specified"));
+            }
+        }
+        Ok(EnumMap::from(|key| entries[key].take().unwrap()))
     }
 }

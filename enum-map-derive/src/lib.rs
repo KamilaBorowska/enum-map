@@ -58,7 +58,7 @@ fn generate_enum_code(name: &Ident, variants: &[Variant]) -> Tokens {
             fn to_usize(self) -> usize {
                 self as usize
             }
-            fn from_function<F: Fn(Self) -> V>(f: F) -> Self::Array {
+            fn from_function<F: FnMut(Self) -> V>(mut f: F) -> Self::Array {
                 [#(
                     f(#repeat_name_b::#variant_b),
                 )*]
