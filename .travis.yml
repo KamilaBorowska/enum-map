@@ -9,4 +9,4 @@ matrix:
 script:
   - cd enum-map
   - cargo build --verbose
-  - cargo test --verbose
+  - cargo test --verbose --all-features
