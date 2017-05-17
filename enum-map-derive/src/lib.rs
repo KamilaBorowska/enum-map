@@ -1,3 +1,8 @@
+//! Procedural macro implementing `#[derive(EnumMap)]`
+//!
+//! This is supposed to used with `enum-map` crate, which provides the
+//! actual usage documentation.
+
 #![recursion_limit = "128"]
 
 extern crate proc_macro;
