@@ -5,7 +5,8 @@ authors = ["Konrad Borowski <konrad@borowski.pw>"]
 repository = "https://github.com/xfix/enum-map"
 license = "MIT/Apache-2.0"
 description = "A library providing enum map providing type safe enum array"
-keywords = ["no_std", "enum"]
+keywords = ["data-structure", "no_std", "enum"]
+categories = ["data-structures", "no-std"]
 
 [badges]
 travis-ci = { repository = "xfix/enum-map" }
