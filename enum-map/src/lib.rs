@@ -257,7 +257,13 @@ impl<'a, K: Internal<V>, V> Iterator for Iter<'a, K, V> {
             .next()
             .map(|(index, item)| (K::from_usize(index), item))
     }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.iterator.size_hint()
+    }
 }
+
+impl<'a, K: Internal<V>, V> ExactSizeIterator for Iter<'a, K, V> {}
 
 impl<'a, K: Internal<V>, V> IntoIterator for &'a EnumMap<K, V> {
     type Item = (K, &'a V);
@@ -310,7 +316,13 @@ impl<'a, K: Internal<V>, V> Iterator for IterMut<'a, K, V> {
             .next()
             .map(|(index, item)| (K::from_usize(index), item))
     }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.iterator.size_hint()
+    }
 }
+
+impl<'a, K: Internal<V>, V> ExactSizeIterator for IterMut<'a, K, V> {}
 
 impl<'a, K: Internal<V>, V> IntoIterator for &'a mut EnumMap<K, V> {
     type Item = (K, &'a mut V);
