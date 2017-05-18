@@ -2,6 +2,39 @@
 //!
 //! It is implemented using array, so using it is as fast as using Rust
 //! arrays.
+//!
+//! # Examples
+//!
+//! ```
+//! #[macro_use]
+//! extern crate enum_map;
+//! #[macro_use]
+//! extern crate enum_map_derive;
+//!
+//! use enum_map::EnumMap;
+//!
+//! #[derive(Debug, EnumMap)]
+//! enum Example {
+//!     A,
+//!     B,
+//!     C,
+//! }
+//!
+//! fn main() {
+//!     let mut map = enum_map! {
+//!         Example::A => 1,
+//!         Example::B => 2,
+//!         Example::C => 3,
+//!     };
+//!     map[Example::C] = 4;
+//!
+//!     assert_eq!(map[Example::A], 1);
+//!
+//!     for (key, &value) in &map {
+//!         println!("{:?} has {} as value.", key, value);
+//!     }
+//! }
+//! ```
 
 #![no_std]
 #![deny(missing_docs)]
