@@ -4,33 +4,6 @@ use Internal;
 use core::hash::{Hash, Hasher};
 use core::ops::{Index, IndexMut};
 
-impl<K: Internal<V>, V: Default> EnumMap<K, V>
-    where K::Array: Default
-{
-    /// Creates an enum map with default values.
-    ///
-    /// ```
-    /// extern crate enum_map;
-    /// #[macro_use]
-    /// extern crate enum_map_derive;
-    ///
-    /// use enum_map::EnumMap;
-    ///
-    /// #[derive(EnumMap)]
-    /// enum Example {
-    ///     A,
-    /// }
-    ///
-    /// fn main() {
-    ///     let enum_map = EnumMap::<_, i32>::new();
-    ///     assert_eq!(enum_map[Example::A], 0);
-    /// }
-    /// ```
-    pub fn new() -> Self {
-        EnumMap::default()
-    }
-}
-
 // Implementations provided by derive attribute are too specific, and put requirements on K.
 // This is caused by rust-lang/rust#26925.
 impl<K: Internal<V>, V> Clone for EnumMap<K, V>

@@ -102,6 +102,33 @@ pub struct EnumMap<K: Internal<V>, V> {
     array: K::Array,
 }
 
+impl<K: Internal<V>, V: Default> EnumMap<K, V>
+    where K::Array: Default
+{
+    /// Creates an enum map with default values.
+    ///
+    /// ```
+    /// extern crate enum_map;
+    /// #[macro_use]
+    /// extern crate enum_map_derive;
+    ///
+    /// use enum_map::EnumMap;
+    ///
+    /// #[derive(EnumMap)]
+    /// enum Example {
+    ///     A,
+    /// }
+    ///
+    /// fn main() {
+    ///     let enum_map = EnumMap::<_, i32>::new();
+    ///     assert_eq!(enum_map[Example::A], 0);
+    /// }
+    /// ```
+    pub fn new() -> Self {
+        EnumMap::default()
+    }
+}
+
 impl<K: Internal<V>, V> EnumMap<K, V> {
     /// Returns number of elements in enum map.
     pub fn len(&self) -> usize {
