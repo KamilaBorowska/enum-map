@@ -76,7 +76,10 @@ pub trait Internal<V>: Sized {
 /// information about an enum, which can be automatically generated using
 /// `#[derive(EnumMap)]` from `enum_map_derive` crate.
 ///
-/// Additionally, `bool` automatically derives from `EnumMap`.
+/// Additionally, `bool` and `u8` automatically derives from `EnumMap`. While
+/// `u8` is not technically an enum, it's convenient to consider it like one.
+/// In particular, [reverse-complement in benchmark game] could be using `u8`
+/// as an enum.
 ///
 /// # Examples
 ///
@@ -102,6 +105,9 @@ pub trait Internal<V>: Sized {
 ///     assert_eq!(map[Example::A], 3);
 /// }
 /// ```
+///
+/// [reverse-complement in benchmark game]:
+///     http://benchmarksgame.alioth.debian.org/u64q/program.php?test=revcomp&lang=rust&id=2
 #[derive(Debug)]
 pub struct EnumMap<K: Internal<V>, V> {
     array: K::Array,
