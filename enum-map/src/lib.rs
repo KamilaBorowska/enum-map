@@ -1,6 +1,6 @@
 //! An enum mapping type.
 //!
-//! It is implemented using array, so using it is as fast as using Rust
+//! It is implemented using an array type, so using it is as fast as using Rust
 //! arrays.
 //!
 //! # Examples
