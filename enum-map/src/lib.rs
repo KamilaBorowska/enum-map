@@ -109,6 +109,38 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
         K::slice(&self.array).len()
     }
 
+    /// Returns whether the enum variant set is empty.
+    ///
+    /// This isn't particularly useful, as there is no real reason to use
+    /// enum map for enums without variants. However, it is provided for
+    /// consistency with data structures providing len method (and I will
+    /// admit, to avoid clippy warnings).
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// extern crate enum_map;
+    /// #[macro_use]
+    /// extern crate enum_map_derive;
+    ///
+    /// use enum_map::EnumMap;
+    ///
+    /// #[derive(EnumMap)]
+    /// enum Void {}
+    ///
+    /// #[derive(EnumMap)]
+    /// enum SingleVariant {
+    ///     Variant,
+    /// }
+    ///
+    /// fn main() {
+    ///     assert_eq!(EnumMap::<Void, ()>::new().is_empty(), true);
+    ///     assert_eq!(EnumMap::<SingleVariant, ()>::new().is_empty(), false);
+    /// }
+    pub fn is_empty(&self) -> bool {
+        K::slice(&self.array).is_empty()
+    }
+
     /// Returns an iterator over enum map.
     pub fn iter(&self) -> Iter<K, V> {
         self.into_iter()
