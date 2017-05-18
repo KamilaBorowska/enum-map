@@ -19,10 +19,10 @@ use quote::Tokens;
 fn generate_enum_code(name: &Ident, variants: &[Variant]) -> Tokens {
     let mut enum_count = 0usize;
     for &Variant {
-             ref data,
-             ref discriminant,
-             ..
-         } in variants {
+            ref data,
+            ref discriminant,
+            ..
+        } in variants {
         if data != &VariantData::Unit {
             panic!("#[derive(EnumMap)] requires C style style enum");
         }
