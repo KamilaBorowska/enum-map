@@ -55,6 +55,8 @@ use core::marker::PhantomData;
 use core::ops::{Index, IndexMut};
 use core::slice;
 
+mod implementations;
+
 // this is not stable, do not depend on this
 #[doc(hidden)]
 pub trait Internal<V>: Sized {
@@ -73,6 +75,8 @@ pub trait Internal<V>: Sized {
 /// although public due to macro limitations) trait which allows extracting
 /// information about an enum, which can be automatically generated using
 /// `#[derive(EnumMap)]` from `enum_map_derive` crate.
+///
+/// Additionally, `bool` automatically derives from `EnumMap`.
 ///
 /// # Examples
 ///
