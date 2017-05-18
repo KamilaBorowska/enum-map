@@ -39,22 +39,13 @@
 #![no_std]
 #![deny(missing_docs)]
 
-#[cfg(feature = "serde")]
-extern crate serde;
-
-#[cfg(feature = "serde")]
-use serde::ser::{Serialize, Serializer, SerializeMap};
-#[cfg(feature = "serde")]
-use serde::de::{self, Deserialize, Deserializer, Error, MapAccess};
-
-#[cfg(feature = "serde")]
-use core::fmt;
 use core::iter::Enumerate;
 use core::marker::PhantomData;
 use core::slice;
 
 mod enummap_impls;
 mod implementations;
+mod serde;
 
 // this is not stable, do not depend on this
 #[doc(hidden)]
@@ -343,54 +334,5 @@ impl<'a, K: Internal<V>, V> IntoIterator for &'a mut EnumMap<K, V> {
             _phantom: PhantomData,
             iterator: K::slice_mut(&mut self.array).iter_mut().enumerate(),
         }
-    }
-}
-
-#[cfg(feature = "serde")]
-impl<K: Internal<V> + Serialize, V: Serialize> Serialize for EnumMap<K, V> {
-    fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
-        let mut map = serializer.serialize_map(Some(self.len()))?;
-        for (key, value) in self {
-            map.serialize_entry(&key, value)?;
-        }
-        map.end()
-    }
-}
-
-#[cfg(feature = "serde")]
-impl<'de, K, V> Deserialize<'de> for EnumMap<K, V>
-    where K: Internal<V> + Internal<Option<V>> + Deserialize<'de>,
-          V: Deserialize<'de>
-{
-    fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
-        deserializer.deserialize_map(Visitor(PhantomData))
-    }
-}
-
-#[cfg(feature = "serde")]
-struct Visitor<K: Internal<V>, V>(PhantomData<EnumMap<K, V>>);
-
-#[cfg(feature = "serde")]
-impl<'de, K, V> de::Visitor<'de> for Visitor<K, V>
-    where K: Internal<V> + Internal<Option<V>> + Deserialize<'de>,
-          V: Deserialize<'de>
-{
-    type Value = EnumMap<K, V>;
-
-    fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-        write!(formatter, "map")
-    }
-
-    fn visit_map<M: MapAccess<'de>>(self, mut access: M) -> Result<Self::Value, M::Error> {
-        let mut entries = EnumMap::from(|_| None);
-        while let Some((key, value)) = access.next_entry()? {
-            entries[key] = Some(value);
-        }
-        for (_, value) in &entries {
-            if value.is_none() {
-                return Err(M::Error::custom("key not specified"));
-            }
-        }
-        Ok(EnumMap::from(|key| entries[key].take().unwrap()))
     }
 }
