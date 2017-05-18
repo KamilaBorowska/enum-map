@@ -38,6 +38,12 @@ fn generate_enum_code(name: &Ident, variants: &[Variant]) -> Tokens {
     let repeat_name_b = repeat_name_a.clone();
     let counter = 0..variants.len();
 
+    let to_usize = if variants.len() == 0 {
+        quote! { unreachable!() }
+    } else {
+        quote! { self as usize }
+    };
+
     quote! {
         impl<V> ::enum_map::Internal<V> for #name {
             type Array = [V; #enum_count];
@@ -56,7 +62,7 @@ fn generate_enum_code(name: &Ident, variants: &[Variant]) -> Tokens {
                 }
             }
             fn to_usize(self) -> usize {
-                self as usize
+                #to_usize
             }
             fn from_function<F: FnMut(Self) -> V>(mut f: F) -> Self::Array {
                 [#(
