@@ -176,6 +176,25 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
     pub fn iter_mut(&mut self) -> IterMut<K, V> {
         self.into_iter()
     }
+
+    /// Swaps two indexes.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// #[macro_use]
+    /// extern crate enum_map;
+    ///
+    /// fn main() {
+    ///     let mut map = enum_map! { false => 0, true => 1 };
+    ///     map.swap(false, true);
+    ///     assert_eq!(map[false], 1);
+    ///     assert_eq!(map[true], 0);
+    /// }
+    /// ```
+    pub fn swap(&mut self, a: K, b: K) {
+        K::slice_mut(&mut self.array).swap(a.to_usize(), b.to_usize())
+    }
 }
 
 impl<F: FnMut(K) -> V, K: Internal<V>, V> From<F> for EnumMap<K, V> {
