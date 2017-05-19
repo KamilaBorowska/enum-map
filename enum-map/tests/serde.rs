@@ -1,3 +1,4 @@
+#![no_std]
 #![cfg(feature = "serde")]
 
 #[macro_use]
