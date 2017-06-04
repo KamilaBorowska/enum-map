@@ -46,14 +46,31 @@ mod serde;
 
 pub use iter::{Iter, IterMut};
 
-// this is not stable, do not depend on this
-#[doc(hidden)]
+/// Internal enum mapping type
+///
+/// This trait is internally used by `#[derive(EnumMap)]`. Despite it being
+/// a public trait, it's not intended to be public. `Internal<T>` is
+/// implemented by any enum type where V is a generic type representing a
+/// value. The purpose of this generic type is to allow providing a value
+/// type for arrays, as Rust currently does not support higher kinded types.
+/// Users aren't expected to use this trait directly, but rather to use
+/// `EnumMap<K, V>` which uses this internally.
+///
+/// This trait is also implemented by `bool` and `u8` type. While `u8` is
+/// strictly speaking not an actual enum, there are good reasons to consider
+/// it like one, as array of `u8` keys is a relatively common pattern.
 pub trait Internal<V>: Sized {
+    #[doc(hidden)]
     type Array;
+    #[doc(hidden)]
     fn slice(&Self::Array) -> &[V];
+    #[doc(hidden)]
     fn slice_mut(&mut Self::Array) -> &mut [V];
+    #[doc(hidden)]
     fn from_usize(usize) -> Self;
+    #[doc(hidden)]
     fn to_usize(self) -> usize;
+    #[doc(hidden)]
     fn from_function<F: FnMut(Self) -> V>(F) -> Self::Array;
 }
 
