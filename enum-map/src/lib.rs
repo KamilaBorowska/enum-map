@@ -258,6 +258,6 @@ impl<F: FnMut(K) -> V, K: Internal<V>, V> From<F> for EnumMap<K, V> {
 #[macro_export]
 macro_rules! enum_map {
     {$($t:tt)*} => {
-        ::enum_map::EnumMap::from(|k| match k { $($t)* })
+        $crate::EnumMap::from(|k| match k { $($t)* })
     };
 }
