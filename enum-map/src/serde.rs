@@ -39,7 +39,7 @@ impl<'de, K, V> de::Visitor<'de> for Visitor<K, V>
     type Value = EnumMap<K, V>;
 
     fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-        write!(formatter, "map")
+        write!(formatter, "a map")
     }
 
     fn visit_map<M: MapAccess<'de>>(self, mut access: M) -> Result<Self::Value, M::Error> {
