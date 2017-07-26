@@ -37,9 +37,9 @@
 #![no_std]
 #![deny(missing_docs)]
 
-// Allowing to quiet "proc macro crates and `#[no_link]` crates have no
+// This allows to quiet "proc macro crates and `#[no_link]` crates have no
 // effect without `#[macro_use]`" warning. Just using extern DOES have
-// effect of letting me export the macro.
+// an effect of letting me export the macro.
 #[allow(unused_imports)]
 #[macro_use]
 extern crate enum_map_derive;
@@ -50,7 +50,7 @@ mod iter;
 mod serde;
 
 pub use iter::{Iter, IterMut};
-// Macro export
+// `*` here means re-exporting a derive procedural macro.
 pub use enum_map_derive::*;
 
 /// Internal enum mapping type
