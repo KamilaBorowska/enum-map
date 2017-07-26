@@ -4,8 +4,6 @@
 #[macro_use]
 extern crate enum_map;
 #[macro_use]
-extern crate enum_map_derive;
-#[macro_use]
 extern crate serde;
 extern crate serde_test;
 

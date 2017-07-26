@@ -8,8 +8,6 @@
 //! ```
 //! #[macro_use]
 //! extern crate enum_map;
-//! #[macro_use]
-//! extern crate enum_map_derive;
 //!
 //! use enum_map::EnumMap;
 //!
@@ -39,12 +37,21 @@
 #![no_std]
 #![deny(missing_docs)]
 
+// Allowing to quiet "proc macro crates and `#[no_link]` crates have no
+// effect without `#[macro_use]`" warning. Just using extern DOES have
+// effect of letting me export the macro.
+#[allow(unused_imports)]
+#[macro_use]
+extern crate enum_map_derive;
+
 mod enummap_impls;
 mod implementations;
 mod iter;
 mod serde;
 
 pub use iter::{Iter, IterMut};
+// Macro export
+pub use enum_map_derive::*;
 
 /// Internal enum mapping type
 ///
@@ -90,9 +97,8 @@ pub trait Internal<V>: Sized {
 /// # Examples
 ///
 /// ```
-/// extern crate enum_map;
 /// #[macro_use]
-/// extern crate enum_map_derive;
+/// extern crate enum_map;
 ///
 /// use enum_map::EnumMap;
 ///
@@ -125,9 +131,8 @@ impl<K: Internal<V>, V: Default> EnumMap<K, V>
     /// Creates an enum map with default values.
     ///
     /// ```
-    /// extern crate enum_map;
     /// #[macro_use]
-    /// extern crate enum_map_derive;
+    /// extern crate enum_map;
     ///
     /// use enum_map::EnumMap;
     ///
@@ -162,9 +167,8 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
     /// # Examples
     ///
     /// ```
-    /// extern crate enum_map;
     /// #[macro_use]
-    /// extern crate enum_map_derive;
+    /// extern crate enum_map;
     ///
     /// use enum_map::EnumMap;
     ///
@@ -232,8 +236,6 @@ impl<F: FnMut(K) -> V, K: Internal<V>, V> From<F> for EnumMap<K, V> {
 /// ```
 /// #[macro_use]
 /// extern crate enum_map;
-/// #[macro_use]
-/// extern crate enum_map_derive;
 ///
 /// #[derive(EnumMap)]
 /// enum Example {

@@ -2,8 +2,6 @@
 
 #[macro_use]
 extern crate enum_map;
-#[macro_use]
-extern crate enum_map_derive;
 
 #[derive(Debug, EnumMap, PartialEq)]
 enum Example {
