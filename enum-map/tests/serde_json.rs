@@ -33,3 +33,10 @@ fn json_invalid_deserialization() {
     let example: Result<EnumMap<Example, i32>, _> = serde_json::from_str(r"{}");
     assert!(example.is_err());
 }
+
+#[test]
+fn json_invalid_key() {
+    let example: Result<EnumMap<Example, i32>, _> =
+        serde_json::from_str(r#"{"a": 5, "b": 10, "c": 6}"#);
+    assert!(example.is_err());
+}
