@@ -126,7 +126,8 @@ pub struct EnumMap<K: Internal<V>, V> {
 }
 
 impl<K: Internal<V>, V: Default> EnumMap<K, V>
-    where K::Array: Default
+where
+    K::Array: Default,
 {
     /// Creates an enum map with default values.
     ///

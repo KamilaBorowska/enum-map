@@ -19,17 +19,21 @@ enum Example {
 #[test]
 fn serialization() {
     let map = enum_map! { Example::A => 5, Example::B => 10 };
-    assert_tokens(&map,
-                  &[Token::Map { len: Some(2) },
-                    Token::UnitVariant {
-                        name: "Example",
-                        variant: "A",
-                    },
-                    Token::I32(5),
-                    Token::UnitVariant {
-                        name: "Example",
-                        variant: "B",
-                    },
-                    Token::I32(10),
-                    Token::MapEnd]);
+    assert_tokens(
+        &map,
+        &[
+            Token::Map { len: Some(2) },
+            Token::UnitVariant {
+                name: "Example",
+                variant: "A",
+            },
+            Token::I32(5),
+            Token::UnitVariant {
+                name: "Example",
+                variant: "B",
+            },
+            Token::I32(10),
+            Token::MapEnd,
+        ],
+    );
 }

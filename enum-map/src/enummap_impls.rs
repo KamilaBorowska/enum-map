@@ -7,27 +7,38 @@ use core::ops::{Index, IndexMut};
 // Implementations provided by derive attribute are too specific, and put requirements on K.
 // This is caused by rust-lang/rust#26925.
 impl<K: Internal<V>, V> Clone for EnumMap<K, V>
-    where K::Array: Clone
+where
+    K::Array: Clone,
 {
     fn clone(&self) -> Self {
         EnumMap { array: self.array.clone() }
     }
 }
 
-impl<K: Internal<V>, V> Copy for EnumMap<K, V> where K::Array: Copy {}
+impl<K: Internal<V>, V> Copy for EnumMap<K, V>
+where
+    K::Array: Copy,
+{
+}
 
 impl<K: Internal<V>, V> PartialEq for EnumMap<K, V>
-    where K::Array: PartialEq
+where
+    K::Array: PartialEq,
 {
     fn eq(&self, other: &Self) -> bool {
         self.array == other.array
     }
 }
 
-impl<K: Internal<V>, V> Eq for EnumMap<K, V> where K::Array: Eq {}
+impl<K: Internal<V>, V> Eq for EnumMap<K, V>
+where
+    K::Array: Eq,
+{
+}
 
 impl<K: Internal<V>, V> Hash for EnumMap<K, V>
-    where K::Array: Hash
+where
+    K::Array: Hash,
 {
     fn hash<H: Hasher>(&self, state: &mut H) {
         self.array.hash(state);
@@ -35,7 +46,8 @@ impl<K: Internal<V>, V> Hash for EnumMap<K, V>
 }
 
 impl<K: Internal<V>, V> Default for EnumMap<K, V>
-    where K::Array: Default
+where
+    K::Array: Default,
 {
     fn default() -> Self {
         EnumMap { array: K::Array::default() }

@@ -16,8 +16,10 @@ fn iterator_len() {
 
 #[test]
 fn iterator_next_back() {
-    assert_eq!(enum_map! { Example::A => 1, Example:: B => 2 }
-                   .iter()
-                   .next_back(),
-               Some((Example::B, &2)));
+    assert_eq!(
+        enum_map! { Example::A => 1, Example:: B => 2 }
+            .iter()
+            .next_back(),
+        Some((Example::B, &2))
+    );
 }
