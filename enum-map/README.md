@@ -5,7 +5,7 @@ arrays.
 
 # Examples
 
-```
+```rust
 #[macro_use]
 extern crate enum_map;
 
