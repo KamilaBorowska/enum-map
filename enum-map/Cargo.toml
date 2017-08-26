@@ -8,6 +8,7 @@ description = "A library providing enum map providing type safe enum array"
 keywords = ["data-structure", "no_std", "enum"]
 categories = ["data-structures", "no-std"]
 documentation = "https://docs.rs/enum-map"
+readme = "README.md"
 
 [badges]
 travis-ci = { repository = "xfix/enum-map" }
