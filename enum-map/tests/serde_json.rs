@@ -27,3 +27,9 @@ fn json_deserialization() {
     let example: EnumMap<Example, i32> = serde_json::from_str(JSON).unwrap();
     assert_eq!(example, enum_map! { Example::A => 5, Example::B => 10 });
 }
+
+#[test]
+fn json_invalid_deserialization() {
+    let example: Result<EnumMap<Example, i32>, _> = serde_json::from_str(r"{}");
+    assert!(example.is_err());
+}
