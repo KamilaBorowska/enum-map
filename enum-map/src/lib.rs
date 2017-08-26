@@ -37,6 +37,8 @@
 #![no_std]
 #![deny(missing_docs)]
 
+#[macro_use]
+extern crate array_macro;
 // This allows to quiet "proc macro crates and `#[no_link]` crates have no
 // effect without `#[macro_use]`" warning. Just using extern DOES have
 // an effect of letting me export the macro.
