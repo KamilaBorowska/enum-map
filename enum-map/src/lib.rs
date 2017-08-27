@@ -108,6 +108,8 @@ where
 {
     /// Creates an enum map with default values.
     ///
+    /// # Examples
+    ///
     /// ```
     /// #[macro_use]
     /// extern crate enum_map;
