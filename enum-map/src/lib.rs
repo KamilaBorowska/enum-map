@@ -279,6 +279,8 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
     /// Modifying the container referenced by this slice may cause its buffer
     /// to be reallocated, which would also make any pointers to it invalid.
     ///
+    /// # Examples
+    ///
     /// ```
     /// #[macro_use]
     /// extern crate enum_map;
