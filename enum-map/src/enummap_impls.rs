@@ -4,6 +4,21 @@ use Internal;
 use core::hash::{Hash, Hasher};
 use core::ops::{Index, IndexMut};
 
+impl<K: Internal<V>, V> Index<K> for EnumMap<K, V> {
+    type Output = V;
+
+    fn index(&self, key: K) -> &V {
+        &self.as_slice()[key.to_usize()]
+    }
+}
+
+impl<K: Internal<V>, V> IndexMut<K> for EnumMap<K, V> {
+    fn index_mut(&mut self, key: K) -> &mut V {
+        &mut self.as_mut_slice()[key.to_usize()]
+    }
+}
+
+
 // Implementations provided by derive attribute are too specific, and put requirements on K.
 // This is caused by rust-lang/rust#26925.
 impl<K: Internal<V>, V> Clone for EnumMap<K, V>
@@ -51,19 +66,5 @@ where
 {
     fn default() -> Self {
         EnumMap { array: K::Array::default() }
-    }
-}
-
-impl<K: Internal<V>, V> Index<K> for EnumMap<K, V> {
-    type Output = V;
-
-    fn index(&self, key: K) -> &V {
-        &self.as_slice()[key.to_usize()]
-    }
-}
-
-impl<K: Internal<V>, V> IndexMut<K> for EnumMap<K, V> {
-    fn index_mut(&mut self, key: K) -> &mut V {
-        &mut self.as_mut_slice()[key.to_usize()]
     }
 }
