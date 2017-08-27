@@ -70,7 +70,7 @@ impl<'a, K: Internal<V>, V> IntoIterator for &'a EnumMap<K, V> {
     fn into_iter(self) -> Self::IntoIter {
         Iter {
             _phantom: PhantomData,
-            iterator: K::slice(&self.array).iter().enumerate(),
+            iterator: self.as_slice().iter().enumerate(),
         }
     }
 }
@@ -137,7 +137,7 @@ impl<'a, K: Internal<V>, V> IntoIterator for &'a mut EnumMap<K, V> {
     fn into_iter(self) -> Self::IntoIter {
         IterMut {
             _phantom: PhantomData,
-            iterator: K::slice_mut(&mut self.array).iter_mut().enumerate(),
+            iterator: self.as_mut_slice().iter_mut().enumerate(),
         }
     }
 }
