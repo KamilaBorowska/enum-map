@@ -217,6 +217,16 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
         self.as_slice().iter()
     }
 
+    /// Converts an enum map to a slice representing values.
+    pub fn as_slice(&self) -> &[V] {
+        K::slice(&self.array)
+    }
+
+    /// Converts a mutable enum map to a mutable slice representing values.
+    pub fn as_mut_slice(&mut self) -> &mut [V] {
+        K::slice_mut(&mut self.array)
+    }
+
     /// An iterator visiting all values mutably. The iterator type is `&mut V`.
     ///
     /// # Examples
@@ -236,16 +246,6 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
     /// ```
     pub fn values_mut(&mut self) -> slice::IterMut<V> {
         self.as_mut_slice().iter_mut()
-    }
-
-    /// Converts an enum map to a slice representing values.
-    pub fn as_slice(&self) -> &[V] {
-        K::slice(&self.array)
-    }
-
-    /// Converts a mutable enum map to a mutable slice representing values.
-    pub fn as_mut_slice(&mut self) -> &mut [V] {
-        K::slice_mut(&mut self.array)
     }
 
     /// Returns a raw pointer to the enum map's buffer.
