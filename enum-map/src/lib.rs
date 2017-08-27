@@ -210,7 +210,7 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
     ///     let mut values = map.values();
     ///     assert_eq!(values.next(), Some(&3));
     ///     assert_eq!(values.next(), Some(&4));
-    ///     assert_eq!(values.next(), None);   
+    ///     assert_eq!(values.next(), None);
     /// }
     /// ```
     pub fn values(&self) -> slice::Iter<V> {
