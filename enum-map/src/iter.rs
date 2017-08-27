@@ -15,8 +15,6 @@ use core::slice;
 /// ```
 /// #[macro_use]
 /// extern crate enum_map;
-/// #[macro_use]
-/// extern crate enum_map_derive;
 ///
 /// #[derive(EnumMap)]
 /// enum Example {
@@ -85,8 +83,6 @@ impl<'a, K: Internal<V>, V> IntoIterator for &'a EnumMap<K, V> {
 /// ```
 /// #[macro_use]
 /// extern crate enum_map;
-/// #[macro_use]
-/// extern crate enum_map_derive;
 ///
 /// #[derive(Debug, EnumMap)]
 /// enum Example {
