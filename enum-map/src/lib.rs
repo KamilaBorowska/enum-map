@@ -192,6 +192,57 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
     pub fn swap(&mut self, a: K, b: K) {
         K::slice_mut(&mut self.array).swap(a.to_usize(), b.to_usize())
     }
+
+    /// Returns a raw pointer to the enum map's buffer.
+    ///
+    /// The caller must ensure that the slice outlives the pointer this
+    /// function returns, or else it will end up pointing to garbage.
+    ///
+    /// Modifying the container referenced by this slice may cause its buffer
+    /// to be reallocated, which would also make any pointers to it invalid.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// #[macro_use]
+    /// extern crate enum_map;
+    ///
+    /// use enum_map::EnumMap;
+    ///
+    /// fn main() {
+    ///     let map = enum_map! { 5 => 42, _ => 0 };
+    ///     assert_eq!(unsafe { *map.as_ptr().offset(5) }, 42);
+    /// }
+    /// ```
+    pub fn as_ptr(&self) -> *const V {
+        K::slice(&self.array).as_ptr()
+    }
+
+    /// Returns an unsafe mutable pointer to the enum map's buffer.
+    ///
+    /// The caller must ensure that the slice outlives the pointer this
+    /// function returns, or else it will end up pointing to garbage.
+    ///
+    /// Modifying the container referenced by this slice may cause its buffer
+    /// to be reallocated, which would also make any pointers to it invalid.
+    ///
+    /// ```
+    /// #[macro_use]
+    /// extern crate enum_map;
+    ///
+    /// use enum_map::EnumMap;
+    ///
+    /// fn main() {
+    ///     let mut map = enum_map! { _ => 0 };
+    ///     unsafe {
+    ///         *map.as_mut_ptr().offset(11) = 23
+    ///     };
+    ///     assert_eq!(map[11], 23);
+    /// }
+    /// ```
+    pub fn as_mut_ptr(&mut self) -> *mut V {
+        K::slice_mut(&mut self.array).as_mut_ptr()
+    }
 }
 
 impl<F: FnMut(K) -> V, K: Internal<V>, V> From<F> for EnumMap<K, V> {
