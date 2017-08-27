@@ -27,10 +27,10 @@ use core::slice;
 ///     let mut map = enum_map! { Example::A => 3, _ => 0 };
 ///     assert_eq!(map[Example::A], 3);
 ///     for (key, &value) in &map {
-///         assert_eq!(match key {
+///         assert_eq!(value, match key {
 ///             Example::A => 3,
 ///             _ => 0,
-///         }, value);
+///         });
 ///     }
 /// }
 /// ```
