@@ -56,6 +56,8 @@ pub use iter::{Iter, IterMut};
 // `*` here means re-exporting a derive procedural macro.
 pub use enum_map_derive::*;
 
+use core::slice;
+
 /// An enum mapping.
 ///
 /// This internally uses an array which stores a value for each possible
@@ -191,6 +193,47 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
     /// ```
     pub fn swap(&mut self, a: K, b: K) {
         K::slice_mut(&mut self.array).swap(a.to_usize(), b.to_usize())
+    }
+
+    /// An iterator visiting all values. The iterator type is `&V`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// #[macro_use]
+    /// extern crate enum_map;
+    ///
+    /// fn main() {
+    ///     let map = enum_map! { false => 3, true => 4 };
+    ///     let mut values = map.values();
+    ///     assert_eq!(values.next(), Some(&3));
+    ///     assert_eq!(values.next(), Some(&4));
+    ///     assert_eq!(values.next(), None);   
+    /// }
+    /// ```
+    pub fn values(&self) -> slice::Iter<V> {
+        K::slice(&self.array).iter()
+    }
+
+    /// An iterator visiting all values mutably. The iterator type is `&mut V`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// #[macro_use]
+    /// extern crate enum_map;
+    ///
+    /// fn main() {
+    ///     let mut map = enum_map! { _ => 2 };
+    ///     for value in map.values_mut() {
+    ///         *value += 2;
+    ///     }
+    ///     assert_eq!(map[false], 4);
+    ///     assert_eq!(map[true], 4);
+    /// }
+    /// ```
+    pub fn values_mut(&mut self) -> slice::IterMut<V> {
+        K::slice_mut(&mut self.array).iter_mut()
     }
 
     /// Returns a raw pointer to the enum map's buffer.
