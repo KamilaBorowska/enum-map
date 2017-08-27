@@ -11,7 +11,7 @@ fn test_bool() {
     map[false] += 1;
     assert_eq!(map[false], 25);
     for (key, item) in &mut map {
-        if key == false {
+        if !key {
             *item += 1;
         }
     }
