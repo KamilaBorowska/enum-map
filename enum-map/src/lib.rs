@@ -132,7 +132,7 @@ where
 impl<K: Internal<V>, V> EnumMap<K, V> {
     /// Returns number of elements in enum map.
     pub fn len(&self) -> usize {
-        K::slice(&self.array).len()
+        self.as_slice().len()
     }
 
     /// Returns whether the enum variant set is empty.
@@ -163,7 +163,7 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
     ///     assert_eq!(EnumMap::<SingleVariant, ()>::new().is_empty(), false);
     /// }
     pub fn is_empty(&self) -> bool {
-        K::slice(&self.array).is_empty()
+        self.as_slice().is_empty()
     }
 
     /// Returns an iterator over enum map.
@@ -192,7 +192,7 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
     /// }
     /// ```
     pub fn swap(&mut self, a: K, b: K) {
-        K::slice_mut(&mut self.array).swap(a.to_usize(), b.to_usize())
+        self.as_mut_slice().swap(a.to_usize(), b.to_usize())
     }
 
     /// An iterator visiting all values. The iterator type is `&V`.
@@ -212,7 +212,7 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
     /// }
     /// ```
     pub fn values(&self) -> slice::Iter<V> {
-        K::slice(&self.array).iter()
+        self.as_slice().iter()
     }
 
     /// An iterator visiting all values mutably. The iterator type is `&mut V`.
@@ -233,7 +233,17 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
     /// }
     /// ```
     pub fn values_mut(&mut self) -> slice::IterMut<V> {
-        K::slice_mut(&mut self.array).iter_mut()
+        self.as_mut_slice().iter_mut()
+    }
+
+    /// Converts an enum map to a slice representing values.
+    pub fn as_slice(&self) -> &[V] {
+        K::slice(&self.array)
+    }
+
+    /// Converts a mutable enum map to a mutable slice representing values.
+    pub fn as_mut_slice(&mut self) -> &mut [V] {
+        K::slice_mut(&mut self.array)
     }
 
     /// Returns a raw pointer to the enum map's buffer.
@@ -258,7 +268,7 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
     /// }
     /// ```
     pub fn as_ptr(&self) -> *const V {
-        K::slice(&self.array).as_ptr()
+        self.as_slice().as_ptr()
     }
 
     /// Returns an unsafe mutable pointer to the enum map's buffer.
@@ -284,7 +294,7 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
     /// }
     /// ```
     pub fn as_mut_ptr(&mut self) -> *mut V {
-        K::slice_mut(&mut self.array).as_mut_ptr()
+        self.as_mut_slice().as_mut_ptr()
     }
 }
 
