@@ -132,6 +132,16 @@ where
 }
 
 impl<K: Internal<V>, V> EnumMap<K, V> {
+    /// Returns an iterator over enum map.
+    pub fn iter(&self) -> Iter<K, V> {
+        self.into_iter()
+    }
+
+    /// Returns a mutable iterator over enum map.
+    pub fn iter_mut(&mut self) -> IterMut<K, V> {
+        self.into_iter()
+    }
+
     /// Returns number of elements in enum map.
     pub fn len(&self) -> usize {
         self.as_slice().len()
@@ -166,16 +176,6 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
     /// }
     pub fn is_empty(&self) -> bool {
         self.as_slice().is_empty()
-    }
-
-    /// Returns an iterator over enum map.
-    pub fn iter(&self) -> Iter<K, V> {
-        self.into_iter()
-    }
-
-    /// Returns a mutable iterator over enum map.
-    pub fn iter_mut(&mut self) -> IterMut<K, V> {
-        self.into_iter()
     }
 
     /// Swaps two indexes.
