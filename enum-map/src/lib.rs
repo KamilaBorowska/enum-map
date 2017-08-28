@@ -171,8 +171,8 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
     /// }
     ///
     /// fn main() {
-    ///     assert_eq!(EnumMap::<Void, ()>::new().is_empty(), true);
-    ///     assert_eq!(EnumMap::<SingleVariant, ()>::new().is_empty(), false);
+    ///     assert!(EnumMap::<Void, ()>::new().is_empty());
+    ///     assert!(!EnumMap::<SingleVariant, ()>::new().is_empty());
     /// }
     pub fn is_empty(&self) -> bool {
         self.as_slice().is_empty()
