@@ -12,7 +12,7 @@
 /// strictly speaking not an actual enum, there are good reasons to consider
 /// it like one, as array of `u8` keys is a relatively common pattern.
 pub trait Internal<V>: Sized {
-    #[doc(hidden)]
+    /// Representation of an enum map for type `V`, usually an array.
     type Array;
     #[doc(hidden)]
     fn slice(&Self::Array) -> &[V];
