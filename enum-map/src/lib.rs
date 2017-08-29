@@ -46,6 +46,46 @@ extern crate array_macro;
 #[macro_use]
 extern crate enum_map_derive;
 
+/// Enum map constructor.
+///
+/// This macro allows to create a new enum map in a type safe way. It takes
+/// a list of `,` separated pairs separated by `=>`. Left side is `|`
+/// separated list of enum keys, or `_` to match all unmatched enum keys,
+/// while right side is a value.
+///
+/// # Examples
+///
+/// ```
+/// #[macro_use]
+/// extern crate enum_map;
+///
+/// #[derive(EnumMap)]
+/// enum Example {
+///     A,
+///     B,
+///     C,
+///     D,
+/// }
+///
+/// fn main() {
+///     let enum_map = enum_map! {
+///         Example::A | Example::B => 1,
+///         Example::C => 2,
+///         _ => 3,
+///     };
+///     assert_eq!(enum_map[Example::A], 1);
+///     assert_eq!(enum_map[Example::B], 1);
+///     assert_eq!(enum_map[Example::C], 2);
+///     assert_eq!(enum_map[Example::D], 3);
+/// }
+/// ```
+#[macro_export]
+macro_rules! enum_map {
+    {$($t:tt)*} => {
+        $crate::EnumMap::from(|k| match k { $($t)* })
+    };
+}
+
 mod enummap_impls;
 mod internal;
 mod iter;
@@ -306,44 +346,4 @@ impl<F: FnMut(K) -> V, K: Internal<V>, V> From<F> for EnumMap<K, V> {
     fn from(f: F) -> Self {
         EnumMap { array: K::from_function(f) }
     }
-}
-
-/// Enum map constructor.
-///
-/// This macro allows to create a new enum map in a type safe way. It takes
-/// a list of `,` separated pairs separated by `=>`. Left side is `|`
-/// separated list of enum keys, or `_` to match all unmatched enum keys,
-/// while right side is a value.
-///
-/// # Examples
-///
-/// ```
-/// #[macro_use]
-/// extern crate enum_map;
-///
-/// #[derive(EnumMap)]
-/// enum Example {
-///     A,
-///     B,
-///     C,
-///     D,
-/// }
-///
-/// fn main() {
-///     let enum_map = enum_map! {
-///         Example::A | Example::B => 1,
-///         Example::C => 2,
-///         _ => 3,
-///     };
-///     assert_eq!(enum_map[Example::A], 1);
-///     assert_eq!(enum_map[Example::B], 1);
-///     assert_eq!(enum_map[Example::C], 2);
-///     assert_eq!(enum_map[Example::D], 3);
-/// }
-/// ```
-#[macro_export]
-macro_rules! enum_map {
-    {$($t:tt)*} => {
-        $crate::EnumMap::from(|k| match k { $($t)* })
-    };
 }
