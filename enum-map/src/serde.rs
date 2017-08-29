@@ -11,6 +11,7 @@ use self::serde::de::{self, Deserialize, Deserializer, Error, MapAccess};
 use core::fmt;
 use core::marker::PhantomData;
 
+/// Requires crate feature `"serde"`
 impl<K: Internal<V> + Serialize, V: Serialize> Serialize for EnumMap<K, V> {
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         let mut map = serializer.serialize_map(Some(self.len()))?;
@@ -21,6 +22,7 @@ impl<K: Internal<V> + Serialize, V: Serialize> Serialize for EnumMap<K, V> {
     }
 }
 
+/// Requires crate feature `"serde"`
 impl<'de, K, V> Deserialize<'de> for EnumMap<K, V>
 where
     K: Internal<V>
