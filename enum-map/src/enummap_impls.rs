@@ -1,8 +1,27 @@
 use EnumMap;
 use Internal;
 
+use core::iter::Extend;
 use core::hash::{Hash, Hasher};
 use core::ops::{Index, IndexMut};
+
+impl<K: Internal<V>, V> Extend<(K, V)> for EnumMap<K, V> {
+    fn extend<I: IntoIterator<Item = (K, V)>>(&mut self, iter: I) {
+        for (key, value) in iter {
+            self[key] = value;
+        }
+    }
+}
+
+impl<'a, K, V> Extend<(&'a K, &'a V)> for EnumMap<K, V>
+where
+    K: Internal<V> + Copy,
+    V: Copy,
+{
+    fn extend<I: IntoIterator<Item = (&'a K, &'a V)>>(&mut self, iter: I) {
+        self.extend(iter.into_iter().map(|(&key, &value)| (key, value)))
+    }
+}
 
 impl<K: Internal<V>, V> Index<K> for EnumMap<K, V> {
     type Output = V;
