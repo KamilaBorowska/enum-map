@@ -19,7 +19,7 @@ where
     V: Copy,
 {
     fn extend<I: IntoIterator<Item = (&'a K, &'a V)>>(&mut self, iter: I) {
-        self.extend(iter.into_iter().map(|(&key, &value)| (key, value)))
+        self.extend(iter.into_iter().map(|(&key, &value)| (key, value)));
     }
 }
 
