@@ -35,7 +35,7 @@ where
     }
 }
 
-struct Visitor<K: Internal<V>, V>(PhantomData<EnumMap<K, V>>);
+struct Visitor<K, V>(PhantomData<(K, V)>);
 
 impl<'de, K, V> de::Visitor<'de> for Visitor<K, V>
 where
