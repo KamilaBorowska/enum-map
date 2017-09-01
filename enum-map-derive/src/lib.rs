@@ -19,10 +19,11 @@ use quote::Tokens;
 fn generate_enum_code(name: &Ident, variants: &[Variant]) -> Tokens {
     let mut enum_count = 0usize;
     for &Variant {
-            ref data,
-            ref discriminant,
-            ..
-        } in variants {
+        ref data,
+        ref discriminant,
+        ..
+    } in variants
+    {
         if data != &VariantData::Unit {
             panic!("#[derive(EnumMap)] requires C style style enum");
         }
@@ -77,9 +78,8 @@ fn generate_enum_code(name: &Ident, variants: &[Variant]) -> Tokens {
 pub fn derive_enum_map(input: TokenStream) -> TokenStream {
     let input = syn::parse_macro_input(&input.to_string()).unwrap();
     match input.body {
-            Body::Enum(ref variants) => generate_enum_code(&input.ident, variants),
-            _ => panic!("#[derive(EnumMap)] is only defined for enums"),
-        }
-        .parse()
+        Body::Enum(ref variants) => generate_enum_code(&input.ident, variants),
+        _ => panic!("#[derive(EnumMap)] is only defined for enums"),
+    }.parse()
         .unwrap()
 }
