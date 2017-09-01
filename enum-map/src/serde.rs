@@ -55,7 +55,7 @@ where
         while let Some((key, value)) = access.next_entry()? {
             entries[key] = Some(value);
         }
-        for (_, value) in &entries {
+        for value in entries.values() {
             if value.is_none() {
                 return Err(M::Error::custom("key not specified"));
             }
