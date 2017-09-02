@@ -142,10 +142,7 @@ pub struct EnumMap<K: Internal<V>, V> {
     array: K::Array,
 }
 
-impl<K: Internal<V>, V: Default> EnumMap<K, V>
-where
-    K::Array: Default,
-{
+impl<K: Internal<V>, V: Default> EnumMap<K, V> {
     /// Creates an enum map with default values.
     ///
     /// # Examples
@@ -167,7 +164,7 @@ where
     /// }
     /// ```
     pub fn new() -> Self {
-        EnumMap::default()
+        enum_map! { _ => V::default() }
     }
 }
 
