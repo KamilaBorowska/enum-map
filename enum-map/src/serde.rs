@@ -56,7 +56,7 @@ where
             entries[key] = Some(value);
         }
         for value in entries.values() {
-            value.ok_or_else(|| M::Error::custom("key not specified"))?;
+            value.as_ref().ok_or_else(|| M::Error::custom("key not specified"))?;
         }
         Ok(enum_map! { key => entries[key].take().unwrap() })
     }
