@@ -51,7 +51,7 @@ where
     }
 
     fn visit_map<M: MapAccess<'de>>(self, mut access: M) -> Result<Self::Value, M::Error> {
-        let mut entries = EnumMap::new();
+        let mut entries = enum_map! { _ => None };
         while let Some((key, value)) = access.next_entry()? {
             entries[key] = Some(value);
         }
