@@ -36,12 +36,12 @@ fn generate_enum_code(name: &Ident, variants: &[Variant]) -> Tokens {
 
     let variant_a = variants.iter().map(|variant| &variant.ident);
     let variant_b = variants.iter().map(|variant| &variant.ident);
-    let repeat_name_a = iter::repeat(name).take(variants.len());
-    let repeat_name_b = repeat_name_a.clone();
+    let repeat_name = iter::repeat(name);
+    let repeat_name_b = repeat_name.clone();
     let counter = 0..variants.len();
 
     let to_usize = if variants.len() == 0 || has_discriminants {
-        let repeat_name = repeat_name_a.clone();
+        let repeat_name = repeat_name.clone();
         let variant = variants.iter().map(|variant| &variant.ident);
         let counter = 0..variants.len();
         quote! {
@@ -67,7 +67,7 @@ fn generate_enum_code(name: &Ident, variants: &[Variant]) -> Tokens {
             fn from_usize(value: usize) -> Self {
                 match value {
                     #(
-                        #counter => #repeat_name_a::#variant_a,
+                        #counter => #repeat_name::#variant_a,
                     )*
                     _ => unreachable!()
                 }
