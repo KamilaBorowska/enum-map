@@ -18,6 +18,7 @@ use quote::Tokens;
 
 fn generate_enum_code(name: &Ident, variants: &[Variant]) -> Tokens {
     let mut enum_count = 0usize;
+    let mut has_discriminants = false;
     for &Variant {
         ref data,
         ref discriminant,
@@ -28,7 +29,7 @@ fn generate_enum_code(name: &Ident, variants: &[Variant]) -> Tokens {
             panic!("#[derive(EnumMap)] requires C style style enum");
         }
         if discriminant.is_some() {
-            panic!("#[derive(EnumMap)] doesn't currently support discriminants");
+            has_discriminants = true;
         }
         enum_count += 1;
     }
@@ -39,8 +40,17 @@ fn generate_enum_code(name: &Ident, variants: &[Variant]) -> Tokens {
     let repeat_name_b = repeat_name_a.clone();
     let counter = 0..variants.len();
 
-    let to_usize = if variants.len() == 0 {
-        quote! { unreachable!() }
+    let to_usize = if variants.len() == 0 || has_discriminants {
+        let repeat_name = repeat_name_a.clone();
+        let variant = variants.iter().map(|variant| &variant.ident);
+        let counter = 0..variants.len();
+        quote! {
+            match self {
+                #(
+                    #repeat_name::#variant => #counter,
+                )*
+            }
+        }
     } else {
         quote! { self as usize }
     };
