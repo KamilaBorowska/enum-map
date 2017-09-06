@@ -7,9 +7,9 @@ use enum_map::EnumMap;
 
 #[derive(Debug, EnumMap, PartialEq)]
 enum Discriminants {
-    A = 2,
-    B = 0,
-    C = 1,
+    A = 2000,
+    B = 3000,
+    C = 1000,
 }
 
 #[test]
