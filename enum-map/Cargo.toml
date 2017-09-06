@@ -16,7 +16,7 @@ travis-ci = { repository = "xfix/enum-map" }
 [dependencies]
 array-macro = "0.1.1"
 serde = { version = "1.0.0", optional = true, features = ["derive"] }
-enum-map-derive = { version = "0.2.0", path = "../enum-map-derive" }
+enum-map-derive = { version = "0.2.4", path = "../enum-map-derive" }
 
 [dev-dependencies]
 serde_test = "1.0.5"
