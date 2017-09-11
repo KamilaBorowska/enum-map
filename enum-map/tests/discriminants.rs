@@ -18,7 +18,7 @@ fn discriminants() {
     map[Discriminants::A] = 3;
     map[Discriminants::B] = 2;
     map[Discriminants::C] = 1;
-    let mut pairs = map.into_iter();
+    let mut pairs = (&map).into_iter();
     assert_eq!(pairs.next(), Some((Discriminants::A, &3)));
     assert_eq!(pairs.next(), Some((Discriminants::B, &2)));
     assert_eq!(pairs.next(), Some((Discriminants::C, &1)));

@@ -92,7 +92,7 @@ mod iter;
 mod serde;
 
 pub use internal::Internal;
-pub use iter::{Iter, IterMut};
+pub use iter::{Iter, IterMut, IntoIter};
 // `*` here means re-exporting a derive procedural macro.
 pub use enum_map_derive::*;
 

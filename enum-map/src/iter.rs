@@ -3,6 +3,8 @@ use Internal;
 
 use core::iter::Enumerate;
 use core::marker::PhantomData;
+use core::mem::ManuallyDrop;
+use core::ptr;
 use core::slice;
 
 /// Immutable enum map iterator
@@ -136,6 +138,66 @@ impl<'a, K: Internal<V>, V> IntoIterator for &'a mut EnumMap<K, V> {
         IterMut {
             _phantom: PhantomData,
             iterator: self.as_mut_slice().iter_mut().enumerate(),
+        }
+    }
+}
+
+/// A map iterator that moves out of map.
+///
+/// This struct is created by `into_iter` on `EnumMap`.
+///
+/// # Examples
+///
+/// ```
+/// #[macro_use]
+/// extern crate enum_map;
+///
+/// #[derive(Debug, EnumMap)]
+/// enum Example {
+///     A,
+///     B,
+/// }
+///
+/// fn main() {
+///     let map = enum_map! { Example::A | Example::B => String::from("123") };
+///     for (_, value) in map {
+///         assert_eq!(value + "4", "1234");
+///     }
+/// }
+/// ```
+pub struct IntoIter<K: Internal<V>, V> {
+    map: ManuallyDrop<EnumMap<K, V>>,
+    position: usize,
+}
+
+impl<K: Internal<V>, V> Iterator for IntoIter<K, V> {
+    type Item = (K, V);
+    fn next(&mut self) -> Option<(K, V)> {
+        let slice = self.map.as_slice();
+        if self.position < slice.len() {
+            let key = K::from_usize(self.position);
+            let result = Some((key, unsafe { ptr::read(&slice[self.position]) }));
+            self.position += 1;
+            result
+        } else {
+            None
+        }
+    }
+}
+
+impl<K: Internal<V>, V> Drop for IntoIter<K, V> {
+    fn drop(&mut self) {
+        for _item in self {}
+    }
+}
+
+impl<K: Internal<V>, V> IntoIterator for EnumMap<K, V> {
+    type Item = (K, V);
+    type IntoIter = IntoIter<K, V>;
+    fn into_iter(self) -> Self::IntoIter {
+        IntoIter {
+            map: ManuallyDrop::new(self),
+            position: 0,
         }
     }
 }
