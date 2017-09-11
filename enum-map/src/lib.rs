@@ -164,7 +164,7 @@ impl<K: Internal<V>, V: Default> EnumMap<K, V> {
     /// }
     /// ```
     pub fn new() -> Self {
-        enum_map! { _ => V::default() }
+        EnumMap::default()
     }
 }
 

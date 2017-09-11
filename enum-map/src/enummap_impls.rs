@@ -79,11 +79,8 @@ where
     }
 }
 
-impl<K: Internal<V>, V> Default for EnumMap<K, V>
-where
-    K::Array: Default,
-{
+impl<K: Internal<V>, V: Default> Default for EnumMap<K, V> {
     fn default() -> Self {
-        EnumMap { array: K::Array::default() }
+        enum_map! { _ => V::default() }
     }
 }
