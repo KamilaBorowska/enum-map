@@ -55,20 +55,13 @@ where
 {
 }
 
-impl<K: Internal<V>, V> PartialEq for EnumMap<K, V>
-where
-    K::Array: PartialEq,
-{
+impl<K: Internal<V>, V: PartialEq> PartialEq for EnumMap<K, V> {
     fn eq(&self, other: &Self) -> bool {
-        self.array == other.array
+        self.as_slice() == other.as_slice()
     }
 }
 
-impl<K: Internal<V>, V> Eq for EnumMap<K, V>
-where
-    K::Array: Eq,
-{
-}
+impl<K: Internal<V>, V: Eq> Eq for EnumMap<K, V> {}
 
 impl<K: Internal<V>, V: Hash> Hash for EnumMap<K, V> {
     fn hash<H: Hasher>(&self, state: &mut H) {
