@@ -70,12 +70,9 @@ where
 {
 }
 
-impl<K: Internal<V>, V> Hash for EnumMap<K, V>
-where
-    K::Array: Hash,
-{
+impl<K: Internal<V>, V: Hash> Hash for EnumMap<K, V> {
     fn hash<H: Hasher>(&self, state: &mut H) {
-        self.array.hash(state);
+        self.as_slice().hash(state);
     }
 }
 
