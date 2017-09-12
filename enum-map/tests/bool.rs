@@ -1,5 +1,3 @@
-#![no_std]
-
 #[macro_use]
 extern crate enum_map;
 
@@ -32,4 +30,8 @@ fn test_option_bool() {
     assert_eq!(map[Some(false)], 5);
     assert_eq!(map[Some(true)], 6);
     assert_eq!(map.as_slice(), [4, 5, 6]);
+    assert_eq!(
+        map.into_iter().collect::<Vec<_>>(),
+        [(None, 4), (Some(false), 5), (Some(true), 6)]
+    );
 }
