@@ -10,7 +10,7 @@ use core::slice;
 /// Users aren't expected to use this trait directly, but rather to use
 /// `EnumMap<K, V>` which uses this internally.
 ///
-/// This trait is also implemented by `bool` and `u8` type. While `u8` is
+/// This trait is also implemented by `bool`, `u8` and `Option` type. While `u8` is
 /// strictly speaking not an actual enum, there are good reasons to consider
 /// it like one, as array of `u8` keys is a relatively common pattern.
 pub trait Internal<V>: Sized {
