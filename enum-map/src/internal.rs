@@ -70,6 +70,7 @@ impl<T> Internal<T> for u8 {
     }
 }
 
+// C representation is needed to ensure Rust compiler won't reorder those 2 fields.
 #[repr(C)]
 pub struct OptionInternal<T, U> {
     none: T,
