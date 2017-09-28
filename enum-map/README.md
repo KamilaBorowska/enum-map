@@ -1,3 +1,5 @@
+# enum-map
+
 [![Build Status](https://travis-ci.org/xfix/enum-map.svg?branch=master)](https://travis-ci.org/xfix/enum-map)
 
 A library providing enum map providing type safe enum array. It is
@@ -5,7 +7,7 @@ implemented using regular Rust arrays, so using them is as fast (and
 in fact faster due to no bounds checking) as using regular Rust
 arrays.
 
-# Examples
+## Examples
 
 ```rust
 #[macro_use]
