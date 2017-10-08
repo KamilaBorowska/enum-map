@@ -17,15 +17,15 @@ pub trait Internal<V>: Sized {
     /// Representation of an enum map for type `V`, usually an array.
     type Array;
     #[doc(hidden)]
-    fn slice(&Self::Array) -> &[V];
+    fn slice(array: &Self::Array) -> &[V];
     #[doc(hidden)]
-    fn slice_mut(&mut Self::Array) -> &mut [V];
+    fn slice_mut(array: &mut Self::Array) -> &mut [V];
     #[doc(hidden)]
-    fn from_usize(usize) -> Self;
+    fn from_usize(value: usize) -> Self;
     #[doc(hidden)]
     fn to_usize(self) -> usize;
     #[doc(hidden)]
-    fn from_function<F: FnMut(Self) -> V>(F) -> Self::Array;
+    fn from_function<F: FnMut(Self) -> V>(f: F) -> Self::Array;
 }
 
 impl<T> Internal<T> for bool {
