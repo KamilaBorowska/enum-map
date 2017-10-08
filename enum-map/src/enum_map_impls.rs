@@ -6,7 +6,7 @@ use core::hash::{Hash, Hasher};
 use core::ops::{Index, IndexMut};
 
 impl<K: Internal<V>, V> Extend<(K, V)> for EnumMap<K, V> {
-    fn extend<I: IntoIterator<Item = (K, V)>>(&mut self, iter: I) {
+    fn extend<I: IntoIterator<Item=(K, V)>>(&mut self, iter: I) {
         for (key, value) in iter {
             self[key] = value;
         }
@@ -14,11 +14,11 @@ impl<K: Internal<V>, V> Extend<(K, V)> for EnumMap<K, V> {
 }
 
 impl<'a, K, V> Extend<(&'a K, &'a V)> for EnumMap<K, V>
-where
-    K: Internal<V> + Copy,
-    V: Copy,
+    where
+        K: Internal<V> + Copy,
+        V: Copy,
 {
-    fn extend<I: IntoIterator<Item = (&'a K, &'a V)>>(&mut self, iter: I) {
+    fn extend<I: IntoIterator<Item=(&'a K, &'a V)>>(&mut self, iter: I) {
         self.extend(iter.into_iter().map(|(&key, &value)| (key, value)));
     }
 }
@@ -41,8 +41,8 @@ impl<K: Internal<V>, V> IndexMut<K> for EnumMap<K, V> {
 // Implementations provided by derive attribute are too specific, and put requirements on K.
 // This is caused by rust-lang/rust#26925.
 impl<K: Internal<V>, V> Clone for EnumMap<K, V>
-where
-    K::Array: Clone,
+    where
+        K::Array: Clone,
 {
     fn clone(&self) -> Self {
         EnumMap { array: self.array.clone() }
@@ -50,10 +50,9 @@ where
 }
 
 impl<K: Internal<V>, V> Copy for EnumMap<K, V>
-where
-    K::Array: Copy,
-{
-}
+    where
+        K::Array: Copy,
+{}
 
 impl<K: Internal<V>, V: PartialEq> PartialEq for EnumMap<K, V> {
     fn eq(&self, other: &Self) -> bool {

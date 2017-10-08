@@ -24,11 +24,11 @@ impl<K: Internal<V> + Serialize, V: Serialize> Serialize for EnumMap<K, V> {
 
 /// Requires crate feature `"serde"`
 impl<'de, K, V> Deserialize<'de> for EnumMap<K, V>
-where
-    K: Internal<V>
+    where
+        K: Internal<V>
         + Internal<Option<V>>
         + Deserialize<'de>,
-    V: Deserialize<'de>,
+        V: Deserialize<'de>,
 {
     fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
         deserializer.deserialize_map(Visitor(PhantomData))
@@ -38,11 +38,11 @@ where
 struct Visitor<K, V>(PhantomData<(K, V)>);
 
 impl<'de, K, V> de::Visitor<'de> for Visitor<K, V>
-where
-    K: Internal<V>
+    where
+        K: Internal<V>
         + Internal<Option<V>>
         + Deserialize<'de>,
-    V: Deserialize<'de>,
+        V: Deserialize<'de>,
 {
     type Value = EnumMap<K, V>;
 
