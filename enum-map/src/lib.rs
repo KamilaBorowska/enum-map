@@ -86,7 +86,7 @@ macro_rules! enum_map {
     };
 }
 
-mod enummap_impls;
+mod enum_map_impls;
 mod internal;
 mod iter;
 mod serde;
