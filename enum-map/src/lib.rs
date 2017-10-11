@@ -104,7 +104,7 @@ use core::slice;
 /// enum value. To work, it requires implementation of internal (private,
 /// although public due to macro limitations) trait which allows extracting
 /// information about an enum, which can be automatically generated using
-/// `#[derive(EnumMap)]` from `enum_map_derive` crate.
+/// `#[derive(EnumMap)]` macro.
 ///
 /// Additionally, `bool` and `u8` automatically derives from `EnumMap`. While
 /// `u8` is not technically an enum, it's convenient to consider it like one.
