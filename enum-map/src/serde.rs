@@ -5,7 +5,7 @@ extern crate serde;
 use EnumMap;
 use Internal;
 
-use self::serde::ser::{Serialize, Serializer, SerializeMap};
+use self::serde::ser::{Serialize, SerializeMap, Serializer};
 use self::serde::de::{self, Deserialize, Deserializer, Error, MapAccess};
 
 use core::fmt;
@@ -24,11 +24,9 @@ impl<K: Internal<V> + Serialize, V: Serialize> Serialize for EnumMap<K, V> {
 
 /// Requires crate feature `"serde"`
 impl<'de, K, V> Deserialize<'de> for EnumMap<K, V>
-    where
-        K: Internal<V>
-        + Internal<Option<V>>
-        + Deserialize<'de>,
-        V: Deserialize<'de>,
+where
+    K: Internal<V> + Internal<Option<V>> + Deserialize<'de>,
+    V: Deserialize<'de>,
 {
     fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
         deserializer.deserialize_map(Visitor(PhantomData))
@@ -38,11 +36,9 @@ impl<'de, K, V> Deserialize<'de> for EnumMap<K, V>
 struct Visitor<K, V>(PhantomData<(K, V)>);
 
 impl<'de, K, V> de::Visitor<'de> for Visitor<K, V>
-    where
-        K: Internal<V>
-        + Internal<Option<V>>
-        + Deserialize<'de>,
-        V: Deserialize<'de>,
+where
+    K: Internal<V> + Internal<Option<V>> + Deserialize<'de>,
+    V: Deserialize<'de>,
 {
     type Value = EnumMap<K, V>;
 
@@ -56,9 +52,9 @@ impl<'de, K, V> de::Visitor<'de> for Visitor<K, V>
             entries[key] = Some(value);
         }
         for value in entries.values() {
-            value.as_ref().ok_or_else(
-                || M::Error::custom("key not specified"),
-            )?;
+            value
+                .as_ref()
+                .ok_or_else(|| M::Error::custom("key not specified"))?;
         }
         Ok(enum_map! { key => entries[key].take().unwrap() })
     }

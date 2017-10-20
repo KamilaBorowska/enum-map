@@ -8,7 +8,7 @@ extern crate serde;
 extern crate serde_test;
 
 
-use serde_test::{Token, assert_tokens};
+use serde_test::{assert_tokens, Token};
 
 #[derive(Debug, EnumMap, Deserialize, Serialize)]
 enum Example {

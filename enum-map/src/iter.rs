@@ -45,9 +45,9 @@ pub struct Iter<'a, K, V: 'a> {
 impl<'a, K: Internal<V>, V> Iterator for Iter<'a, K, V> {
     type Item = (K, &'a V);
     fn next(&mut self) -> Option<Self::Item> {
-        self.iterator.next().map(|(index, item)| {
-            (K::from_usize(index), item)
-        })
+        self.iterator
+            .next()
+            .map(|(index, item)| (K::from_usize(index), item))
     }
 
     fn size_hint(&self) -> (usize, Option<usize>) {
@@ -57,9 +57,9 @@ impl<'a, K: Internal<V>, V> Iterator for Iter<'a, K, V> {
 
 impl<'a, K: Internal<V>, V> DoubleEndedIterator for Iter<'a, K, V> {
     fn next_back(&mut self) -> Option<Self::Item> {
-        self.iterator.next_back().map(|(index, item)| {
-            (K::from_usize(index), item)
-        })
+        self.iterator
+            .next_back()
+            .map(|(index, item)| (K::from_usize(index), item))
     }
 }
 
@@ -111,9 +111,9 @@ pub struct IterMut<'a, K, V: 'a> {
 impl<'a, K: Internal<V>, V> Iterator for IterMut<'a, K, V> {
     type Item = (K, &'a mut V);
     fn next(&mut self) -> Option<Self::Item> {
-        self.iterator.next().map(|(index, item)| {
-            (K::from_usize(index), item)
-        })
+        self.iterator
+            .next()
+            .map(|(index, item)| (K::from_usize(index), item))
     }
 
     fn size_hint(&self) -> (usize, Option<usize>) {
@@ -123,9 +123,9 @@ impl<'a, K: Internal<V>, V> Iterator for IterMut<'a, K, V> {
 
 impl<'a, K: Internal<V>, V> DoubleEndedIterator for IterMut<'a, K, V> {
     fn next_back(&mut self) -> Option<Self::Item> {
-        self.iterator.next_back().map(|(index, item)| {
-            (K::from_usize(index), item)
-        })
+        self.iterator
+            .next_back()
+            .map(|(index, item)| (K::from_usize(index), item))
     }
 }
 

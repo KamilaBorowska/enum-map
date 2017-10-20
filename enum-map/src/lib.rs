@@ -92,7 +92,7 @@ mod iter;
 mod serde;
 
 pub use internal::Internal;
-pub use iter::{Iter, IterMut, IntoIter};
+pub use iter::{IntoIter, Iter, IterMut};
 // `*` here means re-exporting a derive procedural macro.
 pub use enum_map_derive::*;
 
@@ -341,6 +341,8 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
 
 impl<F: FnMut(K) -> V, K: Internal<V>, V> From<F> for EnumMap<K, V> {
     fn from(f: F) -> Self {
-        EnumMap { array: K::from_function(f) }
+        EnumMap {
+            array: K::from_function(f),
+        }
     }
 }
