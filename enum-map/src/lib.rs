@@ -346,3 +346,19 @@ impl<F: FnMut(K) -> V, K: Internal<V>, V> From<F> for EnumMap<K, V> {
         }
     }
 }
+
+/// Gets an index of an enum key in a slice.
+///
+/// # Example
+///
+/// ```
+/// use enum_map::index_for_key;
+/// assert_eq!(index_for_key(false), 0);
+/// assert_eq!(index_for_key(true), 1);
+/// assert_eq!(index_for_key(None::<bool>), 0);
+/// assert_eq!(index_for_key(Some(false)), 1);
+/// assert_eq!(index_for_key(Some(true)), 2);
+/// ```
+pub fn index_for_key<K: Internal<()>>(variant: K) -> usize {
+    variant.to_usize()
+}
