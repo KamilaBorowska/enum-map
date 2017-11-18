@@ -66,7 +66,7 @@ impl<T> Internal<T> for u8 {
         self as usize
     }
     fn from_function<F: FnMut(Self) -> T>(mut f: F) -> [T; 256] {
-        array![|i| f(i); 256]
+        array![|i| f(i as u8); 256]
     }
 }
 
