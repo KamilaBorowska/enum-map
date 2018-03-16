@@ -13,3 +13,9 @@ fn empty_map() {
     let void: EnumMap<Void, Void> = enum_map!{};
     assert!(void.is_empty());
 }
+
+#[test]
+#[should_panic]
+fn empty_value() {
+    let _void: EnumMap<bool, Void> = enum_map! { _ => unreachable!() };
+}
