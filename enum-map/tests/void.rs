@@ -17,5 +17,5 @@ fn empty_map() {
 #[test]
 #[should_panic]
 fn empty_value() {
-    let _void: EnumMap<bool, Void> = enum_map! { _ => unreachable!() };
+    enum_map! { _ => unreachable!() };
 }
