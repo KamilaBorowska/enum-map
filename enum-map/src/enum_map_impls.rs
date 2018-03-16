@@ -37,7 +37,6 @@ impl<K: Internal<V>, V> IndexMut<K> for EnumMap<K, V> {
     }
 }
 
-
 // Implementations provided by derive attribute are too specific, and put requirements on K.
 // This is caused by rust-lang/rust#26925.
 impl<K: Internal<V>, V> Clone for EnumMap<K, V>
