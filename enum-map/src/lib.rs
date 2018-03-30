@@ -134,7 +134,6 @@ use core::slice;
 ///
 /// [reverse-complement in benchmark game]:
 ///     http://benchmarksgame.alioth.debian.org/u64q/program.php?test=revcomp&lang=rust&id=2
-#[derive(Debug)]
 pub struct EnumMap<K: Internal<V>, V> {
     array: K::Array,
 }

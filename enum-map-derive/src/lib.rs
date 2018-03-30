@@ -13,8 +13,8 @@ extern crate syn;
 use std::iter;
 
 use proc_macro::TokenStream;
-use syn::{Body, Ident, Variant, VariantData};
 use quote::Tokens;
+use syn::{Body, Ident, Variant, VariantData};
 
 fn generate_enum_code(name: &Ident, variants: &[Variant]) -> Tokens {
     let mut enum_count = 0usize;

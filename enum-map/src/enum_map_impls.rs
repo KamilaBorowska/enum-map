@@ -1,9 +1,16 @@
 use EnumMap;
 use Internal;
 
-use core::iter::Extend;
+use core::fmt::{self, Debug, Formatter};
 use core::hash::{Hash, Hasher};
+use core::iter::Extend;
 use core::ops::{Index, IndexMut};
+
+impl<K: Internal<V> + Debug, V: Debug> Debug for EnumMap<K, V> {
+    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+        f.debug_map().entries(self).finish()
+    }
+}
 
 impl<K: Internal<V>, V> Extend<(K, V)> for EnumMap<K, V> {
     fn extend<I: IntoIterator<Item = (K, V)>>(&mut self, iter: I) {

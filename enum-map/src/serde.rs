@@ -5,8 +5,8 @@ extern crate serde;
 use EnumMap;
 use Internal;
 
-use self::serde::ser::{Serialize, SerializeMap, Serializer};
 use self::serde::de::{self, Deserialize, Deserializer, Error, MapAccess};
+use self::serde::ser::{Serialize, SerializeMap, Serializer};
 
 use core::fmt;
 use core::marker::PhantomData;
