@@ -12,6 +12,9 @@ readme = "README.md"
 
 [badges]
 travis-ci = { repository = "xfix/enum-map" }
+is-it-maintained-issue-resolution = { repository = "xfix/enum-map" }
+is-it-maintained-open-issues = { repository = "xfix/enum-map" }
+maintenance = { status = "actively-developed" }
 
 [dependencies]
 array-macro = "1.0.0"
