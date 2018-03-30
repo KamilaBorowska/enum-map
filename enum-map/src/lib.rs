@@ -39,12 +39,9 @@
 
 #[macro_use]
 extern crate array_macro;
-// This allows to quiet "proc macro crates and `#[no_link]` crates have no
-// effect without `#[macro_use]`" warning. Just using extern DOES have
-// an effect of letting me export the macro.
-#[allow(unused_imports)]
 #[macro_use]
-extern crate enum_map_derive;
+extern crate reexport_proc_macro;
+reexport_proc_macro!(enum_map_derive);
 
 /// Enum map constructor.
 ///
