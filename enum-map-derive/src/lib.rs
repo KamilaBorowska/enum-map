@@ -19,7 +19,12 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> quote::Tokens {
     let enum_count = data_enum.variants.len();
     let mut has_discriminants = false;
 
-    for &Variant { ref fields, ref discriminant, .. } in &data_enum.variants {
+    for &Variant {
+        ref fields,
+        ref discriminant,
+        ..
+    } in &data_enum.variants
+    {
         match *fields {
             Fields::Unit => (),
             _ => panic!("#[derive(EnumMap)] requires C style style enum"),
