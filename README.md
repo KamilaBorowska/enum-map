@@ -1,5 +1,6 @@
 # enum-map
 
+[![Crates.io](https://img.shields.io/crates/v/enum-map.svg)](https://crates.io/crates/enum-map)
 [![Build Status](https://travis-ci.org/xfix/enum-map.svg?branch=master)](https://travis-ci.org/xfix/enum-map)
 
 A library providing enum map providing type safe enum array. It is
