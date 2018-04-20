@@ -171,6 +171,16 @@ fn iterator_len() {
 }
 
 #[test]
+fn iter_mut_len() {
+    assert_eq!(
+        enum_map! { Example::A | Example::B | Example::C => 0 }
+            .iter_mut()
+            .len(),
+        3
+    );
+}
+
+#[test]
 fn iterator_next_back() {
     assert_eq!(
         enum_map! { Example::A => 1, Example::B => 2, Example::C => 3 }
