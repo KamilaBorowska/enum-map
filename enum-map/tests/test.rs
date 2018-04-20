@@ -237,9 +237,11 @@ fn into_iter_drop() {
 
 #[test]
 fn test_u8() {
-    let map = enum_map! { b'a' => 4, _ => 0 };
+    let mut map = enum_map! { b'a' => 4, _ => 0 };
+    map[b'c'] = 3;
     assert_eq!(map[b'a'], 4);
     assert_eq!(map[b'b'], 0);
+    assert_eq!(map[b'c'], 3);
 }
 
 #[derive(EnumMap)]
