@@ -191,6 +191,16 @@ fn iterator_next_back() {
 }
 
 #[test]
+fn iter_mut_next_back() {
+    assert_eq!(
+        enum_map! { Example::A => 1, Example::B => 2, Example::C => 3 }
+            .iter()
+            .next_back(),
+        Some((Example::C, &mut 3))
+    );
+}
+
+#[test]
 fn into_iter() {
     let mut iter = enum_map! { true => 5, false => 7 }.into_iter();
     assert_eq!(iter.next(), Some((false, 7)));
