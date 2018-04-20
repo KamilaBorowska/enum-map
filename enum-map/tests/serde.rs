@@ -61,7 +61,7 @@ fn json_invalid_deserialization() {
 
 #[test]
 fn json_invalid_type() {
-    let example: Result<EnumMap<Example, i32>, _> = serde::json::from_str("4");
+    let example: Result<EnumMap<Example, i32>, _> = serde_json::from_str("4");
     assert!(example.is_err());
 }
 
