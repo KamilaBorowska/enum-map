@@ -240,6 +240,7 @@ fn test_u8() {
     assert_eq!(map[b'a'], 4);
     assert_eq!(map[b'b'], 0);
     assert_eq!(map[b'c'], 3);
+    assert_eq!(map.iter().next(), Some((0, &0)));
 }
 
 #[derive(EnumMap)]
