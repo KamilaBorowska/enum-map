@@ -15,8 +15,6 @@ script:
   - cargo test --verbose
   - cargo test --verbose --all-features
 after_success: |
-  if [[ "$TRAVIS_RUST_VERSION" == stable ]]; then
-    bash <(curl https://raw.githubusercontent.com/xd009642/tarpaulin/master/travis-install.sh)
-    cargo tarpaulin --features serde --out Xml
-    bash <(curl -s https://codecov.io/bash)
-  fi
+  bash <(curl https://raw.githubusercontent.com/xd009642/tarpaulin/master/travis-install.sh)
+  cargo tarpaulin --features serde --out Xml
+  bash <(curl -s https://codecov.io/bash)
