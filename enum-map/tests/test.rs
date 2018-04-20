@@ -192,7 +192,7 @@ fn iterator_next_back() {
 fn iter_mut_next_back() {
     assert_eq!(
         enum_map! { Example::A => 1, Example::B => 2, Example::C => 3 }
-            .iter()
+            .iter_mut()
             .next_back(),
         Some((Example::C, &mut 3))
     );
