@@ -4,6 +4,7 @@ extern crate enum_map;
 use enum_map::{EnumMap, IntoIter};
 
 use std::cell::RefCell;
+use std::collections::HashSet;
 
 #[derive(Copy, Clone, Debug, EnumMap, PartialEq)]
 enum Example {
@@ -57,6 +58,14 @@ fn test_clone() {
 fn test_debug() {
     let map = enum_map! { false => 3, true => 5 };
     assert_eq!(format!("{:?}", map), "{false: 3, true: 5}");
+}
+
+#[test]
+fn test_hash() {
+    let map = enum_map! { false => 3, true => 5 };
+    let mut set = HashSet::new();
+    set.insert(map);
+    assert!(set.contains(&map));
 }
 
 #[test]
