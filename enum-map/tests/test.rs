@@ -180,6 +180,15 @@ fn iterator_next_back() {
     );
 }
 
+#[test]
+fn into_iter() {
+    let mut iter = enum_map! { true => 5, false => 7 }.into_iter();
+    assert_eq!(iter.next(), Some((false, 7)));
+    assert_eq!(iter.next(), Some((true, 5)));
+    assert_eq!(iter.next(), None);
+    assert_eq!(iter.next(), None);
+}
+
 struct DropReporter<'a> {
     into: &'a RefCell<Vec<usize>>,
     value: usize,
