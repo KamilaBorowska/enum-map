@@ -7,8 +7,8 @@ addons:
             - libssl-dev
 cache: cargo
 rust:
-  - "1.13"
-  - "1.22"
+  - 1.13.0
+  - 1.22.0
   - stable
   - beta
   - nightly
