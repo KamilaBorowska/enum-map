@@ -13,9 +13,8 @@ rust:
   - beta
   - nightly
 script:
-  - cargo clean
-  - cargo test --verbose
   - cd enum-map
+  - cargo test --verbose
   - cargo test --verbose --all-features
 after_success: |
   bash <(curl https://raw.githubusercontent.com/xd009642/tarpaulin/master/travis-install.sh)
