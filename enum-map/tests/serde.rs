@@ -10,7 +10,7 @@ extern crate serde_test;
 
 use enum_map::EnumMap;
 
-use serde_test::{assert_tokens, Configure, Token};
+use serde_test::{assert_de_tokens_error, assert_tokens, Compact, Configure, Token};
 
 #[derive(Debug, EnumMap, Deserialize, Serialize)]
 enum Example {
@@ -51,6 +51,14 @@ fn compact_serialization() {
             Token::I32(10),
             Token::TupleEnd,
         ],
+    );
+}
+
+#[test]
+fn invalid_compact_deserialization() {
+    assert_de_tokens_error::<Compact<EnumMap<bool, bool>>>(
+        &[Token::I32(4)],
+        "invalid type: integer `4`, expected a sequence",
     );
 }
 
