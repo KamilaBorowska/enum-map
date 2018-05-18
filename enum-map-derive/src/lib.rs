@@ -58,7 +58,7 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> quote::Tokens {
     };
 
     quote! {
-        impl<V> ::enum_map::Internal<V> for #name {
+        impl<V> ::enum_map::Enum<V> for #name {
             type Array = [V; #enum_count];
 
             fn slice(array: &Self::Array) -> &[V] {

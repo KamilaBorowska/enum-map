@@ -1,5 +1,4 @@
-use EnumMap;
-use Internal;
+use {Enum, EnumMap};
 
 use core::iter::Enumerate;
 use core::marker::PhantomData;
@@ -42,7 +41,7 @@ pub struct Iter<'a, K, V: 'a> {
     iterator: Enumerate<slice::Iter<'a, V>>,
 }
 
-impl<'a, K: Internal<V>, V> Iterator for Iter<'a, K, V> {
+impl<'a, K: Enum<V>, V> Iterator for Iter<'a, K, V> {
     type Item = (K, &'a V);
     fn next(&mut self) -> Option<Self::Item> {
         self.iterator
@@ -55,7 +54,7 @@ impl<'a, K: Internal<V>, V> Iterator for Iter<'a, K, V> {
     }
 }
 
-impl<'a, K: Internal<V>, V> DoubleEndedIterator for Iter<'a, K, V> {
+impl<'a, K: Enum<V>, V> DoubleEndedIterator for Iter<'a, K, V> {
     fn next_back(&mut self) -> Option<Self::Item> {
         self.iterator
             .next_back()
@@ -63,9 +62,9 @@ impl<'a, K: Internal<V>, V> DoubleEndedIterator for Iter<'a, K, V> {
     }
 }
 
-impl<'a, K: Internal<V>, V> ExactSizeIterator for Iter<'a, K, V> {}
+impl<'a, K: Enum<V>, V> ExactSizeIterator for Iter<'a, K, V> {}
 
-impl<'a, K: Internal<V>, V> IntoIterator for &'a EnumMap<K, V> {
+impl<'a, K: Enum<V>, V> IntoIterator for &'a EnumMap<K, V> {
     type Item = (K, &'a V);
     type IntoIter = Iter<'a, K, V>;
     fn into_iter(self) -> Self::IntoIter {
@@ -108,7 +107,7 @@ pub struct IterMut<'a, K, V: 'a> {
     iterator: Enumerate<slice::IterMut<'a, V>>,
 }
 
-impl<'a, K: Internal<V>, V> Iterator for IterMut<'a, K, V> {
+impl<'a, K: Enum<V>, V> Iterator for IterMut<'a, K, V> {
     type Item = (K, &'a mut V);
     fn next(&mut self) -> Option<Self::Item> {
         self.iterator
@@ -121,7 +120,7 @@ impl<'a, K: Internal<V>, V> Iterator for IterMut<'a, K, V> {
     }
 }
 
-impl<'a, K: Internal<V>, V> DoubleEndedIterator for IterMut<'a, K, V> {
+impl<'a, K: Enum<V>, V> DoubleEndedIterator for IterMut<'a, K, V> {
     fn next_back(&mut self) -> Option<Self::Item> {
         self.iterator
             .next_back()
@@ -129,9 +128,9 @@ impl<'a, K: Internal<V>, V> DoubleEndedIterator for IterMut<'a, K, V> {
     }
 }
 
-impl<'a, K: Internal<V>, V> ExactSizeIterator for IterMut<'a, K, V> {}
+impl<'a, K: Enum<V>, V> ExactSizeIterator for IterMut<'a, K, V> {}
 
-impl<'a, K: Internal<V>, V> IntoIterator for &'a mut EnumMap<K, V> {
+impl<'a, K: Enum<V>, V> IntoIterator for &'a mut EnumMap<K, V> {
     type Item = (K, &'a mut V);
     type IntoIter = IterMut<'a, K, V>;
     fn into_iter(self) -> Self::IntoIter {
@@ -165,12 +164,12 @@ impl<'a, K: Internal<V>, V> IntoIterator for &'a mut EnumMap<K, V> {
 ///     }
 /// }
 /// ```
-pub struct IntoIter<K: Internal<V>, V> {
+pub struct IntoIter<K: Enum<V>, V> {
     map: ManuallyDrop<EnumMap<K, V>>,
     position: usize,
 }
 
-impl<K: Internal<V>, V> Iterator for IntoIter<K, V> {
+impl<K: Enum<V>, V> Iterator for IntoIter<K, V> {
     type Item = (K, V);
     fn next(&mut self) -> Option<(K, V)> {
         let slice = self.map.as_slice();
@@ -185,13 +184,13 @@ impl<K: Internal<V>, V> Iterator for IntoIter<K, V> {
     }
 }
 
-impl<K: Internal<V>, V> Drop for IntoIter<K, V> {
+impl<K: Enum<V>, V> Drop for IntoIter<K, V> {
     fn drop(&mut self) {
         for _item in self {}
     }
 }
 
-impl<K: Internal<V>, V> IntoIterator for EnumMap<K, V> {
+impl<K: Enum<V>, V> IntoIterator for EnumMap<K, V> {
     type Item = (K, V);
     type IntoIter = IntoIter<K, V>;
     fn into_iter(self) -> Self::IntoIter {

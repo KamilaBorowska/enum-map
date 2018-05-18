@@ -88,7 +88,7 @@ mod internal;
 mod iter;
 mod serde;
 
-pub use internal::Internal;
+pub use internal::Enum;
 pub use iter::{IntoIter, Iter, IterMut};
 
 use core::slice;
@@ -132,11 +132,11 @@ use core::slice;
 ///
 /// [reverse-complement in benchmark game]:
 ///     http://benchmarksgame.alioth.debian.org/u64q/program.php?test=revcomp&lang=rust&id=2
-pub struct EnumMap<K: Internal<V>, V> {
+pub struct EnumMap<K: Enum<V>, V> {
     array: K::Array,
 }
 
-impl<K: Internal<V>, V: Default> EnumMap<K, V> {
+impl<K: Enum<V>, V: Default> EnumMap<K, V> {
     /// Creates an enum map with default values.
     ///
     /// # Examples
@@ -162,7 +162,7 @@ impl<K: Internal<V>, V: Default> EnumMap<K, V> {
     }
 }
 
-impl<K: Internal<V>, V> EnumMap<K, V> {
+impl<K: Enum<V>, V> EnumMap<K, V> {
     /// Returns an iterator over enum map.
     pub fn iter(&self) -> Iter<K, V> {
         self.into_iter()
@@ -333,7 +333,7 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
     }
 }
 
-impl<F: FnMut(K) -> V, K: Internal<V>, V> From<F> for EnumMap<K, V> {
+impl<F: FnMut(K) -> V, K: Enum<V>, V> From<F> for EnumMap<K, V> {
     fn from(f: F) -> Self {
         EnumMap {
             array: K::from_function(f),
@@ -350,6 +350,6 @@ impl<F: FnMut(K) -> V, K: Internal<V>, V> From<F> for EnumMap<K, V> {
 /// assert_eq!(index_for_key(false), 0);
 /// assert_eq!(index_for_key(true), 1);
 /// ```
-pub fn index_for_key<K: Internal<()>>(variant: K) -> usize {
+pub fn index_for_key<K: Enum<()>>(variant: K) -> usize {
     variant.to_usize()
 }

@@ -1,17 +1,14 @@
-/// Internal enum mapping type
+/// Enum mapping type
 ///
-/// This trait is internally used by `#[derive(EnumMap)]`. Despite it being
-/// a public trait, it's not intended to be public. `Internal<T>` is
+/// This trait is internally used by `#[derive(Enum)]`.  `Internal<T>` is
 /// implemented by any enum type where V is a generic type representing a
 /// value. The purpose of this generic type is to allow providing a value
 /// type for arrays, as Rust currently does not support higher kinded types.
-/// Users aren't expected to use this trait directly, but rather to use
-/// `EnumMap<K, V>` which uses this internally.
 ///
-/// This trait is also implemented by `bool`, `u8` and `Option` type. While `u8` is
+/// This trait is also implemented by `bool` and `u8`. While `u8` is
 /// strictly speaking not an actual enum, there are good reasons to consider
 /// it like one, as array of `u8` keys is a relatively common pattern.
-pub trait Internal<V>: Sized {
+pub trait Enum<V>: Sized {
     /// Representation of an enum map for type `V`, usually an array.
     type Array;
     #[doc(hidden)]
@@ -26,7 +23,7 @@ pub trait Internal<V>: Sized {
     fn from_function<F: FnMut(Self) -> V>(f: F) -> Self::Array;
 }
 
-impl<T> Internal<T> for bool {
+impl<T> Enum<T> for bool {
     type Array = [T; 2];
     fn slice(array: &[T; 2]) -> &[T] {
         array
@@ -49,7 +46,7 @@ impl<T> Internal<T> for bool {
     }
 }
 
-impl<T> Internal<T> for u8 {
+impl<T> Enum<T> for u8 {
     type Array = [T; 256];
     fn slice(array: &[T; 256]) -> &[T] {
         array
