@@ -9,7 +9,7 @@ extern crate serde_test;
 
 use enum_map::EnumMap;
 
-use serde_test::{assert_tokens, Token};
+use serde_test::{assert_tokens, Configure, Token};
 
 #[derive(Debug, EnumMap, Deserialize, Serialize)]
 enum Example {
@@ -21,7 +21,7 @@ enum Example {
 fn serialization() {
     let map = enum_map! { Example::A => 5, Example::B => 10 };
     assert_tokens(
-        &map,
+        &map.readable(),
         &[
             Token::Map { len: Some(2) },
             Token::UnitVariant {
@@ -35,6 +35,20 @@ fn serialization() {
             },
             Token::I32(10),
             Token::MapEnd,
+        ],
+    );
+}
+
+#[test]
+fn compact_serialization() {
+    let map = enum_map! { Example::A => 5, Example::B => 10 };
+    assert_tokens(
+        &map.compact(),
+        &[
+            Token::Tuple { len: 2 },
+            Token::I32(5),
+            Token::I32(10),
+            Token::TupleEnd,
         ],
     );
 }
