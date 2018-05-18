@@ -78,6 +78,7 @@ pub struct OptionInternal<T, U> {
     some: U,
 }
 
+#[deprecated(since = "0.2.30", note = "the implementation is unsafe, and will be removed in enum-map 0.3.0")]
 impl<T, U: Internal<T>> Internal<T> for Option<U> {
     type Array = OptionInternal<T, U::Array>;
     fn slice(array: &Self::Array) -> &[T] {
