@@ -39,7 +39,7 @@ where
         if deserializer.is_human_readable() {
             deserializer.deserialize_map(HumanReadableVisitor(PhantomData))
         } else {
-            deserializer.deserialize_map(CompactVisitor(PhantomData))
+            deserializer.deserialize_tuple(<K as Enum<V>>::POSSIBLE_VALUES, CompactVisitor(PhantomData))
         }
     }
 }
@@ -90,12 +90,12 @@ where
         {
             let mut iter = entries.values_mut();
             while let Some(place) = iter.next() {
-                *place = Some(access.next_element()?).ok_or_else(|| {
+                *place = Some(access.next_element()?.ok_or_else(|| {
                     M::Error::invalid_length(
                         len - iter.len(),
                         &"a sequence with as many elements as there are variants",
                     )
-                })?;
+                })?);
             }
         }
         Ok(enum_map! { key => entries[key].take().unwrap() })

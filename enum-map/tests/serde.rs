@@ -1,5 +1,6 @@
 #![cfg(feature = "serde")]
 
+extern crate bincode;
 #[macro_use]
 extern crate enum_map;
 #[macro_use]
@@ -84,4 +85,11 @@ fn json_invalid_key() {
     let example: Result<EnumMap<Example, i32>, _> =
         serde_json::from_str(r#"{"a": 5, "b": 10, "c": 6}"#);
     assert!(example.is_err());
+}
+
+#[test]
+fn bincode_serialization() {
+    let example = enum_map! { false => 3u8, true => 4u8 };
+    let serialized = bincode::serialize(&example).unwrap();
+    assert_eq!(example, bincode::deserialize(&serialized).unwrap());
 }

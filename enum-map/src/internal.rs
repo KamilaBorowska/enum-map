@@ -11,6 +11,8 @@
 pub trait Enum<V>: Sized {
     /// Representation of an enum map for type `V`, usually an array.
     type Array;
+    /// Number of possible values the type can have.
+    const POSSIBLE_VALUES: usize;
     #[doc(hidden)]
     fn slice(array: &Self::Array) -> &[V];
     #[doc(hidden)]
@@ -25,6 +27,7 @@ pub trait Enum<V>: Sized {
 
 impl<T> Enum<T> for bool {
     type Array = [T; 2];
+    const POSSIBLE_VALUES: usize = 2;
     fn slice(array: &[T; 2]) -> &[T] {
         array
     }
@@ -48,6 +51,7 @@ impl<T> Enum<T> for bool {
 
 impl<T> Enum<T> for u8 {
     type Array = [T; 256];
+    const POSSIBLE_VALUES: usize = 256;
     fn slice(array: &[T; 256]) -> &[T] {
         array
     }
