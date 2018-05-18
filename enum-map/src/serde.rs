@@ -93,7 +93,7 @@ where
             while let Some(place) = iter.next() {
                 *place = Some(access.next_element()?.ok_or_else(|| {
                     M::Error::invalid_length(
-                        len - iter.len(),
+                        len - iter.len() - 1,
                         &"a sequence with as many elements as there are variants",
                     )
                 })?);

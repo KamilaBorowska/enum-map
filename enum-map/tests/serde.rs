@@ -62,6 +62,14 @@ fn invalid_compact_deserialization() {
     );
 }
 
+#[test]
+fn too_short_compact_deserialization() {
+    assert_de_tokens_error::<Compact<EnumMap<bool, bool>>>(
+        &[Token::Seq { len: None }, Token::Bool(true), Token::SeqEnd],
+        &"invalid length 1, expected a sequence with as many elements as there are variants",
+    );
+}
+
 const JSON: &str = r#"{"A":5,"B":10}"#;
 
 #[test]
