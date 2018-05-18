@@ -1,5 +1,3 @@
-use core::slice;
-
 /// Internal enum mapping type
 ///
 /// This trait is internally used by `#[derive(EnumMap)]`. Despite it being
@@ -76,42 +74,4 @@ impl<T> Internal<T> for u8 {
 pub struct OptionInternal<T, U> {
     none: T,
     some: U,
-}
-
-#[deprecated(
-    since = "0.2.30", note = "the implementation is unsafe, and will be removed in enum-map 0.3.0"
-)]
-impl<T, U: Internal<T>> Internal<T> for Option<U> {
-    type Array = OptionInternal<T, U::Array>;
-    fn slice(array: &Self::Array) -> &[T] {
-        unsafe {
-            slice::from_raw_parts(
-                array as *const _ as *const T,
-                1 + U::slice(&array.some).len(),
-            )
-        }
-    }
-    fn slice_mut(array: &mut Self::Array) -> &mut [T] {
-        unsafe {
-            slice::from_raw_parts_mut(array as *mut _ as *mut T, 1 + U::slice(&array.some).len())
-        }
-    }
-    fn from_usize(value: usize) -> Self {
-        match value {
-            0 => None,
-            v => Some(U::from_usize(v - 1)),
-        }
-    }
-    fn to_usize(self) -> usize {
-        match self {
-            None => 0,
-            Some(x) => x.to_usize() + 1,
-        }
-    }
-    fn from_function<F: FnMut(Self) -> T>(mut f: F) -> Self::Array {
-        OptionInternal {
-            none: f(None),
-            some: U::from_function(|x| f(Some(x))),
-        }
-    }
 }
