@@ -93,3 +93,10 @@ fn bincode_serialization() {
     let serialized = bincode::serialize(&example).unwrap();
     assert_eq!(example, bincode::deserialize(&serialized).unwrap());
 }
+
+#[test]
+fn bincode_too_short_deserialization() {
+    assert!(
+        bincode::deserialize::<EnumMap<bool, bool>>(&bincode::serialize(&()).unwrap()).is_err()
+    );
+}
