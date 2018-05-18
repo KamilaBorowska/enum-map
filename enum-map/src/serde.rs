@@ -39,7 +39,8 @@ where
         if deserializer.is_human_readable() {
             deserializer.deserialize_map(HumanReadableVisitor(PhantomData))
         } else {
-            deserializer.deserialize_tuple(<K as Enum<V>>::POSSIBLE_VALUES, CompactVisitor(PhantomData))
+            deserializer
+                .deserialize_tuple(<K as Enum<V>>::POSSIBLE_VALUES, CompactVisitor(PhantomData))
         }
     }
 }

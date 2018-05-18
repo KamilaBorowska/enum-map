@@ -61,6 +61,8 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> quote::Tokens {
         impl<V> ::enum_map::Enum<V> for #name {
             type Array = [V; #enum_count];
 
+            const POSSIBLE_VALUES: usize = #enum_count;
+
             fn slice(array: &Self::Array) -> &[V] {
                 array
             }
