@@ -180,6 +180,11 @@ fn iter_mut_len() {
 }
 
 #[test]
+fn into_iter_len() {
+    assert_eq!(enum_map! { Example::A | _ => 0 }.into_iter().len(), 3);
+}
+
+#[test]
 fn iterator_next_back() {
     assert_eq!(
         enum_map! { Example::A => 1, Example::B => 2, Example::C => 3 }

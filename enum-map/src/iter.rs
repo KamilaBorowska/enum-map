@@ -187,7 +187,15 @@ impl<K: Internal<V>, V> Iterator for IntoIter<K, V> {
             None
         }
     }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        let slice = self.map.as_slice();
+        let diff = slice.len() - self.position;
+        (diff, Some(diff))
+    }
 }
+
+impl<K: Internal<V>, V> ExactSizeIterator for IntoIter<K, V> {}
 
 impl<K: Internal<V>, V> FusedIterator for IntoIter<K, V> {}
 
