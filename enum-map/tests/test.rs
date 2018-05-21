@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate enum_map;
 
-use enum_map::{EnumMap, Internal, IntoIter};
+use enum_map::{Enum, EnumMap, IntoIter};
 
 use std::cell::RefCell;
 use std::collections::HashSet;
@@ -247,8 +247,9 @@ enum X {
     A(PhantomData<*const ()>),
 }
 
-impl<V> Internal<V> for X {
+impl<V> Enum<V> for X {
     type Array = [V; 1];
+    const POSSIBLE_VALUES: usize = 1;
 
     fn slice(array: &[V; 1]) -> &[V] {
         array
