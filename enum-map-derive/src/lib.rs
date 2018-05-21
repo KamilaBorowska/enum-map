@@ -15,7 +15,7 @@ use std::iter;
 
 use syn::{Data, DataEnum, DeriveInput, Fields, Ident, Variant};
 
-fn generate_enum_code(name: Ident, data_enum: DataEnum) -> quote::Tokens {
+fn generate_enum_code(name: Ident, data_enum: DataEnum) -> proc_macro2::TokenStream {
     let enum_count = data_enum.variants.len();
     let mut has_discriminants = false;
 
@@ -37,7 +37,7 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> quote::Tokens {
 
     let variants_names_a = data_enum.variants.iter().map(|variant| &variant.ident);
     let variants_names_b = data_enum.variants.iter().map(|variant| &variant.ident);
-    let repeat_name_a = iter::repeat(name);
+    let repeat_name_a = iter::repeat(&name);
     let repeat_name_b = repeat_name_a.clone();
     let counter = 0..enum_count;
 
