@@ -1,10 +1,11 @@
 #[macro_use]
 extern crate enum_map;
 
-use enum_map::{EnumMap, IntoIter};
+use enum_map::{EnumMap, Internal, IntoIter};
 
 use std::cell::RefCell;
 use std::collections::HashSet;
+use std::marker::PhantomData;
 
 #[derive(Copy, Clone, Debug, EnumMap, PartialEq)]
 enum Example {
@@ -256,4 +257,47 @@ fn empty_map() {
 #[should_panic]
 fn empty_value() {
     let _void: EnumMap<bool, Void> = enum_map! { _ => unreachable!() };
+}
+
+#[derive(Clone, Copy)]
+enum X {
+    A(PhantomData<*const ()>),
+}
+
+impl<V> Internal<V> for X {
+    type Array = [V; 1];
+
+    fn slice(array: &[V; 1]) -> &[V] {
+        array
+    }
+
+    fn slice_mut(array: &mut [V; 1]) -> &mut [V] {
+        array
+    }
+
+    fn from_usize(arg: usize) -> X {
+        assert_eq!(arg, 0);
+        X::A(PhantomData)
+    }
+
+    fn to_usize(self) -> usize {
+        0
+    }
+
+    fn from_function<F: FnMut(Self) -> V>(mut f: F) -> [V; 1] {
+        [f(X::A(PhantomData))]
+    }
+}
+
+fn assert_sync_send<T: Sync + Send>(_: T) {}
+
+#[test]
+fn assert_enum_map_does_not_copy_sync_send_dependency_of_keys() {
+    let mut map = enum_map! { X::A(PhantomData) => true };
+    assert_sync_send(map);
+    assert_sync_send(&map);
+    assert_sync_send(&mut map);
+    assert_sync_send(map.iter());
+    assert_sync_send(map.iter_mut());
+    assert_sync_send(map.into_iter());
 }

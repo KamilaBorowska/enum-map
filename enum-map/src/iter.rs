@@ -38,7 +38,7 @@ use core::slice;
 /// ```
 #[derive(Debug)]
 pub struct Iter<'a, K, V: 'a> {
-    _phantom: PhantomData<K>,
+    _phantom: PhantomData<fn() -> K>,
     iterator: Enumerate<slice::Iter<'a, V>>,
 }
 
@@ -104,7 +104,7 @@ impl<'a, K: Internal<V>, V> IntoIterator for &'a EnumMap<K, V> {
 /// ```
 #[derive(Debug)]
 pub struct IterMut<'a, K, V: 'a> {
-    _phantom: PhantomData<K>,
+    _phantom: PhantomData<fn() -> K>,
     iterator: Enumerate<slice::IterMut<'a, V>>,
 }
 
