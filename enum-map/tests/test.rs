@@ -235,6 +235,11 @@ fn values_rev_collect() {
 }
 
 #[test]
+fn values_len() {
+    assert_eq!(enum_map! { false => 0, true => 1 }.values().len(), 2);
+}
+
+#[test]
 fn test_u8() {
     let mut map = enum_map! { b'a' => 4, _ => 0 };
     map[b'c'] = 3;
