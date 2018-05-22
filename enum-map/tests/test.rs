@@ -213,6 +213,14 @@ fn into_iter() {
     assert_eq!(iter.next(), None);
 }
 
+#[test]
+fn into_iter_u8() {
+    assert_eq!(
+        EnumMap::from(|i: u8| i).into_iter().collect::<Vec<_>>(),
+        (0..256).map(|x| (x as u8, x as u8)).collect::<Vec<_>>()
+    );
+}
+
 struct DropReporter<'a> {
     into: &'a RefCell<Vec<usize>>,
     value: usize,
