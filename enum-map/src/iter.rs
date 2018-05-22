@@ -200,3 +200,72 @@ impl<K: Enum<V>, V> IntoIterator for EnumMap<K, V> {
         }
     }
 }
+
+impl<K: Enum<V>, V> EnumMap<K, V> {
+    /// An iterator visiting all values. The iterator type is `&V`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// #[macro_use]
+    /// extern crate enum_map;
+    ///
+    /// fn main() {
+    ///     let map = enum_map! { false => 3, true => 4 };
+    ///     let mut values = map.values();
+    ///     assert_eq!(values.next(), Some(&3));
+    ///     assert_eq!(values.next(), Some(&4));
+    ///     assert_eq!(values.next(), None);
+    /// }
+    /// ```
+    pub fn values(&self) -> Values<V> {
+        Values(self.as_slice().iter())
+    }
+
+    /// An iterator visiting all values mutably. The iterator type is `&mut V`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// #[macro_use]
+    /// extern crate enum_map;
+    ///
+    /// fn main() {
+    ///     let mut map = enum_map! { _ => 2 };
+    ///     for value in map.values_mut() {
+    ///         *value += 2;
+    ///     }
+    ///     assert_eq!(map[false], 4);
+    ///     assert_eq!(map[true], 4);
+    /// }
+    /// ```
+    pub fn values_mut(&mut self) -> ValuesMut<V> {
+        ValuesMut(self.as_mut_slice().iter_mut())
+    }
+}
+
+/// An iterator over the values of `EnumMap`.
+///
+/// This `struct` is created by the `values` method of `EnumMap`.
+/// See its documentation for more.
+pub struct Values<'a, V: 'a>(slice::Iter<'a, V>);
+
+impl<'a, V: 'a> Iterator for Values<'a, V> {
+    type Item = &'a V;
+    fn next(&mut self) -> Option<&'a V> {
+        self.0.next()
+    }
+}
+
+/// A mutable iterator over the values of `EnumMap`.
+///
+/// This `struct` is created by the `values_mut` method of `EnumMap`.
+/// See its documentation for more.
+pub struct ValuesMut<'a, V: 'a>(slice::IterMut<'a, V>);
+
+impl<'a, V: 'a> Iterator for ValuesMut<'a, V> {
+    type Item = &'a mut V;
+    fn next(&mut self) -> Option<&'a mut V> {
+        self.0.next()
+    }
+}
