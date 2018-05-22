@@ -269,6 +269,10 @@ impl<'a, V: 'a> Iterator for Values<'a, V> {
     fn next(&mut self) -> Option<&'a V> {
         self.0.next()
     }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.0.size_hint()
+    }
 }
 
 impl<'a, V: 'a> DoubleEndedIterator for Values<'a, V> {
@@ -276,6 +280,8 @@ impl<'a, V: 'a> DoubleEndedIterator for Values<'a, V> {
         self.0.next_back()
     }
 }
+
+impl<'a, V: 'a> ExactSizeIterator for Values<'a, V> {}
 
 impl<'a, V: 'a> FusedIterator for Values<'a, V> {}
 
@@ -290,6 +296,10 @@ impl<'a, V: 'a> Iterator for ValuesMut<'a, V> {
     fn next(&mut self) -> Option<&'a mut V> {
         self.0.next()
     }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.0.size_hint()
+    }
 }
 
 impl<'a, V: 'a> DoubleEndedIterator for ValuesMut<'a, V> {
@@ -297,5 +307,7 @@ impl<'a, V: 'a> DoubleEndedIterator for ValuesMut<'a, V> {
         self.0.next_back()
     }
 }
+
+impl<'a, V: 'a> ExactSizeIterator for ValuesMut<'a, V> {}
 
 impl<'a, V: 'a> FusedIterator for ValuesMut<'a, V> {}
