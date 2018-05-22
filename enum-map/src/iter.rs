@@ -182,7 +182,15 @@ impl<K: Enum<V>, V> Iterator for IntoIter<K, V> {
             None
         }
     }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        let slice = self.map.as_slice();
+        let diff = slice.len() - self.position;
+        (diff, Some(diff))
+    }
 }
+
+impl<K: Enum<V>, V> ExactSizeIterator for IntoIter<K, V> {}
 
 impl<K: Enum<V>, V> Drop for IntoIter<K, V> {
     fn drop(&mut self) {
