@@ -223,6 +223,18 @@ fn into_iter_drop() {
 }
 
 #[test]
+fn values_rev_collect() {
+    assert_eq!(
+        vec![3, 2, 1],
+        enum_map! { Example::A => 1, Example::B => 2, Example::C => 3 }
+            .values()
+            .rev()
+            .cloned()
+            .collect::<Vec<_>>()
+    );
+}
+
+#[test]
 fn test_u8() {
     let mut map = enum_map! { b'a' => 4, _ => 0 };
     map[b'c'] = 3;
