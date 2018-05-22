@@ -68,11 +68,3 @@ impl<T> Enum<T> for u8 {
         array![|i| f(i as u8); 256]
     }
 }
-
-// C representation is needed to ensure Rust compiler won't reorder those 2 fields.
-#[repr(C)]
-#[derive(Copy, Clone)]
-pub struct OptionInternal<T, U> {
-    none: T,
-    some: U,
-}
