@@ -16,7 +16,7 @@ extern crate enum_map;
 
 use enum_map::EnumMap;
 
-#[derive(Debug, EnumMap)]
+#[derive(Debug, Enum)]
 enum Example {
     A,
     B,
