@@ -277,6 +277,8 @@ impl<'a, V: 'a> DoubleEndedIterator for Values<'a, V> {
     }
 }
 
+impl<'a, V: 'a> FusedIterator for Values<'a, V> {}
+
 /// A mutable iterator over the values of `EnumMap`.
 ///
 /// This `struct` is created by the `values_mut` method of `EnumMap`.
@@ -295,3 +297,5 @@ impl<'a, V: 'a> DoubleEndedIterator for ValuesMut<'a, V> {
         self.0.next_back()
     }
 }
+
+impl<'a, V: 'a> FusedIterator for ValuesMut<'a, V> {}
