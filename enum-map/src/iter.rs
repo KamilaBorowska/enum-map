@@ -271,6 +271,12 @@ impl<'a, V: 'a> Iterator for Values<'a, V> {
     }
 }
 
+impl<'a, V: 'a> DoubleEndedIterator for Values<'a, V> {
+    fn next_back(&mut self) -> Option<&'a V> {
+        self.0.next_back()
+    }
+}
+
 /// A mutable iterator over the values of `EnumMap`.
 ///
 /// This `struct` is created by the `values_mut` method of `EnumMap`.
@@ -281,5 +287,11 @@ impl<'a, V: 'a> Iterator for ValuesMut<'a, V> {
     type Item = &'a mut V;
     fn next(&mut self) -> Option<&'a mut V> {
         self.0.next()
+    }
+}
+
+impl<'a, V: 'a> DoubleEndedIterator for ValuesMut<'a, V> {
+    fn next_back(&mut self) -> Option<&'a mut V> {
+        self.0.next_back()
     }
 }
