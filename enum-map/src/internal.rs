@@ -1,6 +1,6 @@
 /// Enum mapping type
 ///
-/// This trait is internally used by `#[derive(Enum)]`.  `Enum<T>` is
+/// This trait is internally used by `#[derive(Enum)]`. `Enum<T>` is
 /// implemented by any enum type where V is a generic type representing a
 /// value. The purpose of this generic type is to allow providing a value
 /// type for arrays, as Rust currently does not support higher kinded types.
