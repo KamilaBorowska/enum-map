@@ -240,6 +240,11 @@ fn values_len() {
 }
 
 #[test]
+fn values_mut_next_back() {
+    let mut map = enum_map! { false => 0, true => 1 };
+    assert_eq!(map.values_mut().next_back(), Some(&mut 1));
+}
+#[test]
 fn test_u8() {
     let mut map = enum_map! { b'a' => 4, _ => 0 };
     map[b'c'] = 3;
