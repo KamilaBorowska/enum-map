@@ -1,6 +1,6 @@
 /// Enum mapping type
 ///
-/// This trait is internally used by `#[derive(Enum)]`.  `Internal<T>` is
+/// This trait is internally used by `#[derive(Enum)]`.  `Enum<T>` is
 /// implemented by any enum type where V is a generic type representing a
 /// value. The purpose of this generic type is to allow providing a value
 /// type for arrays, as Rust currently does not support higher kinded types.
@@ -13,15 +13,15 @@ pub trait Enum<V>: Sized {
     type Array;
     /// Number of possible values the type can have.
     const POSSIBLE_VALUES: usize;
-    #[doc(hidden)]
+    /// Gets a slice from an array type.
     fn slice(array: &Self::Array) -> &[V];
-    #[doc(hidden)]
+    /// Gets a mutable slice from an array type.
     fn slice_mut(array: &mut Self::Array) -> &mut [V];
-    #[doc(hidden)]
+    /// Takes an usize, and returns an element matching `to_usize` function.
     fn from_usize(value: usize) -> Self;
-    #[doc(hidden)]
+    /// Returns an unique identifier for a value within range of `0..POSSIBLE_VALUES`.
     fn to_usize(self) -> usize;
-    #[doc(hidden)]
+    /// Creates an array using a function called for each argument.
     fn from_function<F: FnMut(Self) -> V>(f: F) -> Self::Array;
 }
 
