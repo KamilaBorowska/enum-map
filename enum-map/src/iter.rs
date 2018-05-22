@@ -1,7 +1,7 @@
 use EnumMap;
 use Internal;
 
-use core::iter::{Enumerate, FusedIterator};
+use core::iter::Enumerate;
 use core::marker::PhantomData;
 use core::mem::ManuallyDrop;
 use core::ptr;
@@ -64,8 +64,6 @@ impl<'a, K: Internal<V>, V> DoubleEndedIterator for Iter<'a, K, V> {
 }
 
 impl<'a, K: Internal<V>, V> ExactSizeIterator for Iter<'a, K, V> {}
-
-impl<'a, K: Internal<V>, V> FusedIterator for Iter<'a, K, V> {}
 
 impl<'a, K: Internal<V>, V> IntoIterator for &'a EnumMap<K, V> {
     type Item = (K, &'a V);
@@ -133,8 +131,6 @@ impl<'a, K: Internal<V>, V> DoubleEndedIterator for IterMut<'a, K, V> {
 
 impl<'a, K: Internal<V>, V> ExactSizeIterator for IterMut<'a, K, V> {}
 
-impl<'a, K: Internal<V>, V> FusedIterator for IterMut<'a, K, V> {}
-
 impl<'a, K: Internal<V>, V> IntoIterator for &'a mut EnumMap<K, V> {
     type Item = (K, &'a mut V);
     type IntoIter = IterMut<'a, K, V>;
@@ -196,8 +192,6 @@ impl<K: Internal<V>, V> Iterator for IntoIter<K, V> {
 }
 
 impl<K: Internal<V>, V> ExactSizeIterator for IntoIter<K, V> {}
-
-impl<K: Internal<V>, V> FusedIterator for IntoIter<K, V> {}
 
 impl<K: Internal<V>, V> Drop for IntoIter<K, V> {
     fn drop(&mut self) {
