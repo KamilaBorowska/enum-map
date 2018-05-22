@@ -6,8 +6,6 @@ addons:
         packages:
             - libssl-dev
 rust:
-  - 1.21.0
-  - 1.22.0
   - stable
   - beta
   - nightly
