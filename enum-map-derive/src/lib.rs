@@ -27,7 +27,7 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> proc_macro2::TokenStr
     {
         match *fields {
             Fields::Unit => (),
-            _ => panic!("#[derive(EnumMap)] requires C style style enum"),
+            _ => return quote!(compile_error!{"#[derive(EnumMap)] requires C style style enum"}),
         }
 
         if discriminant.is_some() {
@@ -97,7 +97,7 @@ pub fn derive_enum_map(input: proc_macro::TokenStream) -> proc_macro::TokenStrea
 
     let result = match input.data {
         Data::Enum(data_enum) => generate_enum_code(input.ident, data_enum),
-        _ => panic!("#[derive(EnumMap)] is only defined for enums"),
+        _ => quote!(compile_error!{"#[derive(EnumMap)] is only defined for enums"}),
     };
 
     result.into()
