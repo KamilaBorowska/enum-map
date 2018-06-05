@@ -1,9 +1,5 @@
 # enum-map
 
-[![Crates.io](https://img.shields.io/crates/v/enum-map.svg)](https://crates.io/crates/enum-map)
-[![Build Status](https://travis-ci.org/xfix/enum-map.svg?branch=master)](https://travis-ci.org/xfix/enum-map)
-[![codecov](https://codecov.io/gh/xfix/enum-map/branch/master/graph/badge.svg)](https://codecov.io/gh/xfix/enum-map)
-
 A library providing enum map providing type safe enum array. It is
 implemented using regular Rust arrays, so using them is as fast
 as using regular Rust arrays.

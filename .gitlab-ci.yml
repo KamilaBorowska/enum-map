@@ -1,0 +1,17 @@
+test:1.26:
+  script: &test_script
+  - rustc --version && cargo --version
+  - cargo test --all --verbose
+  image: liuchong/rustup:1.26.0
+
+test:stable:
+  script: *test_script
+  image: liuchong/rustup:stable
+
+test:beta:
+  script: *test_script
+  image: liuchong/rustup:beta
+
+test:nightly:
+  script: *test_script
+  image: liuchong/rustup:nightly
