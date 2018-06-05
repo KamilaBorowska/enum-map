@@ -1,6 +1,6 @@
 [package]
 name = "enum-map"
-version = "0.2.34"
+version = "0.3.0"
 authors = ["Konrad Borowski <konrad@borowski.pw>"]
 repository = "https://gitlab.com/KonradBorowski/enum-map"
 license = "MIT/Apache-2.0"
@@ -17,7 +17,7 @@ maintenance = { status = "actively-developed" }
 [dependencies]
 array-macro = "1.0.0"
 serde = { version = "1.0.16", optional = true, features = ["derive"] }
-enum-map-derive = { version = "0.2.4", path = "../enum-map-derive" }
+enum-map-derive = { version = "0.3.0", path = "../enum-map-derive" }
 reexport-proc-macro = "1.0.0"
 
 [dev-dependencies]
