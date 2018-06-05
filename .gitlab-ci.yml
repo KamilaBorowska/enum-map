@@ -2,6 +2,8 @@ test:1.21:
   script: &test_script
   - rustc --version && cargo --version
   - cargo test --all --verbose
+  - cd enum-map
+  - cargo test --all-features --verbose
   image: liuchong/rustup:1.21.0
 
 test:stable:
