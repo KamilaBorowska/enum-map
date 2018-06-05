@@ -10,6 +10,7 @@ categories = ["data-structures", "no-std"]
 documentation = "https://docs.rs/enum-map"
 
 [badges]
+gitlab = { repository = "KonradBorowski/enum-map" }
 maintenance = { status = "actively-developed" }
 
 [lib]
