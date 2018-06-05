@@ -4,6 +4,9 @@ A library providing enum map providing type safe enum array. It is
 implemented using regular Rust arrays, so using them is as fast
 as using regular Rust arrays.
 
+If you are using Rust 1.25 or older, you may want to use enum-map 0.2 instead,
+as enum-map 0.3 requires Rust 1.26.
+
 ## Examples
 
 ```rust
@@ -12,7 +15,7 @@ extern crate enum_map;
 
 use enum_map::EnumMap;
 
-#[derive(Debug, EnumMap)]
+#[derive(Debug, Enum)]
 enum Example {
     A,
     B,

@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate enum_map;
 
-use enum_map::{EnumMap, Internal, IntoIter};
+use enum_map::{Enum, EnumMap, IntoIter};
 
 use std::cell::RefCell;
 use std::collections::HashSet;
@@ -28,23 +28,6 @@ fn test_bool() {
     }
     assert_eq!(map[false], 26);
     assert_eq!(map[true], 42);
-}
-
-#[test]
-fn test_option_bool() {
-    let mut map = enum_map! { None => 1, Some(false) => 2, Some(true) => 3};
-    assert_eq!(map[None], 1);
-    assert_eq!(map[Some(false)], 2);
-    assert_eq!(map[Some(true)], 3);
-    map[None] = 4;
-    map[Some(false)] = 5;
-    map[Some(true)] = 6;
-    assert_eq!(map[None], 4);
-    assert_eq!(map[Some(false)], 5);
-    assert_eq!(map[Some(true)], 6);
-    assert_eq!(map.as_slice(), [4, 5, 6]);
-    let expected = [(None, 4), (Some(false), 5), (Some(true), 6)];
-    assert_eq!(map.into_iter().collect::<Vec<_>>(), expected);
 }
 
 #[test]
@@ -248,6 +231,28 @@ fn into_iter_drop() {
 }
 
 #[test]
+fn values_rev_collect() {
+    assert_eq!(
+        vec![3, 2, 1],
+        enum_map! { Example::A => 1, Example::B => 2, Example::C => 3 }
+            .values()
+            .rev()
+            .cloned()
+            .collect::<Vec<_>>()
+    );
+}
+
+#[test]
+fn values_len() {
+    assert_eq!(enum_map! { false => 0, true => 1 }.values().len(), 2);
+}
+
+#[test]
+fn values_mut_next_back() {
+    let mut map = enum_map! { false => 0, true => 1 };
+    assert_eq!(map.values_mut().next_back(), Some(&mut 1));
+}
+#[test]
 fn test_u8() {
     let mut map = enum_map! { b'a' => 4, _ => 0 };
     map[b'c'] = 3;
@@ -277,8 +282,9 @@ enum X {
     A(PhantomData<*const ()>),
 }
 
-impl<V> Internal<V> for X {
+impl<V> Enum<V> for X {
     type Array = [V; 1];
+    const POSSIBLE_VALUES: usize = 1;
 
     fn slice(array: &[V; 1]) -> &[V] {
         array

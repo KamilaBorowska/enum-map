@@ -88,10 +88,8 @@ mod internal;
 mod iter;
 mod serde;
 
-pub use internal::Internal;
-pub use iter::{IntoIter, Iter, IterMut};
-
-use core::slice;
+pub use internal::Enum;
+pub use iter::{IntoIter, Iter, IterMut, Values, ValuesMut};
 
 /// An enum mapping.
 ///
@@ -132,11 +130,11 @@ use core::slice;
 ///
 /// [reverse-complement in benchmark game]:
 ///     http://benchmarksgame.alioth.debian.org/u64q/program.php?test=revcomp&lang=rust&id=2
-pub struct EnumMap<K: Internal<V>, V> {
+pub struct EnumMap<K: Enum<V>, V> {
     array: K::Array,
 }
 
-impl<K: Internal<V>, V: Default> EnumMap<K, V> {
+impl<K: Enum<V>, V: Default> EnumMap<K, V> {
     /// Creates an enum map with default values.
     ///
     /// # Examples
@@ -162,7 +160,7 @@ impl<K: Internal<V>, V: Default> EnumMap<K, V> {
     }
 }
 
-impl<K: Internal<V>, V> EnumMap<K, V> {
+impl<K: Enum<V>, V> EnumMap<K, V> {
     /// Returns an iterator over enum map.
     pub fn iter(&self) -> Iter<K, V> {
         self.into_iter()
@@ -228,26 +226,6 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
         self.as_mut_slice().swap(a.to_usize(), b.to_usize())
     }
 
-    /// An iterator visiting all values. The iterator type is `&V`.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// #[macro_use]
-    /// extern crate enum_map;
-    ///
-    /// fn main() {
-    ///     let map = enum_map! { false => 3, true => 4 };
-    ///     let mut values = map.values();
-    ///     assert_eq!(values.next(), Some(&3));
-    ///     assert_eq!(values.next(), Some(&4));
-    ///     assert_eq!(values.next(), None);
-    /// }
-    /// ```
-    pub fn values(&self) -> slice::Iter<V> {
-        self.as_slice().iter()
-    }
-
     /// Converts an enum map to a slice representing values.
     pub fn as_slice(&self) -> &[V] {
         K::slice(&self.array)
@@ -256,27 +234,6 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
     /// Converts a mutable enum map to a mutable slice representing values.
     pub fn as_mut_slice(&mut self) -> &mut [V] {
         K::slice_mut(&mut self.array)
-    }
-
-    /// An iterator visiting all values mutably. The iterator type is `&mut V`.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// #[macro_use]
-    /// extern crate enum_map;
-    ///
-    /// fn main() {
-    ///     let mut map = enum_map! { _ => 2 };
-    ///     for value in map.values_mut() {
-    ///         *value += 2;
-    ///     }
-    ///     assert_eq!(map[false], 4);
-    ///     assert_eq!(map[true], 4);
-    /// }
-    /// ```
-    pub fn values_mut(&mut self) -> slice::IterMut<V> {
-        self.as_mut_slice().iter_mut()
     }
 
     /// Returns a raw pointer to the enum map's buffer.
@@ -333,26 +290,10 @@ impl<K: Internal<V>, V> EnumMap<K, V> {
     }
 }
 
-impl<F: FnMut(K) -> V, K: Internal<V>, V> From<F> for EnumMap<K, V> {
+impl<F: FnMut(K) -> V, K: Enum<V>, V> From<F> for EnumMap<K, V> {
     fn from(f: F) -> Self {
         EnumMap {
             array: K::from_function(f),
         }
     }
-}
-
-/// Gets an index of an enum key in a slice.
-///
-/// # Example
-///
-/// ```
-/// use enum_map::index_for_key;
-/// assert_eq!(index_for_key(false), 0);
-/// assert_eq!(index_for_key(true), 1);
-/// assert_eq!(index_for_key(None::<bool>), 0);
-/// assert_eq!(index_for_key(Some(false)), 1);
-/// assert_eq!(index_for_key(Some(true)), 2);
-/// ```
-pub fn index_for_key<K: Internal<()>>(variant: K) -> usize {
-    variant.to_usize()
 }
