@@ -2,7 +2,7 @@
 name = "enum-map"
 version = "0.2.32"
 authors = ["Konrad Borowski <konrad@borowski.pw>"]
-repository = "https://gitlab.com/KonradBorowski/enum-mapp"
+repository = "https://gitlab.com/KonradBorowski/enum-map"
 license = "MIT/Apache-2.0"
 description = "A map with C-like enum keys represented internally as an array"
 keywords = ["data-structure", "no_std", "enum"]
