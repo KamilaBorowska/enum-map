@@ -2,7 +2,7 @@
 name = "enum-map"
 version = "0.2.31"
 authors = ["Konrad Borowski <konrad@borowski.pw>"]
-repository = "https://github.com/xfix/enum-map"
+repository = "https://gitlab.com/KonradBorowski/enum-mapp"
 license = "MIT/Apache-2.0"
 description = "A map with C-like enum keys represented internally as an array"
 keywords = ["data-structure", "no_std", "enum"]
@@ -11,11 +11,7 @@ documentation = "https://docs.rs/enum-map"
 readme = "README.md"
 
 [badges]
-travis-ci = { repository = "xfix/enum-map" }
-is-it-maintained-issue-resolution = { repository = "xfix/enum-map" }
-is-it-maintained-open-issues = { repository = "xfix/enum-map" }
 maintenance = { status = "actively-developed" }
-codecov = { repository = "xfix/enum-map" }
 
 [dependencies]
 array-macro = "1.0.0"
