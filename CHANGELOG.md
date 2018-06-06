@@ -1,3 +1,12 @@
+# Version 0.4.0
+
+Change of `#[derive(EnumMap)]` to `#[derive(Enum)]` was supposed to appear in 0.3.0,
+but it was forgotten about. This release fixes just that.
+
+## Incompatible changes
+
+- Changed `#[derive(EnumMap)]` to `#[derive(Enum)]` to match trait name.
+
 # Version 0.3.0
 
 ## New features
@@ -9,8 +18,6 @@
 ## Incompatible changes
 
 - Increased required Rust version to 1.26.0.
-
-- Changed `#[derive(EnumMap)]` to `#[derive(Enum)]` to match trait name.
 
 - Renamed `Internal` trait to `Enum`.
 

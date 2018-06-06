@@ -7,7 +7,7 @@ use std::cell::RefCell;
 use std::collections::HashSet;
 use std::marker::PhantomData;
 
-#[derive(Copy, Clone, Debug, EnumMap, PartialEq)]
+#[derive(Copy, Clone, Debug, Enum, PartialEq)]
 enum Example {
     A,
     B,
@@ -52,7 +52,7 @@ fn test_hash() {
 
 #[test]
 fn discriminants() {
-    #[derive(Debug, EnumMap, PartialEq)]
+    #[derive(Debug, Enum, PartialEq)]
     enum Discriminants {
         A = 2000,
         B = 3000,
@@ -82,7 +82,7 @@ fn extend() {
 
 #[test]
 fn huge_enum() {
-    #[derive(EnumMap)]
+    #[derive(Enum)]
     enum Example {
         A,
         B,
@@ -262,7 +262,7 @@ fn test_u8() {
     assert_eq!(map.iter().next(), Some((0, &0)));
 }
 
-#[derive(EnumMap)]
+#[derive(Enum)]
 enum Void {}
 
 #[test]

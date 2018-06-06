@@ -98,7 +98,7 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> proc_macro2::TokenStr
         }
 }
 
-#[proc_macro_derive(EnumMap)]
+#[proc_macro_derive(Enum)]
 pub fn derive_enum_map(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let input: DeriveInput = syn::parse(input).unwrap();
 

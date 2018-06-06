@@ -11,7 +11,7 @@
 //!
 //! use enum_map::EnumMap;
 //!
-//! #[derive(Debug, EnumMap)]
+//! #[derive(Debug, Enum)]
 //! enum Example {
 //!     A,
 //!     B,
@@ -56,7 +56,7 @@ reexport_proc_macro!(enum_map_derive);
 /// #[macro_use]
 /// extern crate enum_map;
 ///
-/// #[derive(EnumMap)]
+/// #[derive(Enum)]
 /// enum Example {
 ///     A,
 ///     B,
@@ -112,7 +112,7 @@ pub use iter::{IntoIter, Iter, IterMut, Values, ValuesMut};
 ///
 /// use enum_map::EnumMap;
 ///
-/// #[derive(EnumMap)]
+/// #[derive(Enum)]
 /// enum Example {
 ///     A,
 ///     B,
@@ -145,7 +145,7 @@ impl<K: Enum<V>, V: Default> EnumMap<K, V> {
     ///
     /// use enum_map::EnumMap;
     ///
-    /// #[derive(EnumMap)]
+    /// #[derive(Enum)]
     /// enum Example {
     ///     A,
     /// }
@@ -195,10 +195,10 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     ///
     /// use enum_map::EnumMap;
     ///
-    /// #[derive(EnumMap)]
+    /// #[derive(Enum)]
     /// enum Void {}
     ///
-    /// #[derive(EnumMap)]
+    /// #[derive(Enum)]
     /// enum SingleVariant {
     ///     Variant,
     /// }
