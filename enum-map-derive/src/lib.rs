@@ -61,14 +61,17 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> proc_macro2::TokenStr
         impl<V> ::enum_map::Internal<V> for #name {
             type Array = [V; #enum_count];
 
+            #[inline]
             fn slice(array: &Self::Array) -> &[V] {
                 array
             }
 
+            #[inline]
             fn slice_mut(array: &mut Self::Array) -> &mut [V] {
                 array
             }
 
+            #[inline]
             fn from_usize(value: usize) -> Self {
                 match value {
                     #(
@@ -77,9 +80,13 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> proc_macro2::TokenStr
                     _ => unreachable!()
                 }
             }
+
+            #[inline]
             fn to_usize(self) -> usize {
                 #to_usize
             }
+
+            #[inline]
             fn from_function<F: FnMut(Self) -> V>(mut _f: F) -> Self::Array {
                 [#(
                     _f(#repeat_name_b::#variants_names_b),

@@ -44,18 +44,21 @@ pub struct Iter<'a, K, V: 'a> {
 
 impl<'a, K: Internal<V>, V> Iterator for Iter<'a, K, V> {
     type Item = (K, &'a V);
+    #[inline]
     fn next(&mut self) -> Option<Self::Item> {
         self.iterator
             .next()
             .map(|(index, item)| (K::from_usize(index), item))
     }
 
+    #[inline]
     fn size_hint(&self) -> (usize, Option<usize>) {
         self.iterator.size_hint()
     }
 }
 
 impl<'a, K: Internal<V>, V> DoubleEndedIterator for Iter<'a, K, V> {
+    #[inline]
     fn next_back(&mut self) -> Option<Self::Item> {
         self.iterator
             .next_back()
@@ -68,6 +71,7 @@ impl<'a, K: Internal<V>, V> ExactSizeIterator for Iter<'a, K, V> {}
 impl<'a, K: Internal<V>, V> IntoIterator for &'a EnumMap<K, V> {
     type Item = (K, &'a V);
     type IntoIter = Iter<'a, K, V>;
+    #[inline]
     fn into_iter(self) -> Self::IntoIter {
         Iter {
             _phantom: PhantomData,
@@ -110,18 +114,21 @@ pub struct IterMut<'a, K, V: 'a> {
 
 impl<'a, K: Internal<V>, V> Iterator for IterMut<'a, K, V> {
     type Item = (K, &'a mut V);
+    #[inline]
     fn next(&mut self) -> Option<Self::Item> {
         self.iterator
             .next()
             .map(|(index, item)| (K::from_usize(index), item))
     }
 
+    #[inline]
     fn size_hint(&self) -> (usize, Option<usize>) {
         self.iterator.size_hint()
     }
 }
 
 impl<'a, K: Internal<V>, V> DoubleEndedIterator for IterMut<'a, K, V> {
+    #[inline]
     fn next_back(&mut self) -> Option<Self::Item> {
         self.iterator
             .next_back()
@@ -134,6 +141,7 @@ impl<'a, K: Internal<V>, V> ExactSizeIterator for IterMut<'a, K, V> {}
 impl<'a, K: Internal<V>, V> IntoIterator for &'a mut EnumMap<K, V> {
     type Item = (K, &'a mut V);
     type IntoIter = IterMut<'a, K, V>;
+    #[inline]
     fn into_iter(self) -> Self::IntoIter {
         IterMut {
             _phantom: PhantomData,
@@ -184,6 +192,7 @@ impl<K: Internal<V>, V> Iterator for IntoIter<K, V> {
         }
     }
 
+    #[inline]
     fn size_hint(&self) -> (usize, Option<usize>) {
         let slice = self.map.as_slice();
         let diff = slice.len() - self.position;
@@ -194,6 +203,7 @@ impl<K: Internal<V>, V> Iterator for IntoIter<K, V> {
 impl<K: Internal<V>, V> ExactSizeIterator for IntoIter<K, V> {}
 
 impl<K: Internal<V>, V> Drop for IntoIter<K, V> {
+    #[inline]
     fn drop(&mut self) {
         for _item in self {}
     }
@@ -202,6 +212,7 @@ impl<K: Internal<V>, V> Drop for IntoIter<K, V> {
 impl<K: Internal<V>, V> IntoIterator for EnumMap<K, V> {
     type Item = (K, V);
     type IntoIter = IntoIter<K, V>;
+    #[inline]
     fn into_iter(self) -> Self::IntoIter {
         IntoIter {
             map: ManuallyDrop::new(self),
