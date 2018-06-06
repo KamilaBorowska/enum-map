@@ -5,7 +5,7 @@ implemented using regular Rust arrays, so using them is as fast
 as using regular Rust arrays.
 
 If you are using Rust 1.25 or older, you may want to use enum-map 0.2 instead,
-as enum-map 0.3 requires Rust 1.26.
+as enum-map 0.4 requires Rust 1.26.
 
 ## Examples
 
