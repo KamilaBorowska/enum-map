@@ -7,6 +7,10 @@ but it was forgotten about. This release fixes just that.
 
 - Changed `#[derive(EnumMap)]` to `#[derive(Enum)]` to match trait name.
 
+# Version 0.3.1
+
+- Updated README use `#[derive(EnumMap)]` instead of `#[derive(Enum)]`.
+
 # Version 0.3.0
 
 ## New features
