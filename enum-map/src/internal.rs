@@ -28,12 +28,15 @@ pub trait Enum<V>: Sized {
 impl<T> Enum<T> for bool {
     type Array = [T; 2];
     const POSSIBLE_VALUES: usize = 2;
+    #[inline]
     fn slice(array: &[T; 2]) -> &[T] {
         array
     }
+    #[inline]
     fn slice_mut(array: &mut [T; 2]) -> &mut [T] {
         array
     }
+    #[inline]
     fn from_usize(value: usize) -> Self {
         match value {
             0 => false,
@@ -41,9 +44,11 @@ impl<T> Enum<T> for bool {
             _ => unreachable!(),
         }
     }
+    #[inline]
     fn to_usize(self) -> usize {
         self as usize
     }
+    #[inline]
     fn from_function<F: FnMut(Self) -> T>(mut f: F) -> [T; 2] {
         [f(false), f(true)]
     }
@@ -52,18 +57,23 @@ impl<T> Enum<T> for bool {
 impl<T> Enum<T> for u8 {
     type Array = [T; 256];
     const POSSIBLE_VALUES: usize = 256;
+    #[inline]
     fn slice(array: &[T; 256]) -> &[T] {
         array
     }
+    #[inline]
     fn slice_mut(array: &mut [T; 256]) -> &mut [T] {
         array
     }
+    #[inline]
     fn from_usize(value: usize) -> Self {
         value as u8
     }
+    #[inline]
     fn to_usize(self) -> usize {
         self as usize
     }
+    #[inline]
     fn from_function<F: FnMut(Self) -> T>(mut f: F) -> [T; 256] {
         array![|i| f(i as u8); 256]
     }

@@ -155,6 +155,7 @@ impl<K: Enum<V>, V: Default> EnumMap<K, V> {
     ///     assert_eq!(enum_map[Example::A], 0);
     /// }
     /// ```
+    #[inline]
     pub fn new() -> Self {
         EnumMap::default()
     }
@@ -162,16 +163,19 @@ impl<K: Enum<V>, V: Default> EnumMap<K, V> {
 
 impl<K: Enum<V>, V> EnumMap<K, V> {
     /// Returns an iterator over enum map.
+    #[inline]
     pub fn iter(&self) -> Iter<K, V> {
         self.into_iter()
     }
 
     /// Returns a mutable iterator over enum map.
+    #[inline]
     pub fn iter_mut(&mut self) -> IterMut<K, V> {
         self.into_iter()
     }
 
     /// Returns number of elements in enum map.
+    #[inline]
     pub fn len(&self) -> usize {
         self.as_slice().len()
     }
@@ -203,6 +207,7 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     ///     assert!(EnumMap::<Void, ()>::new().is_empty());
     ///     assert!(!EnumMap::<SingleVariant, ()>::new().is_empty());
     /// }
+    #[inline]
     pub fn is_empty(&self) -> bool {
         self.as_slice().is_empty()
     }
@@ -222,16 +227,19 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     ///     assert_eq!(map[true], 0);
     /// }
     /// ```
+    #[inline]
     pub fn swap(&mut self, a: K, b: K) {
         self.as_mut_slice().swap(a.to_usize(), b.to_usize())
     }
 
     /// Converts an enum map to a slice representing values.
+    #[inline]
     pub fn as_slice(&self) -> &[V] {
         K::slice(&self.array)
     }
 
     /// Converts a mutable enum map to a mutable slice representing values.
+    #[inline]
     pub fn as_mut_slice(&mut self) -> &mut [V] {
         K::slice_mut(&mut self.array)
     }
@@ -257,6 +265,7 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     ///     assert_eq!(unsafe { *map.as_ptr().offset(5) }, 42);
     /// }
     /// ```
+    #[inline]
     pub fn as_ptr(&self) -> *const V {
         self.as_slice().as_ptr()
     }
@@ -285,12 +294,14 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     ///     assert_eq!(map[11], 23);
     /// }
     /// ```
+    #[inline]
     pub fn as_mut_ptr(&mut self) -> *mut V {
         self.as_mut_slice().as_mut_ptr()
     }
 }
 
 impl<F: FnMut(K) -> V, K: Enum<V>, V> From<F> for EnumMap<K, V> {
+    #[inline]
     fn from(f: F) -> Self {
         EnumMap {
             array: K::from_function(f),

@@ -58,37 +58,44 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> proc_macro2::TokenStr
     };
 
     quote! {
-        impl<V> ::enum_map::Enum<V> for #name {
-            type Array = [V; #enum_count];
+            impl<V> ::enum_map::Enum<V> for #name {
+                type Array = [V; #enum_count];
 
-            const POSSIBLE_VALUES: usize = #enum_count;
+                const POSSIBLE_VALUES: usize = #enum_count;
 
-            fn slice(array: &Self::Array) -> &[V] {
-                array
-            }
+                #[inline]
+                fn slice(array: &Self::Array) -> &[V] {
+                    array
+                }
 
-            fn slice_mut(array: &mut Self::Array) -> &mut [V] {
-                array
-            }
+                #[inline]
+                fn slice_mut(array: &mut Self::Array) -> &mut [V] {
+                    array
+                }
 
-            fn from_usize(value: usize) -> Self {
-                match value {
-                    #(
-                        #counter => #repeat_name_a::#variants_names_a,
-                    )*
-                    _ => unreachable!()
+                #[inline]
+                fn from_usize(value: usize) -> Self {
+                    match value {
+                        #(
+                            #counter => #repeat_name_a::#variants_names_a,
+                        )*
+                        _ => unreachable!()
+                    }
+                }
+
+                #[inline]
+                fn to_usize(self) -> usize {
+                    #to_usize
+                }
+
+                #[inline]
+                fn from_function<F: FnMut(Self) -> V>(mut _f: F) -> Self::Array {
+                    [#(
+                        _f(#repeat_name_b::#variants_names_b),
+                    )*]
                 }
             }
-            fn to_usize(self) -> usize {
-                #to_usize
-            }
-            fn from_function<F: FnMut(Self) -> V>(mut _f: F) -> Self::Array {
-                [#(
-                    _f(#repeat_name_b::#variants_names_b),
-                )*]
-            }
         }
-    }
 }
 
 #[proc_macro_derive(EnumMap)]

@@ -32,12 +32,14 @@ where
 impl<K: Enum<V>, V> Index<K> for EnumMap<K, V> {
     type Output = V;
 
+    #[inline]
     fn index(&self, key: K) -> &V {
         &self.as_slice()[key.to_usize()]
     }
 }
 
 impl<K: Enum<V>, V> IndexMut<K> for EnumMap<K, V> {
+    #[inline]
     fn index_mut(&mut self, key: K) -> &mut V {
         &mut self.as_mut_slice()[key.to_usize()]
     }
@@ -49,6 +51,7 @@ impl<K: Enum<V>, V> Clone for EnumMap<K, V>
 where
     K::Array: Clone,
 {
+    #[inline]
     fn clone(&self) -> Self {
         EnumMap {
             array: self.array.clone(),
@@ -63,6 +66,7 @@ where
 }
 
 impl<K: Enum<V>, V: PartialEq> PartialEq for EnumMap<K, V> {
+    #[inline]
     fn eq(&self, other: &Self) -> bool {
         self.as_slice() == other.as_slice()
     }
@@ -71,12 +75,14 @@ impl<K: Enum<V>, V: PartialEq> PartialEq for EnumMap<K, V> {
 impl<K: Enum<V>, V: Eq> Eq for EnumMap<K, V> {}
 
 impl<K: Enum<V>, V: Hash> Hash for EnumMap<K, V> {
+    #[inline]
     fn hash<H: Hasher>(&self, state: &mut H) {
         self.as_slice().hash(state);
     }
 }
 
 impl<K: Enum<V>, V: Default> Default for EnumMap<K, V> {
+    #[inline]
     fn default() -> Self {
         enum_map! { _ => V::default() }
     }
