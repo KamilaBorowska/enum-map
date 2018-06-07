@@ -11,7 +11,7 @@
 pub trait Enum<V>: Sized {
     /// Representation of an enum map for type `V`, usually an array.
     type Array;
-    /// Number of possible values the type can have.
+    /// Number of possible states the type can have.
     const POSSIBLE_VALUES: usize;
     /// Gets a slice from an array type.
     fn slice(array: &Self::Array) -> &[V];
