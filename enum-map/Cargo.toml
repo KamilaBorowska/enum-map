@@ -16,11 +16,12 @@ maintenance = { status = "actively-developed" }
 
 [dependencies]
 array-macro = "1.0.0"
-serde = { version = "1.0.0", optional = true, features = ["derive"] }
+serde = { version = "1.0.0", optional = true }
 enum-map-derive = { version = "0.2.4", path = "../enum-map-derive" }
 reexport-proc-macro = "1.0.0"
 
 [dev-dependencies]
+serde_derive = "1.0.0"
 serde_test = "1.0.15"
 serde_json = "1.0.2"
 

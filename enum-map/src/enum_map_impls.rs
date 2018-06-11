@@ -60,11 +60,7 @@ where
     }
 }
 
-impl<K: Internal<V>, V> Copy for EnumMap<K, V>
-where
-    K::Array: Copy,
-{
-}
+impl<K: Internal<V>, V> Copy for EnumMap<K, V> where K::Array: Copy {}
 
 impl<K: Internal<V>, V: PartialEq> PartialEq for EnumMap<K, V> {
     #[inline]
