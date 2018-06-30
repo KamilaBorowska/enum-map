@@ -58,6 +58,7 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> proc_macro2::TokenStr
     };
 
     quote! {
+        #[automatically_derived]
         impl<V> ::enum_map::Internal<V> for #name {
             type Array = [V; #enum_count];
 
