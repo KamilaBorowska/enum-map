@@ -223,7 +223,8 @@ fn into_iter_drop() {
             into: &dropped,
             value: k as usize,
         },
-    }.into_iter();
+    }
+    .into_iter();
     assert_eq!(a.next().unwrap().0, Example::A);
     assert_eq!(*dropped.borrow(), &[0]);
     drop(a);
@@ -267,7 +268,7 @@ enum Void {}
 
 #[test]
 fn empty_map() {
-    let void: EnumMap<Void, Void> = enum_map!{};
+    let void: EnumMap<Void, Void> = enum_map! {};
     assert!(void.is_empty());
 }
 
