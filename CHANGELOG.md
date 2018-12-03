@@ -1,3 +1,10 @@
+# Version 0.4.1
+
+## New features
+
+- Default `serde` features are disabled. This allows enabling serde feature when
+  compiling without `std`.
+
 # Version 0.4.0
 
 Change of `#[derive(EnumMap)]` to `#[derive(Enum)]` was supposed to appear in 0.3.0,
