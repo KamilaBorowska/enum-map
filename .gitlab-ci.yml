@@ -4,11 +4,11 @@ test:1.26:
   - cargo test --all --verbose
   - cd enum-map
   - cargo test --all-features --verbose
-  image: liuchong/rustup:1.26.0
+  image: rust:1.26
 
 test:stable:
   script: *test_script
-  image: liuchong/rustup:stable
+  image: rust:latest
 
 test:beta:
   script: *test_script
@@ -16,7 +16,7 @@ test:beta:
 
 test:nightly:
   script: *test_script
-  image: liuchong/rustup:nightly
+  image: rustlang/rust:nightly
 
 clippy:
   script:
