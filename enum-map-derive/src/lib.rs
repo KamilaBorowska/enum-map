@@ -98,6 +98,23 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> proc_macro2::TokenStr
     }
 }
 
+/// Procedural derive generating `enum_map::Enum` implementation.
+///
+/// # Examples
+///
+/// ```
+/// # extern crate enum_map;
+/// use enum_map::Enum;
+///
+/// #[derive(Enum)]
+/// enum A {
+///     B,
+///     C,
+///     D,
+/// }
+///
+/// assert_eq!(Enum::<()>::to_usize(A::C), 1);
+/// ```
 #[proc_macro_derive(Enum)]
 pub fn derive_enum_map(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let input: DeriveInput = syn::parse(input).unwrap();
