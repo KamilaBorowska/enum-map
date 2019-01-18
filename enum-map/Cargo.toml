@@ -23,7 +23,7 @@ enum-map-internals = { version = "0.1.0", path = "../enum-map-internals" }
 bincode = "1.0.0"
 serde-feature-hack = "0.2.0"
 serde_derive = "1.0.0"
-serde_test = "1.0.16"
+serde_test = "1.0.19"
 serde_json = "1.0.2"
 
 [features]
