@@ -199,13 +199,10 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
         K::slice_mut(&mut self.array)
     }
 
-    /// Returns a raw pointer to the enum map's buffer.
+    /// Returns a raw pointer to the enum map's slice.
     ///
     /// The caller must ensure that the slice outlives the pointer this
     /// function returns, or else it will end up pointing to garbage.
-    ///
-    /// Modifying the container referenced by this slice may cause its buffer
-    /// to be reallocated, which would also make any pointers to it invalid.
     ///
     /// # Examples
     ///
@@ -225,13 +222,10 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
         self.as_slice().as_ptr()
     }
 
-    /// Returns an unsafe mutable pointer to the enum map's buffer.
+    /// Returns an unsafe mutable pointer to the enum map's slice.
     ///
     /// The caller must ensure that the slice outlives the pointer this
     /// function returns, or else it will end up pointing to garbage.
-    ///
-    /// Modifying the container referenced by this slice may cause its buffer
-    /// to be reallocated, which would also make any pointers to it invalid.
     ///
     /// # Examples
     ///
