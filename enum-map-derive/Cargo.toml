@@ -7,7 +7,6 @@ license = "MIT/Apache-2.0"
 description = "Macros 1.1 implementation of #[derive(Enum)]"
 keywords = ["data-structure", "no_std", "enum"]
 categories = ["data-structures", "no-std"]
-documentation = "https://docs.rs/enum-map"
 
 [badges]
 gitlab = { repository = "KonradBorowski/enum-map" }
