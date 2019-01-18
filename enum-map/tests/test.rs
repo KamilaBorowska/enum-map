@@ -7,6 +7,14 @@ use std::cell::RefCell;
 use std::collections::HashSet;
 use std::marker::PhantomData;
 
+trait From<T>: Sized {
+    fn from(_: T) -> Self {
+        unreachable!();
+    }
+}
+
+impl<T, U> From<T> for U {}
+
 #[derive(Copy, Clone, Debug, Enum, PartialEq)]
 enum Example {
     A,
@@ -199,7 +207,9 @@ fn into_iter() {
 #[test]
 fn into_iter_u8() {
     assert_eq!(
-        EnumMap::from(|i: u8| i).into_iter().collect::<Vec<_>>(),
+        <EnumMap<_, _> as core::convert::From<_>>::from(|i: u8| i)
+            .into_iter()
+            .collect::<Vec<_>>(),
         (0..256).map(|x| (x as u8, x as u8)).collect::<Vec<_>>()
     );
 }

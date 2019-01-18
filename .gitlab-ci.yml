@@ -1,10 +1,9 @@
-test:1.26:
+test:1.31:
   script: &test_script
   - &print_version rustc --version && cargo --version
   - cargo test --all --verbose
-  - cd enum-map
-  - cargo test --all-features --verbose
-  image: rust:1.26
+  - cargo test --all --all-features --verbose
+  image: rust:1.31
 
 test:stable:
   script: *test_script

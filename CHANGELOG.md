@@ -1,3 +1,12 @@
+# Version 0.5.0
+
+- Fixed the issue where an aliasing `From` trait implementation caused
+  compilation errors with `enum_map!` macro.
+
+## Incompatible changes
+
+- Now requires Rust 1.31.
+
 # Version 0.4.1
 
 ## New features

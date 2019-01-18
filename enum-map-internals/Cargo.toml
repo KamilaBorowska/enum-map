@@ -1,0 +1,18 @@
+[package]
+name = "enum-map-internals"
+version = "0.1.0"
+authors = ["Konrad Borowski <konrad@borowski.pw>"]
+repository = "https://gitlab.com/KonradBorowski/enum-map"
+license = "MIT/Apache-2.0"
+description = "enum-map internals"
+
+[badges]
+gitlab = { repository = "KonradBorowski/enum-map" }
+maintenance = { status = "actively-developed" }
+
+[dependencies]
+array-macro = "1.0.0"
+serde = { version = "1.0.16", optional = true, default-features = false }
+
+[dev-dependencies]
+enum-map = { version = "0.4.1", path = "../enum-map" }

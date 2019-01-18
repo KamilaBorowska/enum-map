@@ -14,8 +14,8 @@ use core::slice;
 /// # Examples
 ///
 /// ```
-/// #[macro_use]
-/// extern crate enum_map;
+/// # extern crate enum_map;
+/// use enum_map::{enum_map, Enum};
 ///
 /// #[derive(Enum)]
 /// enum Example {
@@ -89,8 +89,8 @@ impl<'a, K: Enum<V>, V> IntoIterator for &'a EnumMap<K, V> {
 /// # Examples
 ///
 /// ```
-/// #[macro_use]
-/// extern crate enum_map;
+/// # extern crate enum_map;
+/// use enum_map::{enum_map, Enum};
 ///
 /// #[derive(Debug, Enum)]
 /// enum Example {
@@ -160,8 +160,8 @@ impl<'a, K: Enum<V>, V> IntoIterator for &'a mut EnumMap<K, V> {
 /// # Examples
 ///
 /// ```
-/// #[macro_use]
-/// extern crate enum_map;
+/// # extern crate enum_map;
+/// use enum_map::{enum_map, Enum};
 ///
 /// #[derive(Debug, Enum)]
 /// enum Example {
@@ -232,8 +232,8 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     /// # Examples
     ///
     /// ```
-    /// #[macro_use]
-    /// extern crate enum_map;
+    /// # extern crate enum_map;
+    /// use enum_map::enum_map;
     ///
     /// fn main() {
     ///     let map = enum_map! { false => 3, true => 4 };
@@ -253,8 +253,8 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     /// # Examples
     ///
     /// ```
-    /// #[macro_use]
-    /// extern crate enum_map;
+    /// # extern crate enum_map;
+    /// use enum_map::enum_map;
     ///
     /// fn main() {
     ///     let mut map = enum_map! { _ => 2 };

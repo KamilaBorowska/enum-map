@@ -2,4 +2,5 @@
 members = [
     "enum-map",
     "enum-map-derive",
+    "enum-map-internals",
 ]
