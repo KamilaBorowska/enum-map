@@ -332,3 +332,25 @@ fn assert_enum_map_does_not_copy_sync_send_dependency_of_keys() {
     assert_sync_send(map.into_iter());
     assert_eq!(map[X::A(PhantomData)], true);
 }
+
+#[test]
+fn test_sum() {
+    assert_eq!(
+        enum_map! { i => u8::into(i) }
+            .iter()
+            .map(|(_, v)| v)
+            .sum::<u32>(),
+        32_640
+    );
+}
+
+#[test]
+fn test_sum_mut() {
+    assert_eq!(
+        enum_map! { i => u8::into(i) }
+            .iter_mut()
+            .map(|(_, &mut v)| -> u32 { v })
+            .sum::<u32>(),
+        32_640
+    );
+}

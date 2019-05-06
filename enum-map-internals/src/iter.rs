@@ -54,6 +54,15 @@ impl<'a, K: Enum<V>, V> Iterator for Iter<'a, K, V> {
     fn size_hint(&self) -> (usize, Option<usize>) {
         self.iterator.size_hint()
     }
+
+    fn fold<B, F>(self, init: B, f: F) -> B
+    where
+        F: FnMut(B, Self::Item) -> B,
+    {
+        self.iterator
+            .map(|(index, item)| (K::from_usize(index), item))
+            .fold(init, f)
+    }
 }
 
 impl<'a, K: Enum<V>, V> DoubleEndedIterator for Iter<'a, K, V> {
@@ -125,6 +134,15 @@ impl<'a, K: Enum<V>, V> Iterator for IterMut<'a, K, V> {
     #[inline]
     fn size_hint(&self) -> (usize, Option<usize>) {
         self.iterator.size_hint()
+    }
+
+    fn fold<B, F>(self, init: B, f: F) -> B
+    where
+        F: FnMut(B, Self::Item) -> B,
+    {
+        self.iterator
+            .map(|(index, item)| (K::from_usize(index), item))
+            .fold(init, f)
     }
 }
 
