@@ -11,7 +11,7 @@ gitlab = { repository = "KonradBorowski/enum-map" }
 maintenance = { status = "actively-developed" }
 
 [dependencies]
-array-macro = "=1.0.3"
+array-macro = "1.0.4"
 serde = { version = "1.0.16", optional = true, default-features = false }
 
 [dev-dependencies]
