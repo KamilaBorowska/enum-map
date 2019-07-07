@@ -1,9 +1,9 @@
-test:1.31:
+test:1.36:
   script: &test_script
   - &print_version rustc --version && cargo --version
   - cargo test --all --verbose
   - cargo test --all --all-features --verbose
-  image: rust:1.31
+  image: rust:1.36
 
 test:stable:
   script: *test_script
