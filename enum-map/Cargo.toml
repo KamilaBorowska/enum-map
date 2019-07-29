@@ -1,6 +1,6 @@
 [package]
 name = "enum-map"
-version = "0.5.0"
+version = "0.6.0"
 authors = ["Konrad Borowski <konrad@borowski.pw>"]
 edition = "2018"
 repository = "https://gitlab.com/KonradBorowski/enum-map"
@@ -17,7 +17,7 @@ maintenance = { status = "actively-developed" }
 
 [dependencies]
 enum-map-derive = { version = "0.4.0", path = "../enum-map-derive" }
-enum-map-internals = { version = "0.1.0", path = "../enum-map-internals" }
+enum-map-internals = { version = "0.2.0", path = "../enum-map-internals" }
 
 [dev-dependencies]
 bincode = "1.0.0"
