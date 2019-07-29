@@ -1,3 +1,9 @@
+# Version 0.6.0
+
+## Incompatible changes
+
+- Now requires Rust 1.36.
+
 # Version 0.5.0
 
 - Fixed the issue where an aliasing `From` trait implementation caused
