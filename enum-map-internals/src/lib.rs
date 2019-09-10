@@ -57,9 +57,9 @@ pub use iter::{IntoIter, Iter, IterMut, Values, ValuesMut};
 /// enum value. To work, it requires implementation of internal (private,
 /// although public due to macro limitations) trait which allows extracting
 /// information about an enum, which can be automatically generated using
-/// `#[derive(EnumMap)]` macro.
+/// `#[derive(Enum)]` macro.
 ///
-/// Additionally, `bool` and `u8` automatically derives from `EnumMap`. While
+/// Additionally, `bool` and `u8` automatically derives from `Enum`. While
 /// `u8` is not technically an enum, it's convenient to consider it like one.
 /// In particular, [reverse-complement in benchmark game] could be using `u8`
 /// as an enum.
