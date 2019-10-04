@@ -1,3 +1,5 @@
+use array_macro::array;
+
 /// Enum mapping type
 ///
 /// This trait is internally used by `#[derive(Enum)]`. `Enum<T>` is
