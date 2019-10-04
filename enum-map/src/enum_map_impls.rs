@@ -1,5 +1,4 @@
-use {Enum, EnumMap};
-
+use crate::{enum_map, Enum, EnumMap};
 use core::fmt::{self, Debug, Formatter};
 use core::hash::{Hash, Hasher};
 use core::iter::Extend;

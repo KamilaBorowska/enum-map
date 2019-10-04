@@ -1,5 +1,4 @@
-use {Enum, EnumMap};
-
+use crate::{Enum, EnumMap};
 use core::iter::{Enumerate, FusedIterator};
 use core::marker::PhantomData;
 use core::mem::ManuallyDrop;

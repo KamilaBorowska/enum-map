@@ -1,14 +1,10 @@
 #![cfg(feature = "serde")]
 
-extern crate serde;
-
-use {Enum, EnumMap};
-
-use self::serde::de::{self, Deserialize, Deserializer, Error, MapAccess, SeqAccess};
-use self::serde::ser::{Serialize, SerializeMap, SerializeTuple, Serializer};
-
+use crate::{enum_map, Enum, EnumMap};
 use core::fmt;
 use core::marker::PhantomData;
+use serde::de::{self, Deserialize, Deserializer, Error, MapAccess, SeqAccess};
+use serde::ser::{Serialize, SerializeMap, SerializeTuple, Serializer};
 
 /// Requires crate feature `"serde"`
 impl<K: Enum<V> + Serialize, V: Serialize> Serialize for EnumMap<K, V> {
