@@ -1,3 +1,9 @@
+# Version 0.6.2.
+
+## New features
+
+- Added `EnumMap#clear` method.
+
 # Version 0.6.0
 
 ## Incompatible changes
