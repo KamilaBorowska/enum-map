@@ -222,6 +222,7 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     ///     assert!(EnumMap::<Void, ()>::new().is_empty());
     ///     assert!(!EnumMap::<SingleVariant, ()>::new().is_empty());
     /// }
+    /// ```
     #[inline]
     pub fn is_empty(&self) -> bool {
         self.as_slice().is_empty()
