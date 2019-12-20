@@ -59,6 +59,14 @@ fn test_hash() {
 }
 
 #[test]
+fn test_clear() {
+    let mut map = enum_map! { false => 1, true => 2 };
+    map.clear();
+    assert_eq!(map[true], 0);
+    assert_eq!(map[false], 0);
+}
+
+#[test]
 fn discriminants() {
     #[derive(Debug, Enum, PartialEq)]
     enum Discriminants {

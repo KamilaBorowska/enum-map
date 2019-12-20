@@ -147,6 +147,35 @@ impl<K: Enum<V>, V: Default> EnumMap<K, V> {
     pub fn new() -> Self {
         EnumMap::default()
     }
+
+    /// Clear enum map with default values.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # extern crate enum_map;
+    /// use enum_map::{Enum, EnumMap};
+    ///
+    /// #[derive(Enum)]
+    /// enum Example {
+    ///     A,
+    ///     B,
+    /// }
+    ///
+    /// fn main() {
+    ///     let mut enum_map = EnumMap::<_, String>::new();
+    ///     enum_map[Example::B] = "foo".into();
+    ///     enum_map.clear();
+    ///     assert_eq!(enum_map[Example::A], "");
+    ///     assert_eq!(enum_map[Example::B], "");
+    /// }
+    /// ```
+    #[inline]
+    pub fn clear(&mut self) {
+        for v in self.as_mut_slice() {
+            *v = V::default();
+        }
+    }
 }
 
 impl<K: Enum<V>, V> EnumMap<K, V> {
@@ -193,6 +222,7 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     ///     assert!(EnumMap::<Void, ()>::new().is_empty());
     ///     assert!(!EnumMap::<SingleVariant, ()>::new().is_empty());
     /// }
+    /// ```
     #[inline]
     pub fn is_empty(&self) -> bool {
         self.as_slice().is_empty()
