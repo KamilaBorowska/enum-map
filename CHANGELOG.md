@@ -2,7 +2,7 @@
 
 ## New features
 
-- Added `EnumMap#clear` method.
+- Added `EnumMap#clear` method (added by @Riey, thanks :)).
 
 # Version 0.6.0
 
