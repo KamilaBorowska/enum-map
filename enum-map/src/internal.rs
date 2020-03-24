@@ -1,4 +1,5 @@
 use array_macro::array;
+use core::convert::Infallible;
 
 /// Enum mapping type
 ///
@@ -78,5 +79,30 @@ impl<T> Enum<T> for u8 {
     #[inline]
     fn from_function<F: FnMut(Self) -> T>(mut f: F) -> [T; 256] {
         array![|i| f(i as u8); 256]
+    }
+}
+
+impl<T> Enum<T> for Infallible {
+    type Array = [T; 0];
+    const POSSIBLE_VALUES: usize = 0;
+    #[inline]
+    fn slice(array: &[T; 0]) -> &[T] {
+        array
+    }
+    #[inline]
+    fn slice_mut(array: &mut [T; 0]) -> &mut [T] {
+        array
+    }
+    #[inline]
+    fn from_usize(_: usize) -> Self {
+        unreachable!();
+    }
+    #[inline]
+    fn to_usize(self) -> usize {
+        match self {}
+    }
+    #[inline]
+    fn from_function<F: FnMut(Self) -> T>(_: F) -> [T; 0] {
+        []
     }
 }

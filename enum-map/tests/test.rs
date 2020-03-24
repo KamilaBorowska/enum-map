@@ -5,6 +5,7 @@ use enum_map::{Enum, EnumMap, IntoIter};
 
 use std::cell::RefCell;
 use std::collections::HashSet;
+use std::convert::Infallible;
 use std::marker::PhantomData;
 
 trait From<T>: Sized {
@@ -294,6 +295,12 @@ fn empty_map() {
 #[should_panic]
 fn empty_value() {
     let _void: EnumMap<bool, Void> = enum_map! { _ => unreachable!() };
+}
+
+#[test]
+fn empty_infallible_map() {
+    let void: EnumMap<Infallible, Infallible> = enum_map! {};
+    assert!(void.is_empty());
 }
 
 #[derive(Clone, Copy)]
