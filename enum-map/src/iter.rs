@@ -303,6 +303,12 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
 /// See its documentation for more.
 pub struct Values<'a, V: 'a>(slice::Iter<'a, V>);
 
+impl<'a, V> Clone for Values<'a, V> {
+    fn clone(&self) -> Self {
+        Values(self.0.clone())
+    }
+}
+
 impl<'a, V: 'a> Iterator for Values<'a, V> {
     type Item = &'a V;
     #[inline]
