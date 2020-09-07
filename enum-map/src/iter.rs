@@ -40,6 +40,15 @@ pub struct Iter<'a, K, V: 'a> {
     iterator: Enumerate<slice::Iter<'a, V>>,
 }
 
+impl<'a, K: Enum<V>, V> Clone for Iter<'a, K, V> {
+    fn clone(&self) -> Self {
+        Iter {
+            _phantom: PhantomData,
+            iterator: self.iterator.clone(),
+        }
+    }
+}
+
 impl<'a, K: Enum<V>, V> Iterator for Iter<'a, K, V> {
     type Item = (K, &'a V);
     #[inline]
@@ -293,6 +302,12 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
 /// This `struct` is created by the `values` method of `EnumMap`.
 /// See its documentation for more.
 pub struct Values<'a, V: 'a>(slice::Iter<'a, V>);
+
+impl<'a, V> Clone for Values<'a, V> {
+    fn clone(&self) -> Self {
+        Values(self.0.clone())
+    }
+}
 
 impl<'a, V: 'a> Iterator for Values<'a, V> {
     type Item = &'a V;

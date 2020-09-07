@@ -93,7 +93,7 @@ fn extend() {
     map.extend(vec![(&Example::B, &4)]);
     assert_eq!(
         map,
-        enum_map! { Example:: A => 3, Example:: B => 4, Example::C => 0 }
+        enum_map! { Example::A => 3, Example::B => 4, Example::C => 0 }
     );
 }
 
@@ -368,4 +368,24 @@ fn test_sum_mut() {
             .sum::<u32>(),
         32_640
     );
+}
+
+#[test]
+fn test_iter_clone() {
+    // Mutex doesn't implement Clone, but iterators should still be Clone.
+    use std::sync::Mutex;
+    let map = enum_map! {
+        Example::A => Mutex::new(3),
+        Example::B => Mutex::new(4),
+        Example::C => Mutex::new(1),
+    };
+    let iter = map.iter();
+    assert_eq!(
+        iter.clone().map(|(_, v)| *v.lock().unwrap()).sum::<u32>(),
+        8
+    );
+    assert_eq!(iter.map(|(_, v)| *v.lock().unwrap()).sum::<u32>(), 8);
+    let values = map.values();
+    assert_eq!(values.clone().map(|v| *v.lock().unwrap()).sum::<u32>(), 8);
+    assert_eq!(values.map(|v| *v.lock().unwrap()).sum::<u32>(), 8);
 }
