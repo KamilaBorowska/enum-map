@@ -93,7 +93,7 @@ fn extend() {
     map.extend(vec![(&Example::B, &4)]);
     assert_eq!(
         map,
-        enum_map! { Example:: A => 3, Example:: B => 4, Example::C => 0 }
+        enum_map! { Example::A => 3, Example::B => 4, Example::C => 0 }
     );
 }
 
@@ -372,7 +372,7 @@ fn test_sum_mut() {
 
 #[test]
 fn test_iter_clone() {
-    let map = enum_map! { Example:: A => 3, Example:: B => 4, Example::C => 1 };
+    let map = enum_map! { Example::A => 3, Example::B => 4, Example::C => 1 };
     let iter = map.iter();
     assert_eq!(iter.clone().map(|(_, v)| v).sum::<u32>(), 8);
     assert_eq!(iter.map(|(_, v)| v).sum::<u32>(), 8);
