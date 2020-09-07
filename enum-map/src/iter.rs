@@ -40,6 +40,15 @@ pub struct Iter<'a, K, V: 'a> {
     iterator: Enumerate<slice::Iter<'a, V>>,
 }
 
+impl<'a, K: Enum<V>, V> Clone for Iter<'a, K, V> {
+    fn clone(&self) -> Self {
+        Iter {
+            _phantom: PhantomData,
+            iterator: self.iterator.clone(),
+        }
+    }
+}
+
 impl<'a, K: Enum<V>, V> Iterator for Iter<'a, K, V> {
     type Item = (K, &'a V);
     #[inline]
