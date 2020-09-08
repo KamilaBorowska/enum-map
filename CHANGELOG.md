@@ -1,3 +1,9 @@
+# Version 0.6.3
+
+## New features
+
+- `Iter` and `Values` now implements `Clone` (added by @amanieu).
+
 # Version 0.6.2.
 
 ## New features
