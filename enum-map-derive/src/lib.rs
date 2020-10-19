@@ -13,21 +13,28 @@ extern crate syn;
 
 use std::iter;
 
+use syn::spanned::Spanned;
 use syn::{Data, DataEnum, DeriveInput, Fields, Ident, Variant};
 
 fn generate_enum_code(name: Ident, data_enum: DataEnum) -> proc_macro2::TokenStream {
     let enum_count = data_enum.variants.len();
     let mut has_discriminants = false;
 
-    for &Variant {
-        ref fields,
-        ref discriminant,
-        ..
-    } in &data_enum.variants
-    {
-        match *fields {
+    for variant in &data_enum.variants {
+        let Variant {
+            fields,
+            discriminant,
+            ..
+        } = variant;
+        match fields {
             Fields::Unit => (),
-            _ => return quote!(compile_error! {"#[derive(Enum)] requires C style style enum"}),
+            _ => {
+                return syn::Error::new(
+                    fields.span(),
+                    "#[derive(Enum)] requires C style style enum",
+                )
+                .to_compile_error();
+            }
         }
 
         if discriminant.is_some() {
