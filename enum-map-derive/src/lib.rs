@@ -29,11 +29,8 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> proc_macro2::TokenStr
         match fields {
             Fields::Unit => (),
             _ => {
-                return syn::Error::new(
-                    fields.span(),
-                    "#[derive(Enum)] requires C style style enum",
-                )
-                .to_compile_error();
+                return syn::Error::new(fields.span(), "#[derive(Enum)] requires C style enum")
+                    .to_compile_error();
             }
         }
 
