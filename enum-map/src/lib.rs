@@ -260,6 +260,7 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     /// let map = enum_map! { 5 => 42, _ => 0 };
     /// assert_eq!(unsafe { *map.as_ptr().offset(5) }, 42);
     /// ```
+    #[deprecated(since = "0.6.4", note = "Please use .as_slice().as_ptr() instead")]
     #[inline]
     pub fn as_ptr(&self) -> *const V {
         self.as_slice().as_ptr()
@@ -282,6 +283,10 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     /// };
     /// assert_eq!(map[11], 23);
     /// ```
+    #[deprecated(
+        since = "0.6.4",
+        note = "Please use .as_mut_slice().as_mut_ptr() instead"
+    )]
     #[inline]
     pub fn as_mut_ptr(&mut self) -> *mut V {
         self.as_mut_slice().as_mut_ptr()
