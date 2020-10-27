@@ -15,19 +15,17 @@
 //!     C,
 //! }
 //!
-//! fn main() {
-//!     let mut map = enum_map! {
-//!         Example::A => 1,
-//!         Example::B => 2,
-//!         Example::C => 3,
-//!     };
-//!     map[Example::C] = 4;
+//! let mut map = enum_map! {
+//!     Example::A => 1,
+//!     Example::B => 2,
+//!     Example::C => 3,
+//! };
+//! map[Example::C] = 4;
 //!
-//!     assert_eq!(map[Example::A], 1);
+//! assert_eq!(map[Example::A], 1);
 //!
-//!     for (key, &value) in &map {
-//!         println!("{:?} has {} as value.", key, value);
-//!     }
+//! for (key, &value) in &map {
+//!     println!("{:?} has {} as value.", key, value);
 //! }
 //! ```
 
@@ -64,17 +62,15 @@ pub use iter::{IntoIter, Iter, IterMut, Values, ValuesMut};
 ///     D,
 /// }
 ///
-/// fn main() {
-///     let enum_map = enum_map! {
-///         Example::A | Example::B => 1,
-///         Example::C => 2,
-///         _ => 3,
-///     };
-///     assert_eq!(enum_map[Example::A], 1);
-///     assert_eq!(enum_map[Example::B], 1);
-///     assert_eq!(enum_map[Example::C], 2);
-///     assert_eq!(enum_map[Example::D], 3);
-/// }
+/// let enum_map = enum_map! {
+///     Example::A | Example::B => 1,
+///     Example::C => 2,
+///     _ => 3,
+/// };
+/// assert_eq!(enum_map[Example::A], 1);
+/// assert_eq!(enum_map[Example::B], 1);
+/// assert_eq!(enum_map[Example::C], 2);
+/// assert_eq!(enum_map[Example::D], 3);
 /// ```
 #[macro_export]
 macro_rules! enum_map {
@@ -109,13 +105,11 @@ macro_rules! enum_map {
 ///     C,
 /// }
 ///
-/// fn main() {
-///     let mut map = EnumMap::new();
-///     // new initializes map with default values
-///     assert_eq!(map[Example::A], 0);
-///     map[Example::A] = 3;
-///     assert_eq!(map[Example::A], 3);
-/// }
+/// let mut map = EnumMap::new();
+/// // new initializes map with default values
+/// assert_eq!(map[Example::A], 0);
+/// map[Example::A] = 3;
+/// assert_eq!(map[Example::A], 3);
 /// ```
 ///
 /// [reverse-complement in benchmark game]:
@@ -138,10 +132,8 @@ impl<K: Enum<V>, V: Default> EnumMap<K, V> {
     ///     A,
     /// }
     ///
-    /// fn main() {
-    ///     let enum_map = EnumMap::<_, i32>::new();
-    ///     assert_eq!(enum_map[Example::A], 0);
-    /// }
+    /// let enum_map = EnumMap::<_, i32>::new();
+    /// assert_eq!(enum_map[Example::A], 0);
     /// ```
     #[inline]
     pub fn new() -> Self {
@@ -162,13 +154,11 @@ impl<K: Enum<V>, V: Default> EnumMap<K, V> {
     ///     B,
     /// }
     ///
-    /// fn main() {
-    ///     let mut enum_map = EnumMap::<_, String>::new();
-    ///     enum_map[Example::B] = "foo".into();
-    ///     enum_map.clear();
-    ///     assert_eq!(enum_map[Example::A], "");
-    ///     assert_eq!(enum_map[Example::B], "");
-    /// }
+    /// let mut enum_map = EnumMap::<_, String>::new();
+    /// enum_map[Example::B] = "foo".into();
+    /// enum_map.clear();
+    /// assert_eq!(enum_map[Example::A], "");
+    /// assert_eq!(enum_map[Example::B], "");
     /// ```
     #[inline]
     pub fn clear(&mut self) {
@@ -218,10 +208,8 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     ///     Variant,
     /// }
     ///
-    /// fn main() {
-    ///     assert!(EnumMap::<Void, ()>::new().is_empty());
-    ///     assert!(!EnumMap::<SingleVariant, ()>::new().is_empty());
-    /// }
+    /// assert!(EnumMap::<Void, ()>::new().is_empty());
+    /// assert!(!EnumMap::<SingleVariant, ()>::new().is_empty());
     /// ```
     #[inline]
     pub fn is_empty(&self) -> bool {
@@ -236,12 +224,10 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     /// # extern crate enum_map;
     /// use enum_map::enum_map;
     ///
-    /// fn main() {
-    ///     let mut map = enum_map! { false => 0, true => 1 };
-    ///     map.swap(false, true);
-    ///     assert_eq!(map[false], 1);
-    ///     assert_eq!(map[true], 0);
-    /// }
+    /// let mut map = enum_map! { false => 0, true => 1 };
+    /// map.swap(false, true);
+    /// assert_eq!(map[false], 1);
+    /// assert_eq!(map[true], 0);
     /// ```
     #[inline]
     pub fn swap(&mut self, a: K, b: K) {
@@ -271,10 +257,8 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     /// # extern crate enum_map;
     /// use enum_map::{enum_map, EnumMap};
     ///
-    /// fn main() {
-    ///     let map = enum_map! { 5 => 42, _ => 0 };
-    ///     assert_eq!(unsafe { *map.as_ptr().offset(5) }, 42);
-    /// }
+    /// let map = enum_map! { 5 => 42, _ => 0 };
+    /// assert_eq!(unsafe { *map.as_ptr().offset(5) }, 42);
     /// ```
     #[inline]
     pub fn as_ptr(&self) -> *const V {
@@ -292,13 +276,11 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     /// # extern crate enum_map;
     /// use enum_map::{enum_map, EnumMap};
     ///
-    /// fn main() {
-    ///     let mut map = enum_map! { _ => 0 };
-    ///     unsafe {
-    ///         *map.as_mut_ptr().offset(11) = 23
-    ///     };
-    ///     assert_eq!(map[11], 23);
-    /// }
+    /// let mut map = enum_map! { _ => 0 };
+    /// unsafe {
+    ///     *map.as_mut_ptr().offset(11) = 23
+    /// };
+    /// assert_eq!(map[11], 23);
     /// ```
     #[inline]
     pub fn as_mut_ptr(&mut self) -> *mut V {
