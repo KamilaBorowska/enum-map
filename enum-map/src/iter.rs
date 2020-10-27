@@ -23,15 +23,13 @@ use core::slice;
 ///     C,
 /// }
 ///
-/// fn main() {
-///     let mut map = enum_map! { Example::A => 3, _ => 0 };
-///     assert_eq!(map[Example::A], 3);
-///     for (key, &value) in &map {
-///         assert_eq!(value, match key {
-///             Example::A => 3,
-///             _ => 0,
-///         });
-///     }
+/// let mut map = enum_map! { Example::A => 3, _ => 0 };
+/// assert_eq!(map[Example::A], 3);
+/// for (key, &value) in &map {
+///     assert_eq!(value, match key {
+///         Example::A => 3,
+///         _ => 0,
+///     });
 /// }
 /// ```
 #[derive(Debug)]
@@ -116,13 +114,11 @@ impl<'a, K: Enum<V>, V> IntoIterator for &'a EnumMap<K, V> {
 ///     C,
 /// }
 ///
-/// fn main() {
-///     let mut map = enum_map! { Example::A => 3, _ => 0 };
-///     for (_, value) in &mut map {
-///         *value += 1;
-///     }
-///     assert_eq!(map, enum_map! { Example::A => 4, _ => 1 });
+/// let mut map = enum_map! { Example::A => 3, _ => 0 };
+/// for (_, value) in &mut map {
+///     *value += 1;
 /// }
+/// assert_eq!(map, enum_map! { Example::A => 4, _ => 1 });
 /// ```
 #[derive(Debug)]
 pub struct IterMut<'a, K, V: 'a> {
@@ -195,11 +191,9 @@ impl<'a, K: Enum<V>, V> IntoIterator for &'a mut EnumMap<K, V> {
 ///     B,
 /// }
 ///
-/// fn main() {
-///     let map = enum_map! { Example::A | Example::B => String::from("123") };
-///     for (_, value) in map {
-///         assert_eq!(value + "4", "1234");
-///     }
+/// let map = enum_map! { Example::A | Example::B => String::from("123") };
+/// for (_, value) in map {
+///     assert_eq!(value + "4", "1234");
 /// }
 /// ```
 pub struct IntoIter<K: Enum<V>, V> {
@@ -261,13 +255,11 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     /// # extern crate enum_map;
     /// use enum_map::enum_map;
     ///
-    /// fn main() {
-    ///     let map = enum_map! { false => 3, true => 4 };
-    ///     let mut values = map.values();
-    ///     assert_eq!(values.next(), Some(&3));
-    ///     assert_eq!(values.next(), Some(&4));
-    ///     assert_eq!(values.next(), None);
-    /// }
+    /// let map = enum_map! { false => 3, true => 4 };
+    /// let mut values = map.values();
+    /// assert_eq!(values.next(), Some(&3));
+    /// assert_eq!(values.next(), Some(&4));
+    /// assert_eq!(values.next(), None);
     /// ```
     #[inline]
     pub fn values(&self) -> Values<V> {
@@ -282,14 +274,12 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     /// # extern crate enum_map;
     /// use enum_map::enum_map;
     ///
-    /// fn main() {
-    ///     let mut map = enum_map! { _ => 2 };
-    ///     for value in map.values_mut() {
-    ///         *value += 2;
-    ///     }
-    ///     assert_eq!(map[false], 4);
-    ///     assert_eq!(map[true], 4);
+    /// let mut map = enum_map! { _ => 2 };
+    /// for value in map.values_mut() {
+    ///     *value += 2;
     /// }
+    /// assert_eq!(map[false], 4);
+    /// assert_eq!(map[true], 4);
     /// ```
     #[inline]
     pub fn values_mut(&mut self) -> ValuesMut<V> {
