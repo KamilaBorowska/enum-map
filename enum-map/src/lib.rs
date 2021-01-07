@@ -136,6 +136,7 @@ impl<K: Enum<V>, V: Default> EnumMap<K, V> {
     /// assert_eq!(enum_map[Example::A], 0);
     /// ```
     #[inline]
+    #[must_use]
     pub fn new() -> Self {
         EnumMap::default()
     }
