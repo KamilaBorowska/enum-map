@@ -190,9 +190,7 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     /// Returns whether the enum variant set is empty.
     ///
     /// This isn't particularly useful, as there is no real reason to use
-    /// enum map for enums without variants. However, it is provided for
-    /// consistency with data structures providing len method (and I will
-    /// admit, to avoid clippy warnings).
+    /// enum map for enums without variants.
     ///
     /// # Examples
     ///
@@ -211,6 +209,7 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     /// assert!(EnumMap::<Void, ()>::new().is_empty());
     /// assert!(!EnumMap::<SingleVariant, ()>::new().is_empty());
     /// ```
+    #[deprecated(since = "0.6.5")]
     #[inline]
     pub fn is_empty(&self) -> bool {
         self.as_slice().is_empty()

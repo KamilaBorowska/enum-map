@@ -286,6 +286,7 @@ fn test_u8() {
 enum Void {}
 
 #[test]
+#[allow(deprecated)]
 fn empty_map() {
     let void: EnumMap<Void, Void> = enum_map! {};
     assert!(void.is_empty());
@@ -298,6 +299,7 @@ fn empty_value() {
 }
 
 #[test]
+#[allow(deprecated)]
 fn empty_infallible_map() {
     let void: EnumMap<Infallible, Infallible> = enum_map! {};
     assert!(void.is_empty());
