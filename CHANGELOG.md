@@ -1,3 +1,9 @@
+# Version 0.6.4
+
+## Other changes
+
+- Deprecated `EnumMap::as_ptr` and `EnumMap::as_mut_ptr`.
+
 # Version 0.6.3
 
 ## New features
