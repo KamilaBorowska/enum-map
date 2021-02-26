@@ -1,3 +1,10 @@
+# Version 0.6.5
+
+## Other changes
+
+- Deprecated `EnumMap::is_empty` and `EnumMap::new`. `EnumMap::new` usages
+  can be replaced with `EnumMap::default`.
+
 # Version 0.6.4
 
 ## Other changes
