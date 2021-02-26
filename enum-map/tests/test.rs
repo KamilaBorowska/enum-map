@@ -314,14 +314,6 @@ impl<V> Enum<V> for X {
     type Array = [V; 1];
     const POSSIBLE_VALUES: usize = 1;
 
-    fn slice(array: &[V; 1]) -> &[V] {
-        array
-    }
-
-    fn slice_mut(array: &mut [V; 1]) -> &mut [V] {
-        array
-    }
-
     fn from_usize(arg: usize) -> X {
         assert_eq!(arg, 0);
         X::A(PhantomData)

@@ -68,16 +68,6 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> proc_macro2::TokenStr
             const POSSIBLE_VALUES: usize = #enum_count;
 
             #[inline]
-            fn slice(array: &Self::Array) -> &[V] {
-                array
-            }
-
-            #[inline]
-            fn slice_mut(array: &mut Self::Array) -> &mut [V] {
-                array
-            }
-
-            #[inline]
             fn from_usize(value: usize) -> Self {
                 match value {
                     #(

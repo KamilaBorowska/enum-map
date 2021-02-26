@@ -13,13 +13,9 @@ use core::convert::Infallible;
 /// it like one, as array of `u8` keys is a relatively common pattern.
 pub trait Enum<V>: Sized {
     /// Representation of an enum map for type `V`, usually an array.
-    type Array;
+    type Array: Array<V>;
     /// Number of possible states the type can have.
     const POSSIBLE_VALUES: usize;
-    /// Gets a slice from an array type.
-    fn slice(array: &Self::Array) -> &[V];
-    /// Gets a mutable slice from an array type.
-    fn slice_mut(array: &mut Self::Array) -> &mut [V];
     /// Takes an usize, and returns an element matching `to_usize` function.
     fn from_usize(value: usize) -> Self;
     /// Returns an unique identifier for a value within range of `0..POSSIBLE_VALUES`.
@@ -28,17 +24,25 @@ pub trait Enum<V>: Sized {
     fn from_function<F: FnMut(Self) -> V>(f: F) -> Self::Array;
 }
 
+pub trait Array<V> {
+    const LENGTH: usize;
+    fn slice(&self) -> &[V];
+    fn slice_mut(&mut self) -> &mut [V];
+}
+
+impl<V, const N: usize> Array<V> for [V; N] {
+    const LENGTH: usize = N;
+    fn slice(&self) -> &[V] {
+        self
+    }
+    fn slice_mut(&mut self) -> &mut [V] {
+        self
+    }
+}
+
 impl<T> Enum<T> for bool {
     type Array = [T; 2];
     const POSSIBLE_VALUES: usize = 2;
-    #[inline]
-    fn slice(array: &[T; 2]) -> &[T] {
-        array
-    }
-    #[inline]
-    fn slice_mut(array: &mut [T; 2]) -> &mut [T] {
-        array
-    }
     #[inline]
     fn from_usize(value: usize) -> Self {
         match value {
@@ -61,14 +65,6 @@ impl<T> Enum<T> for u8 {
     type Array = [T; 256];
     const POSSIBLE_VALUES: usize = 256;
     #[inline]
-    fn slice(array: &[T; 256]) -> &[T] {
-        array
-    }
-    #[inline]
-    fn slice_mut(array: &mut [T; 256]) -> &mut [T] {
-        array
-    }
-    #[inline]
     fn from_usize(value: usize) -> Self {
         value as u8
     }
@@ -85,14 +81,6 @@ impl<T> Enum<T> for u8 {
 impl<T> Enum<T> for Infallible {
     type Array = [T; 0];
     const POSSIBLE_VALUES: usize = 0;
-    #[inline]
-    fn slice(array: &[T; 0]) -> &[T] {
-        array
-    }
-    #[inline]
-    fn slice_mut(array: &mut [T; 0]) -> &mut [T] {
-        array
-    }
     #[inline]
     fn from_usize(_: usize) -> Self {
         unreachable!();

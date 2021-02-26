@@ -38,6 +38,7 @@ mod iter;
 mod serde;
 
 pub use enum_map_derive::Enum;
+use internal::Array;
 pub use internal::Enum;
 pub use iter::{IntoIter, Iter, IterMut, Values, ValuesMut};
 
@@ -238,13 +239,13 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     /// Converts an enum map to a slice representing values.
     #[inline]
     pub fn as_slice(&self) -> &[V] {
-        K::slice(&self.array)
+        self.array.slice()
     }
 
     /// Converts a mutable enum map to a mutable slice representing values.
     #[inline]
     pub fn as_mut_slice(&mut self) -> &mut [V] {
-        K::slice_mut(&mut self.array)
+        self.array.slice_mut()
     }
 
     /// Returns a raw pointer to the enum map's slice.
