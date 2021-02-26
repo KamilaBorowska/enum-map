@@ -54,7 +54,7 @@ fn test_debug() {
 #[test]
 fn test_hash() {
     let map = enum_map! { false => 3, true => 5 };
-    let mut set = HashSet::default();
+    let mut set = HashSet::new();
     set.insert(map);
     assert!(set.contains(&map));
 }
