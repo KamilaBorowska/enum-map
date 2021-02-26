@@ -54,7 +54,7 @@ fn test_debug() {
 #[test]
 fn test_hash() {
     let map = enum_map! { false => 3, true => 5 };
-    let mut set = HashSet::new();
+    let mut set = HashSet::default();
     set.insert(map);
     assert!(set.contains(&map));
 }
@@ -75,7 +75,7 @@ fn discriminants() {
         B = 3000,
         C = 1000,
     }
-    let mut map = EnumMap::new();
+    let mut map = EnumMap::default();
     map[Discriminants::A] = 3;
     map[Discriminants::B] = 2;
     map[Discriminants::C] = 1;
@@ -236,7 +236,7 @@ impl<'a> Drop for DropReporter<'a> {
 
 #[test]
 fn into_iter_drop() {
-    let dropped = RefCell::new(Vec::new());
+    let dropped = RefCell::new(Vec::default());
     let mut a: IntoIter<Example, _> = enum_map! {
         k => DropReporter {
             into: &dropped,

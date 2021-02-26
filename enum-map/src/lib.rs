@@ -105,7 +105,7 @@ macro_rules! enum_map {
 ///     C,
 /// }
 ///
-/// let mut map = EnumMap::new();
+/// let mut map = EnumMap::default();
 /// // new initializes map with default values
 /// assert_eq!(map[Example::A], 0);
 /// map[Example::A] = 3;
@@ -132,11 +132,12 @@ impl<K: Enum<V>, V: Default> EnumMap<K, V> {
     ///     A,
     /// }
     ///
-    /// let enum_map = EnumMap::<_, i32>::new();
+    /// let enum_map = EnumMap::<_, i32>::default();
     /// assert_eq!(enum_map[Example::A], 0);
     /// ```
     #[inline]
     #[must_use]
+    #[deprecated(since = "0.6.5", note = "Please use EnumMap::default instead")]
     pub fn new() -> Self {
         EnumMap::default()
     }
@@ -155,7 +156,7 @@ impl<K: Enum<V>, V: Default> EnumMap<K, V> {
     ///     B,
     /// }
     ///
-    /// let mut enum_map = EnumMap::<_, String>::new();
+    /// let mut enum_map = EnumMap::<_, String>::default();
     /// enum_map[Example::B] = "foo".into();
     /// enum_map.clear();
     /// assert_eq!(enum_map[Example::A], "");
@@ -207,8 +208,8 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     ///     Variant,
     /// }
     ///
-    /// assert!(EnumMap::<Void, ()>::new().is_empty());
-    /// assert!(!EnumMap::<SingleVariant, ()>::new().is_empty());
+    /// assert!(EnumMap::<Void, ()>::default().is_empty());
+    /// assert!(!EnumMap::<SingleVariant, ()>::default().is_empty());
     /// ```
     #[deprecated(since = "0.6.5")]
     #[inline]
