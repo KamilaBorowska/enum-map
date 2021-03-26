@@ -1,8 +1,16 @@
-test:beta:
+test:1.51:
   script: &test_script
   - &print_version rustc --version && cargo --version
   - cargo test --all --verbose
   - cargo test --all --all-features --verbose
+  image: rust:1.51
+
+test:stable:
+  script: *test_script
+  image: rust
+
+test:beta:
+  script: *test_script
   image: liuchong/rustup:beta
 
 test:nightly:
@@ -14,11 +22,11 @@ clippy:
   - *print_version
   - rustup component add clippy-preview
   - cargo clippy --verbose
-  image: liuchong/rustup:beta
+  image: rust
 
 rustfmt:
   script:
   - *print_version
   - rustup component add rustfmt-preview
   - cargo fmt -- --check
-  image: liuchong/rustup:beta
+  image: rust
