@@ -12,7 +12,7 @@ use core::convert::Infallible;
 /// strictly speaking not an actual enum, there are good reasons to consider
 /// it like one, as array of `u8` keys is a relatively common pattern.
 pub trait Enum<V>: Sized {
-    /// Representation of an enum map for type `V`, usually an array.
+    /// Representation of an enum map for type `V`.
     type Array: Array<V>;
     /// Takes an usize, and returns an element matching `to_usize` function.
     fn from_usize(value: usize) -> Self;
