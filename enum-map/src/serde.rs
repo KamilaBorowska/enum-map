@@ -1,5 +1,6 @@
 #![cfg(feature = "serde")]
 
+use crate::internal::Array;
 use crate::{enum_map, Enum, EnumMap};
 use core::fmt;
 use core::marker::PhantomData;

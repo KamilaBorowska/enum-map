@@ -216,9 +216,7 @@ fn into_iter() {
 #[test]
 fn into_iter_u8() {
     assert_eq!(
-        <EnumMap<_, _> as core::convert::From<_>>::from(|i: u8| i)
-            .into_iter()
-            .collect::<Vec<_>>(),
+        enum_map! { i => i }.into_iter().collect::<Vec<_>>(),
         (0..256).map(|x| (x as u8, x as u8)).collect::<Vec<_>>()
     );
 }
@@ -320,10 +318,6 @@ impl<V> Enum<V> for X {
 
     fn to_usize(self) -> usize {
         0
-    }
-
-    fn from_function<F: FnMut(Self) -> V>(mut f: F) -> [V; 1] {
-        [f(X::A(PhantomData))]
     }
 }
 

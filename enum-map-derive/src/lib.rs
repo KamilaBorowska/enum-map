@@ -39,15 +39,13 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> proc_macro2::TokenStr
         }
     }
 
-    let variants_names_a = data_enum.variants.iter().map(|variant| &variant.ident);
-    let variants_names_b = data_enum.variants.iter().map(|variant| &variant.ident);
-    let repeat_name_a = iter::repeat(&name);
-    let repeat_name_b = repeat_name_a.clone();
+    let variants_names = data_enum.variants.iter().map(|variant| &variant.ident);
+    let repeat_name = iter::repeat(&name);
     let counter = 0..enum_count;
 
     let to_usize = if enum_count == 0 || has_discriminants {
-        let variants_names = data_enum.variants.iter().map(|variant| &variant.ident);
-        let repeat_name = repeat_name_a.clone();
+        let variants_names = variants_names.clone();
+        let repeat_name = repeat_name.clone();
         let counter = counter.clone();
 
         quote! {
@@ -70,7 +68,7 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> proc_macro2::TokenStr
             fn from_usize(value: usize) -> Self {
                 match value {
                     #(
-                        #counter => #repeat_name_a::#variants_names_a,
+                        #counter => #repeat_name::#variants_names,
                     )*
                     _ => unreachable!()
                 }
@@ -79,13 +77,6 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> proc_macro2::TokenStr
             #[inline]
             fn to_usize(self) -> usize {
                 #to_usize
-            }
-
-            #[inline]
-            fn from_function<F: FnMut(Self) -> V>(mut _f: F) -> Self::Array {
-                [#(
-                    _f(#repeat_name_b::#variants_names_b),
-                )*]
             }
         }
     }

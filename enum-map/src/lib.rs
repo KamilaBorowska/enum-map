@@ -37,10 +37,85 @@ mod internal;
 mod iter;
 mod serde;
 
+#[doc(hidden)]
+pub use core::mem::{ManuallyDrop, MaybeUninit};
+#[doc(hidden)]
+pub use core::ptr;
 pub use enum_map_derive::Enum;
 use internal::Array;
 pub use internal::Enum;
 pub use iter::{IntoIter, Iter, IterMut, Values, ValuesMut};
+
+// Type invariant: arr[..len] must be initialized
+#[doc(hidden)]
+#[non_exhaustive]
+pub struct ArrayVec<K, V>
+where
+    K: Enum<V>,
+{
+    pub array: MaybeUninit<K::Array>,
+    pub length: usize,
+}
+
+impl<K, V> ArrayVec<K, V>
+where
+    K: Enum<V>,
+{
+    #[doc(hidden)]
+    // This function is marked as unsafe to prevent user from causing unsafety
+    // by using undocumented ArrayVec.
+    pub unsafe fn new() -> Self {
+        ArrayVec {
+            array: MaybeUninit::uninit(),
+            length: 0,
+        }
+    }
+
+    #[doc(hidden)]
+    pub fn storage_length(&self) -> usize {
+        K::Array::LENGTH
+    }
+
+    #[doc(hidden)]
+    pub fn get_key(&self) -> K {
+        K::from_usize(self.length)
+    }
+
+    #[doc(hidden)]
+    // Unsafe as it can write out of bounds.
+    pub unsafe fn push(&mut self, value: V) {
+        self.array
+            .as_mut_ptr()
+            .cast::<V>()
+            .add(self.length)
+            .write(value);
+        self.length += 1;
+    }
+}
+
+impl<K, V> Drop for ArrayVec<K, V>
+where
+    K: Enum<V>,
+{
+    fn drop(&mut self) {
+        // This is safe as arr[..len] is initialized due to
+        // __ArrayVecInner's type invariant.
+        unsafe {
+            ptr::slice_from_raw_parts_mut(self.array.as_mut_ptr() as *mut V, self.length)
+                .drop_in_place();
+        }
+    }
+}
+
+#[doc(hidden)]
+pub union TypeEqualizer<K, V>
+where
+    K: Enum<V>,
+{
+    pub init: (),
+    pub enum_map: ManuallyDrop<EnumMap<K, V>>,
+    pub array_vec: ManuallyDrop<ArrayVec<K, V>>,
+}
 
 /// Enum map constructor.
 ///
@@ -75,9 +150,37 @@ pub use iter::{IntoIter, Iter, IterMut, Values, ValuesMut};
 /// ```
 #[macro_export]
 macro_rules! enum_map {
-    {$($t:tt)*} => {
-        $crate::__from_fn(|k| match k { $($t)* })
-    };
+    {$($t:tt)*} => {{
+        let mut type_equalizer = $crate::TypeEqualizer { init: () };
+        if false {
+            // Safe because this code is unreachable
+            unsafe {
+                type_equalizer.enum_map = $crate::MaybeUninit::assume_init($crate::MaybeUninit::uninit());
+                $crate::ManuallyDrop::into_inner(type_equalizer.enum_map)
+            }
+        } else {
+            // Safe because we are going to follow ArrayVec invariant
+            type_equalizer.array_vec = $crate::ManuallyDrop::new(unsafe { $crate::ArrayVec::new() });
+            // Safe because we just wrote to array_vec field.
+            let mut vec = $crate::ManuallyDrop::into_inner(unsafe { type_equalizer.array_vec });
+            for _ in 0..$crate::ArrayVec::storage_length(&vec) {
+                let _please_do_not_use_continue_without_label;
+                let value;
+                struct __PleaseDoNotUseBreakWithoutLabel;
+                #[allow(unreachable_code)]
+                loop {
+                    _please_do_not_use_continue_without_label = ();
+                    value = match $crate::ArrayVec::get_key(&vec) { $($t)* };
+                    break __PleaseDoNotUseBreakWithoutLabel;
+                };
+                // Safe because this method will be called at most storage_length times.
+                unsafe { $crate::ArrayVec::push(&mut vec, value); }
+            }
+            vec.length = 0;
+            // Safe because the array was fully initialized.
+            $crate::EnumMap::from_array(unsafe { $crate::ptr::read($crate::MaybeUninit::as_ptr(&vec.array)) })
+        }
+    }};
 }
 
 /// An enum mapping.
@@ -172,6 +275,12 @@ impl<K: Enum<V>, V: Default> EnumMap<K, V> {
 }
 
 impl<K: Enum<V>, V> EnumMap<K, V> {
+    /// Creates an enum map from array.
+    #[inline]
+    pub fn from_array(array: K::Array) -> EnumMap<K, V> {
+        EnumMap { array }
+    }
+
     /// Returns an iterator over enum map.
     #[inline]
     pub fn iter(&self) -> Iter<K, V> {
@@ -293,21 +402,4 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     pub fn as_mut_ptr(&mut self) -> *mut V {
         self.as_mut_slice().as_mut_ptr()
     }
-}
-
-impl<F: FnMut(K) -> V, K: Enum<V>, V> From<F> for EnumMap<K, V> {
-    #[inline]
-    fn from(f: F) -> Self {
-        EnumMap {
-            array: K::from_function(f),
-        }
-    }
-}
-
-#[doc(hidden)]
-pub fn __from_fn<K, V>(f: impl FnMut(K) -> V) -> EnumMap<K, V>
-where
-    K: Enum<V>,
-{
-    f.into()
 }

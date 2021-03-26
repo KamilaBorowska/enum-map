@@ -1,4 +1,3 @@
-use array_macro::array;
 use core::convert::Infallible;
 
 /// Enum mapping type
@@ -18,8 +17,6 @@ pub trait Enum<V>: Sized {
     fn from_usize(value: usize) -> Self;
     /// Returns an unique identifier for a value within range of `0..Array::LENGTH`.
     fn to_usize(self) -> usize;
-    /// Creates an array using a function called for each argument.
-    fn from_function<F: FnMut(Self) -> V>(f: F) -> Self::Array;
 }
 
 pub trait Array<V> {
@@ -52,10 +49,6 @@ impl<T> Enum<T> for bool {
     fn to_usize(self) -> usize {
         self as usize
     }
-    #[inline]
-    fn from_function<F: FnMut(Self) -> T>(mut f: F) -> [T; 2] {
-        [f(false), f(true)]
-    }
 }
 
 impl<T> Enum<T> for u8 {
@@ -68,10 +61,6 @@ impl<T> Enum<T> for u8 {
     fn to_usize(self) -> usize {
         self as usize
     }
-    #[inline]
-    fn from_function<F: FnMut(Self) -> T>(mut f: F) -> [T; 256] {
-        array![|i| f(i as u8); 256]
-    }
 }
 
 impl<T> Enum<T> for Infallible {
@@ -83,9 +72,5 @@ impl<T> Enum<T> for Infallible {
     #[inline]
     fn to_usize(self) -> usize {
         match self {}
-    }
-    #[inline]
-    fn from_function<F: FnMut(Self) -> T>(_: F) -> [T; 0] {
-        []
     }
 }
