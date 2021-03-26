@@ -227,29 +227,6 @@ pub struct EnumMap<K: Enum<V>, V> {
 }
 
 impl<K: Enum<V>, V: Default> EnumMap<K, V> {
-    /// Creates an enum map with default values.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # extern crate enum_map;
-    /// use enum_map::{Enum, EnumMap};
-    ///
-    /// #[derive(Enum)]
-    /// enum Example {
-    ///     A,
-    /// }
-    ///
-    /// let enum_map = EnumMap::<_, i32>::default();
-    /// assert_eq!(enum_map[Example::A], 0);
-    /// ```
-    #[inline]
-    #[must_use]
-    #[deprecated(since = "0.6.5", note = "Please use EnumMap::default instead")]
-    pub fn new() -> Self {
-        EnumMap::default()
-    }
-
     /// Clear enum map with default values.
     ///
     /// # Examples
@@ -278,6 +255,7 @@ impl<K: Enum<V>, V: Default> EnumMap<K, V> {
     }
 }
 
+#[allow(clippy::len_without_is_empty)]
 impl<K: Enum<V>, V> EnumMap<K, V> {
     /// Creates an enum map from array.
     #[inline]
@@ -301,34 +279,6 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     #[inline]
     pub fn len(&self) -> usize {
         self.as_slice().len()
-    }
-
-    /// Returns whether the enum variant set is empty.
-    ///
-    /// This isn't particularly useful, as there is no real reason to use
-    /// enum map for enums without variants.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # extern crate enum_map;
-    /// use enum_map::{Enum, EnumMap};
-    ///
-    /// #[derive(Enum)]
-    /// enum Void {}
-    ///
-    /// #[derive(Enum)]
-    /// enum SingleVariant {
-    ///     Variant,
-    /// }
-    ///
-    /// assert!(EnumMap::<Void, ()>::default().is_empty());
-    /// assert!(!EnumMap::<SingleVariant, ()>::default().is_empty());
-    /// ```
-    #[deprecated(since = "0.6.5")]
-    #[inline]
-    pub fn is_empty(&self) -> bool {
-        self.as_slice().is_empty()
     }
 
     /// Swaps two indexes.
@@ -359,51 +309,5 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     #[inline]
     pub fn as_mut_slice(&mut self) -> &mut [V] {
         self.array.slice_mut()
-    }
-
-    /// Returns a raw pointer to the enum map's slice.
-    ///
-    /// The caller must ensure that the slice outlives the pointer this
-    /// function returns, or else it will end up pointing to garbage.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # extern crate enum_map;
-    /// use enum_map::{enum_map, EnumMap};
-    ///
-    /// let map = enum_map! { 5 => 42, _ => 0 };
-    /// assert_eq!(unsafe { *map.as_ptr().offset(5) }, 42);
-    /// ```
-    #[deprecated(since = "0.6.4", note = "Please use .as_slice().as_ptr() instead")]
-    #[inline]
-    pub fn as_ptr(&self) -> *const V {
-        self.as_slice().as_ptr()
-    }
-
-    /// Returns an unsafe mutable pointer to the enum map's slice.
-    ///
-    /// The caller must ensure that the slice outlives the pointer this
-    /// function returns, or else it will end up pointing to garbage.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # extern crate enum_map;
-    /// use enum_map::{enum_map, EnumMap};
-    ///
-    /// let mut map = enum_map! { _ => 0 };
-    /// unsafe {
-    ///     *map.as_mut_ptr().offset(11) = 23
-    /// };
-    /// assert_eq!(map[11], 23);
-    /// ```
-    #[deprecated(
-        since = "0.6.4",
-        note = "Please use .as_mut_slice().as_mut_ptr() instead"
-    )]
-    #[inline]
-    pub fn as_mut_ptr(&mut self) -> *mut V {
-        self.as_mut_slice().as_mut_ptr()
     }
 }
