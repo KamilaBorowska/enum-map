@@ -1,3 +1,18 @@
+# Version 1.0.0
+
+## New features
+
+- It's now possible to use `return` and `?` within `macro_rules!` macro.
+
+- `Enum` trait is much simpler having two methods only.
+
+## Other changes
+
+- Removed previously deprecated features.
+
+- Renamed `to_usize` to `into_usize` matching the naming convention
+  used in Rust programming language.
+
 # Version 0.6.5
 
 ## Other changes
