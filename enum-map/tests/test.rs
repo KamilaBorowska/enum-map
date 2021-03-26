@@ -7,6 +7,7 @@ use std::cell::RefCell;
 use std::collections::HashSet;
 use std::convert::Infallible;
 use std::marker::PhantomData;
+use std::num::ParseIntError;
 
 trait From<T>: Sized {
     fn from(_: T) -> Self {
@@ -371,4 +372,11 @@ fn test_iter_clone() {
     let values = map.values();
     assert_eq!(values.clone().map(|S(v)| v).sum::<u8>(), 8);
     assert_eq!(values.map(|S(v)| v).sum::<u8>(), 8);
+}
+
+#[test]
+fn question_mark() -> Result<(), ParseIntError> {
+    let map = enum_map! { false => "2".parse()?, true => "5".parse()? };
+    assert_eq!(map, enum_map! { false => 2, true => 5 });
+    Ok(())
 }
