@@ -124,6 +124,10 @@ where
 /// separated list of enum keys, or `_` to match all unmatched enum keys,
 /// while right side is a value.
 ///
+/// The iteration order when using this macro is not guaranteed to be
+/// consistent. Future releases of this crate may change it, and this is not
+/// considered to be a breaking change.
+///
 /// # Examples
 ///
 /// ```
