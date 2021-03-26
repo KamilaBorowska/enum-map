@@ -3,7 +3,7 @@ extern crate enum_map;
 
 use enum_map::{Enum, EnumMap, IntoIter};
 
-use std::cell::RefCell;
+use std::cell::{Cell, RefCell};
 use std::collections::HashSet;
 use std::convert::Infallible;
 use std::marker::PhantomData;
@@ -379,4 +379,32 @@ fn question_mark() -> Result<(), ParseIntError> {
     let map = enum_map! { false => "2".parse()?, true => "5".parse()? };
     assert_eq!(map, enum_map! { false => 2, true => 5 });
     Ok(())
+}
+
+#[test]
+fn question_mark_failure() {
+    struct IncOnDrop<'a>(&'a Cell<i32>);
+
+    impl Drop for IncOnDrop<'_> {
+        fn drop(&mut self) {
+            self.0.set(self.0.get() + 1);
+        }
+    }
+
+    fn failible() -> Result<IncOnDrop<'static>, &'static str> {
+        Err("ERROR!")
+    }
+
+    fn try_block(inc: &Cell<i32>) -> Result<(), &'static str> {
+        enum_map! {
+            32 => failible()?,
+            _ => {
+                IncOnDrop(inc)
+            }
+        };
+        Ok(())
+    }
+    let value = Cell::new(0);
+    assert_eq!(try_block(&value), Err("ERROR!"));
+    assert_eq!(value.get(), 32);
 }
