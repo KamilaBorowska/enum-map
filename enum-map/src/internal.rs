@@ -13,10 +13,10 @@ use core::convert::Infallible;
 pub trait Enum<V>: Sized {
     /// Representation of an enum map for type `V`.
     type Array: Array<V>;
-    /// Takes an usize, and returns an element matching `to_usize` function.
+    /// Takes an usize, and returns an element matching `into_usize` function.
     fn from_usize(value: usize) -> Self;
     /// Returns an unique identifier for a value within range of `0..Array::LENGTH`.
-    fn to_usize(self) -> usize;
+    fn into_usize(self) -> usize;
 }
 
 pub trait Array<V> {
@@ -46,7 +46,7 @@ impl<T> Enum<T> for bool {
         }
     }
     #[inline]
-    fn to_usize(self) -> usize {
+    fn into_usize(self) -> usize {
         self as usize
     }
 }
@@ -58,7 +58,7 @@ impl<T> Enum<T> for u8 {
         value as u8
     }
     #[inline]
-    fn to_usize(self) -> usize {
+    fn into_usize(self) -> usize {
         self as usize
     }
 }
@@ -70,7 +70,7 @@ impl<T> Enum<T> for Infallible {
         unreachable!();
     }
     #[inline]
-    fn to_usize(self) -> usize {
+    fn into_usize(self) -> usize {
         match self {}
     }
 }

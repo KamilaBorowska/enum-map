@@ -316,7 +316,7 @@ impl<V> Enum<V> for X {
         X::A(PhantomData)
     }
 
-    fn to_usize(self) -> usize {
+    fn into_usize(self) -> usize {
         0
     }
 }

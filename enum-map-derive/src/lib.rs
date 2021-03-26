@@ -43,7 +43,7 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> proc_macro2::TokenStr
     let repeat_name = iter::repeat(&name);
     let counter = 0..enum_count;
 
-    let to_usize = if enum_count == 0 || has_discriminants {
+    let into_usize = if enum_count == 0 || has_discriminants {
         let variants_names = variants_names.clone();
         let repeat_name = repeat_name.clone();
         let counter = counter.clone();
@@ -75,8 +75,8 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> proc_macro2::TokenStr
             }
 
             #[inline]
-            fn to_usize(self) -> usize {
-                #to_usize
+            fn into_usize(self) -> usize {
+                #into_usize
             }
         }
     }
@@ -97,7 +97,7 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> proc_macro2::TokenStr
 ///     D,
 /// }
 ///
-/// assert_eq!(Enum::<()>::to_usize(A::C), 1);
+/// assert_eq!(Enum::<()>::into_usize(A::C), 1);
 /// ```
 #[proc_macro_derive(Enum)]
 pub fn derive_enum_map(input: proc_macro::TokenStream) -> proc_macro::TokenStream {

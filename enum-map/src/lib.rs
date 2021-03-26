@@ -342,7 +342,7 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     /// ```
     #[inline]
     pub fn swap(&mut self, a: K, b: K) {
-        self.as_mut_slice().swap(a.to_usize(), b.to_usize())
+        self.as_mut_slice().swap(a.into_usize(), b.into_usize())
     }
 
     /// Converts an enum map to a slice representing values.

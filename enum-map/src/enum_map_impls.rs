@@ -33,14 +33,14 @@ impl<K: Enum<V>, V> Index<K> for EnumMap<K, V> {
 
     #[inline]
     fn index(&self, key: K) -> &V {
-        &self.as_slice()[key.to_usize()]
+        &self.as_slice()[key.into_usize()]
     }
 }
 
 impl<K: Enum<V>, V> IndexMut<K> for EnumMap<K, V> {
     #[inline]
     fn index_mut(&mut self, key: K) -> &mut V {
-        &mut self.as_mut_slice()[key.to_usize()]
+        &mut self.as_mut_slice()[key.into_usize()]
     }
 }
 
