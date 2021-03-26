@@ -14,11 +14,9 @@ use core::convert::Infallible;
 pub trait Enum<V>: Sized {
     /// Representation of an enum map for type `V`, usually an array.
     type Array: Array<V>;
-    /// Number of possible states the type can have.
-    const POSSIBLE_VALUES: usize;
     /// Takes an usize, and returns an element matching `to_usize` function.
     fn from_usize(value: usize) -> Self;
-    /// Returns an unique identifier for a value within range of `0..POSSIBLE_VALUES`.
+    /// Returns an unique identifier for a value within range of `0..Array::LENGTH`.
     fn to_usize(self) -> usize;
     /// Creates an array using a function called for each argument.
     fn from_function<F: FnMut(Self) -> V>(f: F) -> Self::Array;
@@ -42,7 +40,6 @@ impl<V, const N: usize> Array<V> for [V; N] {
 
 impl<T> Enum<T> for bool {
     type Array = [T; 2];
-    const POSSIBLE_VALUES: usize = 2;
     #[inline]
     fn from_usize(value: usize) -> Self {
         match value {
@@ -63,7 +60,6 @@ impl<T> Enum<T> for bool {
 
 impl<T> Enum<T> for u8 {
     type Array = [T; 256];
-    const POSSIBLE_VALUES: usize = 256;
     #[inline]
     fn from_usize(value: usize) -> Self {
         value as u8
@@ -80,7 +76,6 @@ impl<T> Enum<T> for u8 {
 
 impl<T> Enum<T> for Infallible {
     type Array = [T; 0];
-    const POSSIBLE_VALUES: usize = 0;
     #[inline]
     fn from_usize(_: usize) -> Self {
         unreachable!();

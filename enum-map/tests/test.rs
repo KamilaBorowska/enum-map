@@ -312,7 +312,6 @@ enum X {
 
 impl<V> Enum<V> for X {
     type Array = [V; 1];
-    const POSSIBLE_VALUES: usize = 1;
 
     fn from_usize(arg: usize) -> X {
         assert_eq!(arg, 0);

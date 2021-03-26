@@ -36,7 +36,7 @@ where
             deserializer.deserialize_map(HumanReadableVisitor(PhantomData))
         } else {
             deserializer
-                .deserialize_tuple(<K as Enum<V>>::POSSIBLE_VALUES, CompactVisitor(PhantomData))
+                .deserialize_tuple(<K as Enum<V>>::Array::LENGTH, CompactVisitor(PhantomData))
         }
     }
 }

@@ -65,7 +65,6 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> proc_macro2::TokenStr
         #[automatically_derived]
         impl<V> ::enum_map::Enum<V> for #name {
             type Array = [V; #enum_count];
-            const POSSIBLE_VALUES: usize = #enum_count;
 
             #[inline]
             fn from_usize(value: usize) -> Self {
