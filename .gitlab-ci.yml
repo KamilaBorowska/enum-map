@@ -1,13 +1,13 @@
-test:1.36:
+test:1.51:
   script: &test_script
   - &print_version rustc --version && cargo --version
   - cargo test --all --verbose
   - cargo test --all --all-features --verbose
-  image: rust:1.36
+  image: rust:1.51
 
 test:stable:
   script: *test_script
-  image: rust:latest
+  image: rust
 
 test:beta:
   script: *test_script
@@ -22,11 +22,11 @@ clippy:
   - *print_version
   - rustup component add clippy-preview
   - cargo clippy --verbose
-  image: rust:latest
+  image: rust
 
 rustfmt:
   script:
   - *print_version
   - rustup component add rustfmt-preview
   - cargo fmt -- --check
-  image: rust:latest
+  image: rust

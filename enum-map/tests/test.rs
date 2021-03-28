@@ -3,10 +3,11 @@ extern crate enum_map;
 
 use enum_map::{Enum, EnumMap, IntoIter};
 
-use std::cell::RefCell;
+use std::cell::{Cell, RefCell};
 use std::collections::HashSet;
 use std::convert::Infallible;
 use std::marker::PhantomData;
+use std::num::ParseIntError;
 
 trait From<T>: Sized {
     fn from(_: T) -> Self {
@@ -216,9 +217,7 @@ fn into_iter() {
 #[test]
 fn into_iter_u8() {
     assert_eq!(
-        <EnumMap<_, _> as core::convert::From<_>>::from(|i: u8| i)
-            .into_iter()
-            .collect::<Vec<_>>(),
+        enum_map! { i => i }.into_iter().collect::<Vec<_>>(),
         (0..256).map(|x| (x as u8, x as u8)).collect::<Vec<_>>()
     );
 }
@@ -286,10 +285,9 @@ fn test_u8() {
 enum Void {}
 
 #[test]
-#[allow(deprecated)]
 fn empty_map() {
     let void: EnumMap<Void, Void> = enum_map! {};
-    assert!(void.is_empty());
+    assert_eq!(void.len(), 0);
 }
 
 #[test]
@@ -299,10 +297,9 @@ fn empty_value() {
 }
 
 #[test]
-#[allow(deprecated)]
 fn empty_infallible_map() {
     let void: EnumMap<Infallible, Infallible> = enum_map! {};
-    assert!(void.is_empty());
+    assert_eq!(void.len(), 0);
 }
 
 #[derive(Clone, Copy)]
@@ -312,27 +309,14 @@ enum X {
 
 impl<V> Enum<V> for X {
     type Array = [V; 1];
-    const POSSIBLE_VALUES: usize = 1;
-
-    fn slice(array: &[V; 1]) -> &[V] {
-        array
-    }
-
-    fn slice_mut(array: &mut [V; 1]) -> &mut [V] {
-        array
-    }
 
     fn from_usize(arg: usize) -> X {
         assert_eq!(arg, 0);
         X::A(PhantomData)
     }
 
-    fn to_usize(self) -> usize {
+    fn into_usize(self) -> usize {
         0
-    }
-
-    fn from_function<F: FnMut(Self) -> V>(mut f: F) -> [V; 1] {
-        [f(X::A(PhantomData))]
     }
 }
 
@@ -386,4 +370,39 @@ fn test_iter_clone() {
     let values = map.values();
     assert_eq!(values.clone().map(|S(v)| v).sum::<u8>(), 8);
     assert_eq!(values.map(|S(v)| v).sum::<u8>(), 8);
+}
+
+#[test]
+fn question_mark() -> Result<(), ParseIntError> {
+    let map = enum_map! { false => "2".parse()?, true => "5".parse()? };
+    assert_eq!(map, enum_map! { false => 2, true => 5 });
+    Ok(())
+}
+
+#[test]
+fn question_mark_failure() {
+    struct IncOnDrop<'a>(&'a Cell<i32>);
+
+    impl Drop for IncOnDrop<'_> {
+        fn drop(&mut self) {
+            self.0.set(self.0.get() + 1);
+        }
+    }
+
+    fn failible() -> Result<IncOnDrop<'static>, &'static str> {
+        Err("ERROR!")
+    }
+
+    fn try_block(inc: &Cell<i32>) -> Result<(), &'static str> {
+        enum_map! {
+            32 => failible()?,
+            _ => {
+                IncOnDrop(inc)
+            }
+        };
+        Ok(())
+    }
+    let value = Cell::new(0);
+    assert_eq!(try_block(&value), Err("ERROR!"));
+    assert_eq!(value.get(), 32);
 }

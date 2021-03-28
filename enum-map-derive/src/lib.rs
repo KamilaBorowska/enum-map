@@ -39,15 +39,13 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> proc_macro2::TokenStr
         }
     }
 
-    let variants_names_a = data_enum.variants.iter().map(|variant| &variant.ident);
-    let variants_names_b = data_enum.variants.iter().map(|variant| &variant.ident);
-    let repeat_name_a = iter::repeat(&name);
-    let repeat_name_b = repeat_name_a.clone();
+    let variants_names = data_enum.variants.iter().map(|variant| &variant.ident);
+    let repeat_name = iter::repeat(&name);
     let counter = 0..enum_count;
 
-    let to_usize = if enum_count == 0 || has_discriminants {
-        let variants_names = data_enum.variants.iter().map(|variant| &variant.ident);
-        let repeat_name = repeat_name_a.clone();
+    let into_usize = if enum_count == 0 || has_discriminants {
+        let variants_names = variants_names.clone();
+        let repeat_name = repeat_name.clone();
         let counter = counter.clone();
 
         quote! {
@@ -65,38 +63,20 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> proc_macro2::TokenStr
         #[automatically_derived]
         impl<V> ::enum_map::Enum<V> for #name {
             type Array = [V; #enum_count];
-            const POSSIBLE_VALUES: usize = #enum_count;
-
-            #[inline]
-            fn slice(array: &Self::Array) -> &[V] {
-                array
-            }
-
-            #[inline]
-            fn slice_mut(array: &mut Self::Array) -> &mut [V] {
-                array
-            }
 
             #[inline]
             fn from_usize(value: usize) -> Self {
                 match value {
                     #(
-                        #counter => #repeat_name_a::#variants_names_a,
+                        #counter => #repeat_name::#variants_names,
                     )*
                     _ => unreachable!()
                 }
             }
 
             #[inline]
-            fn to_usize(self) -> usize {
-                #to_usize
-            }
-
-            #[inline]
-            fn from_function<F: FnMut(Self) -> V>(mut _f: F) -> Self::Array {
-                [#(
-                    _f(#repeat_name_b::#variants_names_b),
-                )*]
+            fn into_usize(self) -> usize {
+                #into_usize
             }
         }
     }
@@ -117,7 +97,7 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> proc_macro2::TokenStr
 ///     D,
 /// }
 ///
-/// assert_eq!(Enum::<()>::to_usize(A::C), 1);
+/// assert_eq!(Enum::<()>::into_usize(A::C), 1);
 /// ```
 #[proc_macro_derive(Enum)]
 pub fn derive_enum_map(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
