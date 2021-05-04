@@ -1,3 +1,8 @@
+## New features
+
+- Implemented `Arbitrary` for maps where the value type also implements
+  `Arbitrary`.  (You have to enable the "arbitrary" feature.)
+
 # Version 1.0.0
 
 ## New features

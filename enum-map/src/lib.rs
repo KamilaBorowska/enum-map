@@ -311,3 +311,12 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
         self.array.slice_mut()
     }
 }
+
+#[cfg(feature = "arbitrary")]
+impl<'a, K: Enum<V>, V: arbitrary::Arbitrary<'a>> arbitrary::Arbitrary<'a> for EnumMap<K, V> {
+    fn arbitrary(u: &mut arbitrary::Unstructured<'a>) -> arbitrary::Result<EnumMap<K, V>> {
+        Ok(enum_map! {
+            _ => arbitrary::Arbitrary::arbitrary(u)?,
+        })
+    }
+}
