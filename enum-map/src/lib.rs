@@ -37,6 +37,7 @@ mod arbitrary;
 mod enum_map_impls;
 mod internal;
 mod iter;
+#[cfg(feature = "serde")]
 mod serde;
 
 #[doc(hidden)]
