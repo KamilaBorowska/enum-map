@@ -32,6 +32,8 @@
 #![no_std]
 #![deny(missing_docs)]
 
+#[cfg(feature = "arbitrary")]
+mod arbitrary;
 mod enum_map_impls;
 mod internal;
 mod iter;
@@ -309,14 +311,5 @@ impl<K: Enum<V>, V> EnumMap<K, V> {
     #[inline]
     pub fn as_mut_slice(&mut self) -> &mut [V] {
         self.array.slice_mut()
-    }
-}
-
-#[cfg(feature = "arbitrary")]
-impl<'a, K: Enum<V>, V: arbitrary::Arbitrary<'a>> arbitrary::Arbitrary<'a> for EnumMap<K, V> {
-    fn arbitrary(u: &mut arbitrary::Unstructured<'a>) -> arbitrary::Result<EnumMap<K, V>> {
-        Ok(enum_map! {
-            _ => arbitrary::Arbitrary::arbitrary(u)?,
-        })
     }
 }
