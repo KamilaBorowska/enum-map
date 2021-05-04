@@ -27,4 +27,4 @@ serde_test = "1.0.19"
 serde_json = "1.0.2"
 
 [package.metadata.docs.rs]
-features = ["serde"]
+features = ["arbitrary", "serde"]
