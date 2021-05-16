@@ -1,3 +1,10 @@
+# Version 1.1.1
+
+## Other changes
+
+- Worked around a bug in Clippy that caused false positives when using
+  `use_self` lint for code that derived `Enum` trait.
+
 # Version 1.1.0
 
 ## New features
