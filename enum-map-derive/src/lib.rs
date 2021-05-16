@@ -11,8 +11,6 @@ extern crate proc_macro2;
 extern crate quote;
 extern crate syn;
 
-use std::iter;
-
 use syn::spanned::Spanned;
 use syn::{Data, DataEnum, DeriveInput, Fields, Ident, Variant};
 
@@ -40,18 +38,16 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> proc_macro2::TokenStr
     }
 
     let variants_names = data_enum.variants.iter().map(|variant| &variant.ident);
-    let repeat_name = iter::repeat(&name);
     let counter = 0..enum_count;
 
     let into_usize = if enum_count == 0 || has_discriminants {
         let variants_names = variants_names.clone();
-        let repeat_name = repeat_name.clone();
         let counter = counter.clone();
 
         quote! {
             match self {
                 #(
-                    #repeat_name::#variants_names => #counter,
+                    Self::#variants_names => #counter,
                 )*
             }
         }
@@ -68,7 +64,7 @@ fn generate_enum_code(name: Ident, data_enum: DataEnum) -> proc_macro2::TokenStr
             fn from_usize(value: usize) -> Self {
                 match value {
                     #(
-                        #counter => #repeat_name::#variants_names,
+                        #counter => Self::#variants_names,
                     )*
                     _ => unreachable!()
                 }
