@@ -1,6 +1,6 @@
 [package]
 name = "enum-map"
-version = "1.1.0"
+version = "1.1.1"
 authors = ["Konrad Borowski <konrad@borowski.pw>"]
 edition = "2018"
 repository = "https://gitlab.com/KonradBorowski/enum-map"
