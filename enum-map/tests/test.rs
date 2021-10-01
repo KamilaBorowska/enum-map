@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate enum_map;
 
-use enum_map::{Enum, EnumMap, IntoIter};
+use enum_map::{Enum, EnumArray, EnumMap, IntoIter};
 
 use std::cell::{Cell, RefCell};
 use std::collections::HashSet;
@@ -66,6 +66,96 @@ fn test_clear() {
     map.clear();
     assert_eq!(map[true], 0);
     assert_eq!(map[false], 0);
+}
+
+#[test]
+fn struct_of_enum() {
+    #[derive(Copy, Clone, Debug, Enum, PartialEq)]
+    struct Product {
+        example: Example,
+        is_done: bool,
+    }
+
+    let mut map = enum_map! {
+        Product { example: Example::A, is_done: false } => "foo",
+        Product { example: Example::B, is_done: false } => "bar",
+        Product { example: Example::C, is_done: false } => "baz",
+        Product { example: Example::A, is_done: true } => "done foo",
+        Product { example: Example::B, is_done: true } => "bar done",
+        Product { example: Example::C, is_done: true } => "doooozne",
+    };
+
+    assert_eq!(
+        map[Product {
+            example: Example::B,
+            is_done: false
+        }],
+        "bar"
+    );
+    assert_eq!(
+        map[Product {
+            example: Example::C,
+            is_done: false
+        }],
+        "baz"
+    );
+    assert_eq!(
+        map[Product {
+            example: Example::B,
+            is_done: true
+        }],
+        "bar done"
+    );
+
+    map[Product {
+        example: Example::B,
+        is_done: true,
+    }] = "not really done";
+    assert_eq!(
+        map[Product {
+            example: Example::B,
+            is_done: false
+        }],
+        "bar"
+    );
+    assert_eq!(
+        map[Product {
+            example: Example::C,
+            is_done: false
+        }],
+        "baz"
+    );
+    assert_eq!(
+        map[Product {
+            example: Example::B,
+            is_done: true
+        }],
+        "not really done"
+    );
+}
+
+#[test]
+fn tuple_struct_of_enum() {
+    #[derive(Copy, Clone, Debug, Enum, PartialEq)]
+    struct Product(Example, bool);
+
+    let mut map = enum_map! {
+        Product(Example::A, false) => "foo",
+        Product(Example::B, false) => "bar",
+        Product(Example::C, false) => "baz",
+        Product(Example::A, true) => "done foo",
+        Product(Example::B, true) => "bar done",
+        Product(Example::C, true) => "doooozne",
+    };
+
+    assert_eq!(map[Product(Example::B, false)], "bar");
+    assert_eq!(map[Product(Example::C, false)], "baz");
+    assert_eq!(map[Product(Example::B, true)], "bar done");
+
+    map[Product(Example::B, true)] = "not really done";
+    assert_eq!(map[Product(Example::B, false)], "bar");
+    assert_eq!(map[Product(Example::C, false)], "baz");
+    assert_eq!(map[Product(Example::B, true)], "not really done");
 }
 
 #[test]
@@ -307,8 +397,8 @@ enum X {
     A(PhantomData<*const ()>),
 }
 
-impl<V> Enum<V> for X {
-    type Array = [V; 1];
+impl Enum for X {
+    const LENGTH: usize = 1;
 
     fn from_usize(arg: usize) -> X {
         assert_eq!(arg, 0);
@@ -318,6 +408,10 @@ impl<V> Enum<V> for X {
     fn into_usize(self) -> usize {
         0
     }
+}
+
+impl<V> EnumArray<V> for X {
+    type Array = [V; Self::LENGTH];
 }
 
 fn assert_sync_send<T: Sync + Send>(_: T) {}

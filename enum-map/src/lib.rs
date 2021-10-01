@@ -10,19 +10,20 @@
 //!
 //! #[derive(Debug, Enum)]
 //! enum Example {
-//!     A,
+//!     A(bool),
 //!     B,
 //!     C,
 //! }
 //!
 //! let mut map = enum_map! {
-//!     Example::A => 1,
+//!     Example::A(false) => 0,
+//!     Example::A(true) => 1,
 //!     Example::B => 2,
 //!     Example::C => 3,
 //! };
 //! map[Example::C] = 4;
 //!
-//! assert_eq!(map[Example::A], 1);
+//! assert_eq!(map[Example::A(true)], 1);
 //!
 //! for (key, &value) in &map {
 //!     println!("{:?} has {} as value.", key, value);
@@ -46,7 +47,7 @@ pub use core::mem::{ManuallyDrop, MaybeUninit};
 pub use core::ptr;
 pub use enum_map_derive::Enum;
 use internal::Array;
-pub use internal::Enum;
+pub use internal::{Enum, EnumArray};
 pub use iter::{IntoIter, Iter, IterMut, Values, ValuesMut};
 
 // Type invariant: arr[..len] must be initialized
@@ -54,7 +55,7 @@ pub use iter::{IntoIter, Iter, IterMut, Values, ValuesMut};
 #[non_exhaustive]
 pub struct ArrayVec<K, V>
 where
-    K: Enum<V>,
+    K: EnumArray<V>,
 {
     pub array: MaybeUninit<K::Array>,
     pub length: usize,
@@ -62,7 +63,7 @@ where
 
 impl<K, V> ArrayVec<K, V>
 where
-    K: Enum<V>,
+    K: EnumArray<V>,
 {
     #[doc(hidden)]
     // This function is marked as unsafe to prevent user from causing unsafety
@@ -98,7 +99,7 @@ where
 
 impl<K, V> Drop for ArrayVec<K, V>
 where
-    K: Enum<V>,
+    K: EnumArray<V>,
 {
     fn drop(&mut self) {
         // This is safe as arr[..len] is initialized due to
@@ -113,7 +114,7 @@ where
 #[doc(hidden)]
 pub union TypeEqualizer<K, V>
 where
-    K: Enum<V>,
+    K: EnumArray<V>,
 {
     pub init: (),
     pub enum_map: ManuallyDrop<EnumMap<K, V>>,
@@ -225,11 +226,11 @@ macro_rules! enum_map {
 ///
 /// [reverse-complement in benchmark game]:
 ///     http://benchmarksgame.alioth.debian.org/u64q/program.php?test=revcomp&lang=rust&id=2
-pub struct EnumMap<K: Enum<V>, V> {
+pub struct EnumMap<K: EnumArray<V>, V> {
     array: K::Array,
 }
 
-impl<K: Enum<V>, V: Default> EnumMap<K, V> {
+impl<K: EnumArray<V>, V: Default> EnumMap<K, V> {
     /// Clear enum map with default values.
     ///
     /// # Examples
@@ -259,7 +260,7 @@ impl<K: Enum<V>, V: Default> EnumMap<K, V> {
 }
 
 #[allow(clippy::len_without_is_empty)]
-impl<K: Enum<V>, V> EnumMap<K, V> {
+impl<K: EnumArray<V>, V> EnumMap<K, V> {
     /// Creates an enum map from array.
     #[inline]
     pub fn from_array(array: K::Array) -> EnumMap<K, V> {

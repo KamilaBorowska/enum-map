@@ -1,12 +1,11 @@
-use crate::internal::Array;
-use crate::{enum_map, Enum, EnumMap};
+use crate::{enum_map, Enum, EnumArray, EnumMap};
 use core::fmt;
 use core::marker::PhantomData;
 use serde::de::{self, Deserialize, Deserializer, Error, MapAccess, SeqAccess};
 use serde::ser::{Serialize, SerializeMap, SerializeTuple, Serializer};
 
 /// Requires crate feature `"serde"`
-impl<K: Enum<V> + Serialize, V: Serialize> Serialize for EnumMap<K, V> {
+impl<K: EnumArray<V> + Serialize, V: Serialize> Serialize for EnumMap<K, V> {
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         if serializer.is_human_readable() {
             let mut map = serializer.serialize_map(Some(self.len()))?;
@@ -27,15 +26,14 @@ impl<K: Enum<V> + Serialize, V: Serialize> Serialize for EnumMap<K, V> {
 /// Requires crate feature `"serde"`
 impl<'de, K, V> Deserialize<'de> for EnumMap<K, V>
 where
-    K: Enum<V> + Enum<Option<V>> + Deserialize<'de>,
+    K: EnumArray<V> + EnumArray<Option<V>> + Deserialize<'de>,
     V: Deserialize<'de>,
 {
     fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
         if deserializer.is_human_readable() {
             deserializer.deserialize_map(HumanReadableVisitor(PhantomData))
         } else {
-            deserializer
-                .deserialize_tuple(<K as Enum<V>>::Array::LENGTH, CompactVisitor(PhantomData))
+            deserializer.deserialize_tuple(<K as Enum>::LENGTH, CompactVisitor(PhantomData))
         }
     }
 }
@@ -44,7 +42,7 @@ struct HumanReadableVisitor<K, V>(PhantomData<(K, V)>);
 
 impl<'de, K, V> de::Visitor<'de> for HumanReadableVisitor<K, V>
 where
-    K: Enum<V> + Enum<Option<V>> + Deserialize<'de>,
+    K: EnumArray<V> + EnumArray<Option<V>> + Deserialize<'de>,
     V: Deserialize<'de>,
 {
     type Value = EnumMap<K, V>;
@@ -71,7 +69,7 @@ struct CompactVisitor<K, V>(PhantomData<(K, V)>);
 
 impl<'de, K, V> de::Visitor<'de> for CompactVisitor<K, V>
 where
-    K: Enum<V> + Enum<Option<V>> + Deserialize<'de>,
+    K: EnumArray<V> + EnumArray<Option<V>> + Deserialize<'de>,
     V: Deserialize<'de>,
 {
     type Value = EnumMap<K, V>;
