@@ -1,3 +1,17 @@
+# Version 2.0.0-1
+
+## New features
+
+- Derives support product types in addition to sum types (implemented
+  by @bzim on GitLab).
+
+- It's now possible to access enum length by accessing `LENGTH` in
+  `Enum` trait.
+
+## Breaking changes
+
+- `Enum` trait was split into two traits, `Enum` and `EnumArray`.
+
 # Version 1.1.1
 
 ## Other changes
