@@ -1,4 +1,4 @@
-use crate::{Enum, EnumMap};
+use crate::{EnumArray, EnumMap};
 use core::iter::{Enumerate, FusedIterator};
 use core::marker::PhantomData;
 use core::mem::ManuallyDrop;
@@ -38,7 +38,7 @@ pub struct Iter<'a, K, V: 'a> {
     iterator: Enumerate<slice::Iter<'a, V>>,
 }
 
-impl<'a, K: Enum<V>, V> Clone for Iter<'a, K, V> {
+impl<'a, K: EnumArray<V>, V> Clone for Iter<'a, K, V> {
     fn clone(&self) -> Self {
         Iter {
             _phantom: PhantomData,
@@ -47,7 +47,7 @@ impl<'a, K: Enum<V>, V> Clone for Iter<'a, K, V> {
     }
 }
 
-impl<'a, K: Enum<V>, V> Iterator for Iter<'a, K, V> {
+impl<'a, K: EnumArray<V>, V> Iterator for Iter<'a, K, V> {
     type Item = (K, &'a V);
     #[inline]
     fn next(&mut self) -> Option<Self::Item> {
@@ -71,7 +71,7 @@ impl<'a, K: Enum<V>, V> Iterator for Iter<'a, K, V> {
     }
 }
 
-impl<'a, K: Enum<V>, V> DoubleEndedIterator for Iter<'a, K, V> {
+impl<'a, K: EnumArray<V>, V> DoubleEndedIterator for Iter<'a, K, V> {
     #[inline]
     fn next_back(&mut self) -> Option<Self::Item> {
         self.iterator
@@ -80,11 +80,11 @@ impl<'a, K: Enum<V>, V> DoubleEndedIterator for Iter<'a, K, V> {
     }
 }
 
-impl<'a, K: Enum<V>, V> ExactSizeIterator for Iter<'a, K, V> {}
+impl<'a, K: EnumArray<V>, V> ExactSizeIterator for Iter<'a, K, V> {}
 
-impl<'a, K: Enum<V>, V> FusedIterator for Iter<'a, K, V> {}
+impl<'a, K: EnumArray<V>, V> FusedIterator for Iter<'a, K, V> {}
 
-impl<'a, K: Enum<V>, V> IntoIterator for &'a EnumMap<K, V> {
+impl<'a, K: EnumArray<V>, V> IntoIterator for &'a EnumMap<K, V> {
     type Item = (K, &'a V);
     type IntoIter = Iter<'a, K, V>;
     #[inline]
@@ -126,7 +126,7 @@ pub struct IterMut<'a, K, V: 'a> {
     iterator: Enumerate<slice::IterMut<'a, V>>,
 }
 
-impl<'a, K: Enum<V>, V> Iterator for IterMut<'a, K, V> {
+impl<'a, K: EnumArray<V>, V> Iterator for IterMut<'a, K, V> {
     type Item = (K, &'a mut V);
     #[inline]
     fn next(&mut self) -> Option<Self::Item> {
@@ -150,7 +150,7 @@ impl<'a, K: Enum<V>, V> Iterator for IterMut<'a, K, V> {
     }
 }
 
-impl<'a, K: Enum<V>, V> DoubleEndedIterator for IterMut<'a, K, V> {
+impl<'a, K: EnumArray<V>, V> DoubleEndedIterator for IterMut<'a, K, V> {
     #[inline]
     fn next_back(&mut self) -> Option<Self::Item> {
         self.iterator
@@ -159,11 +159,11 @@ impl<'a, K: Enum<V>, V> DoubleEndedIterator for IterMut<'a, K, V> {
     }
 }
 
-impl<'a, K: Enum<V>, V> ExactSizeIterator for IterMut<'a, K, V> {}
+impl<'a, K: EnumArray<V>, V> ExactSizeIterator for IterMut<'a, K, V> {}
 
-impl<'a, K: Enum<V>, V> FusedIterator for IterMut<'a, K, V> {}
+impl<'a, K: EnumArray<V>, V> FusedIterator for IterMut<'a, K, V> {}
 
-impl<'a, K: Enum<V>, V> IntoIterator for &'a mut EnumMap<K, V> {
+impl<'a, K: EnumArray<V>, V> IntoIterator for &'a mut EnumMap<K, V> {
     type Item = (K, &'a mut V);
     type IntoIter = IterMut<'a, K, V>;
     #[inline]
@@ -196,12 +196,12 @@ impl<'a, K: Enum<V>, V> IntoIterator for &'a mut EnumMap<K, V> {
 ///     assert_eq!(value + "4", "1234");
 /// }
 /// ```
-pub struct IntoIter<K: Enum<V>, V> {
+pub struct IntoIter<K: EnumArray<V>, V> {
     map: ManuallyDrop<EnumMap<K, V>>,
     position: usize,
 }
 
-impl<K: Enum<V>, V> Iterator for IntoIter<K, V> {
+impl<K: EnumArray<V>, V> Iterator for IntoIter<K, V> {
     type Item = (K, V);
     fn next(&mut self) -> Option<(K, V)> {
         let slice = self.map.as_slice();
@@ -223,18 +223,18 @@ impl<K: Enum<V>, V> Iterator for IntoIter<K, V> {
     }
 }
 
-impl<K: Enum<V>, V> ExactSizeIterator for IntoIter<K, V> {}
+impl<K: EnumArray<V>, V> ExactSizeIterator for IntoIter<K, V> {}
 
-impl<K: Enum<V>, V> FusedIterator for IntoIter<K, V> {}
+impl<K: EnumArray<V>, V> FusedIterator for IntoIter<K, V> {}
 
-impl<K: Enum<V>, V> Drop for IntoIter<K, V> {
+impl<K: EnumArray<V>, V> Drop for IntoIter<K, V> {
     #[inline]
     fn drop(&mut self) {
         for _item in self {}
     }
 }
 
-impl<K: Enum<V>, V> IntoIterator for EnumMap<K, V> {
+impl<K: EnumArray<V>, V> IntoIterator for EnumMap<K, V> {
     type Item = (K, V);
     type IntoIter = IntoIter<K, V>;
     #[inline]
@@ -246,7 +246,7 @@ impl<K: Enum<V>, V> IntoIterator for EnumMap<K, V> {
     }
 }
 
-impl<K: Enum<V>, V> EnumMap<K, V> {
+impl<K: EnumArray<V>, V> EnumMap<K, V> {
     /// An iterator visiting all values. The iterator type is `&V`.
     ///
     /// # Examples
