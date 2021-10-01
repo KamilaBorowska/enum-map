@@ -152,10 +152,10 @@ use syn::{Data, DeriveInput, Type};
 /// assert_eq!(Foo(false, A::D, X::Y ).into_usize(), 4);
 /// assert_eq!(Foo(true, A::C, X::Z ).into_usize(), 9);
 ///
-/// assert_eq!(Foo::from_usize(0), Foo(false, A::B, X::Y ));
-/// assert_eq!(Foo::from_usize(1), Foo(true, A::B, X::Y ));
-/// assert_eq!(Foo::from_usize(4), Foo(false, A::D, X::Y ));
-/// assert_eq!(Foo::from_usize(9), Foo(true, A::C, X::Z ));
+/// assert_eq!(Foo::from_usize(0), Foo(false, A::B, X::Y));
+/// assert_eq!(Foo::from_usize(1), Foo(true, A::B, X::Y));
+/// assert_eq!(Foo::from_usize(4), Foo(false, A::D, X::Y));
+/// assert_eq!(Foo::from_usize(9), Foo(true, A::C, X::Z));
 #[proc_macro_derive(Enum)]
 pub fn derive_enum_map(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let input: DeriveInput = syn::parse(input).unwrap();
