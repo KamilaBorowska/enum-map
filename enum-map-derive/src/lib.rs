@@ -3,8 +3,6 @@
 //! This is supposed to used with `enum-map` crate, which provides the
 //! actual usage documentation.
 
-#![recursion_limit = "128"]
-
 mod derive_enum;
 mod derive_struct;
 
