@@ -1,5 +1,6 @@
 use crate::type_length;
 use proc_macro2::TokenStream;
+use quote::quote;
 use syn::{DataStruct, Fields, FieldsNamed, FieldsUnnamed, Ident, Index};
 
 pub fn generate(name: Ident, data_struct: DataStruct) -> TokenStream {
