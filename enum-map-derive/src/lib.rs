@@ -3,8 +3,6 @@
 //! This is supposed to used with `enum-map` crate, which provides the
 //! actual usage documentation.
 
-#![recursion_limit = "128"]
-
 extern crate proc_macro;
 extern crate proc_macro2;
 #[macro_use]
