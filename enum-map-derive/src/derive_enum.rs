@@ -1,5 +1,6 @@
 use crate::type_length;
 use proc_macro2::TokenStream;
+use quote::{format_ident, quote};
 use syn::{DataEnum, Fields, FieldsNamed, FieldsUnnamed, Ident, Variant};
 
 pub fn generate(name: Ident, data_enum: DataEnum) -> TokenStream {

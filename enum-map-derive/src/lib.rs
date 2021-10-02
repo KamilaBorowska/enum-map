@@ -3,16 +3,11 @@
 //! This is supposed to used with `enum-map` crate, which provides the
 //! actual usage documentation.
 
-extern crate proc_macro;
-extern crate proc_macro2;
-#[macro_use]
-extern crate quote;
-extern crate syn;
-
 mod derive_enum;
 mod derive_struct;
 
 use proc_macro2::TokenStream;
+use quote::quote;
 use syn::{Data, DeriveInput, Type};
 
 /// Procedural derive generating `enum_map::Enum` implementation.
