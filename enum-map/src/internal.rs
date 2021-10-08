@@ -30,9 +30,6 @@ pub trait EnumArray<V>: Enum {
 ///
 /// This trait is inteded for primitive array types (with fixed length).
 pub trait Array<V> {
-    /// Length of the array.
-    const LENGTH: usize;
-
     /// Coerces a reference to the array into a reference to a slice.
     fn slice(&self) -> &[V];
 
@@ -41,7 +38,6 @@ pub trait Array<V> {
 }
 
 impl<V, const N: usize> Array<V> for [V; N] {
-    const LENGTH: usize = N;
     fn slice(&self) -> &[V] {
         self
     }

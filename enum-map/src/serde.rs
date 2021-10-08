@@ -1,4 +1,4 @@
-use crate::{enum_map, Enum, EnumArray, EnumMap};
+use crate::{enum_map, EnumArray, EnumMap};
 use core::fmt;
 use core::marker::PhantomData;
 use serde::de::{self, Deserialize, Deserializer, Error, MapAccess, SeqAccess};
@@ -33,7 +33,7 @@ where
         if deserializer.is_human_readable() {
             deserializer.deserialize_map(HumanReadableVisitor(PhantomData))
         } else {
-            deserializer.deserialize_tuple(<K as Enum>::LENGTH, CompactVisitor(PhantomData))
+            deserializer.deserialize_tuple(K::LENGTH, CompactVisitor(PhantomData))
         }
     }
 }

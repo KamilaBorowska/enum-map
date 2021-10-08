@@ -77,7 +77,7 @@ where
 
     #[doc(hidden)]
     pub fn storage_length(&self) -> usize {
-        K::Array::LENGTH
+        K::LENGTH
     }
 
     #[doc(hidden)]
