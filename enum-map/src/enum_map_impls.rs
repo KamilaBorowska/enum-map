@@ -1,7 +1,7 @@
 use crate::{enum_map, EnumArray, EnumMap};
 use core::fmt::{self, Debug, Formatter};
 use core::hash::{Hash, Hasher};
-use core::iter::Extend;
+use core::iter::{Extend, FromIterator};
 use core::ops::{Index, IndexMut};
 
 impl<K: EnumArray<V> + Debug, V: Debug> Debug for EnumMap<K, V> {
@@ -25,6 +25,18 @@ where
 {
     fn extend<I: IntoIterator<Item = (&'a K, &'a V)>>(&mut self, iter: I) {
         self.extend(iter.into_iter().map(|(&key, &value)| (key, value)));
+    }
+}
+
+impl<K, V> FromIterator<(K, V)> for EnumMap<K, V>
+where
+    Self: Default,
+    K: EnumArray<V>,
+{
+    fn from_iter<I: IntoIterator<Item = (K, V)>>(iter: I) -> Self {
+        let mut map = EnumMap::default();
+        map.extend(iter);
+        map
     }
 }
 

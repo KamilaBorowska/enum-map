@@ -189,6 +189,17 @@ fn extend() {
 }
 
 #[test]
+fn collect() {
+    let iter = vec![(Example::A, 5), (Example::B, 7)]
+        .into_iter()
+        .map(|(k, v)| (k, v + 1));
+    assert_eq!(
+        iter.collect::<EnumMap<_, _>>(),
+        enum_map! { Example::A => 6, Example::B => 8, Example::C => 0 }
+    );
+}
+
+#[test]
 fn huge_enum() {
     #[derive(Enum)]
     enum Example {
