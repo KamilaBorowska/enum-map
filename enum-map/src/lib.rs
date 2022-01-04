@@ -42,7 +42,7 @@ mod iter;
 mod serde;
 
 #[doc(hidden)]
-pub use core::mem::{ManuallyDrop, MaybeUninit};
+pub use core::mem::{self, ManuallyDrop, MaybeUninit};
 #[doc(hidden)]
 pub use core::ptr;
 pub use enum_map_derive::Enum;
@@ -313,5 +313,51 @@ impl<K: EnumArray<V>, V> EnumMap<K, V> {
     #[inline]
     pub fn as_mut_slice(&mut self) -> &mut [V] {
         self.array.slice_mut()
+    }
+
+    /// Returns an enum map with function `f` applied to each element in order.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use enum_map::enum_map;
+    ///
+    /// let a = enum_map! { false => 0, true => 1 };
+    /// let b = a.map(|_, x| f64::from(x) + 0.5);
+    /// assert_eq!(b, enum_map! { false => 0.5, true => 1.5 });
+    /// ```
+    pub fn map<F, T>(self, mut f: F) -> EnumMap<K, T>
+    where
+        F: FnMut(K, V) -> T,
+        K: EnumArray<T>,
+    {
+        struct DropOnPanic<K, V>
+        where
+            K: EnumArray<V>,
+        {
+            position: usize,
+            map: ManuallyDrop<EnumMap<K, V>>,
+        }
+        impl<K, V> Drop for DropOnPanic<K, V>
+        where
+            K: EnumArray<V>,
+        {
+            fn drop(&mut self) {
+                unsafe {
+                    ptr::drop_in_place(&mut self.map.as_mut_slice()[self.position..]);
+                }
+            }
+        }
+        let mut drop_protect = DropOnPanic {
+            position: 0,
+            map: ManuallyDrop::new(self),
+        };
+        enum_map! {
+            k => {
+                let value = unsafe { ptr::read(&drop_protect.map.as_slice()[drop_protect.position]) };
+                drop_protect.position += 1;
+                f(k, value)
+            }
+        }
     }
 }

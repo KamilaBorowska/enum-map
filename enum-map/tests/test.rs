@@ -511,3 +511,15 @@ fn question_mark_failure() {
     assert_eq!(try_block(&value), Err("ERROR!"));
     assert_eq!(value.get(), 32);
 }
+
+#[test]
+#[should_panic = "Intentional panic"]
+fn map_panic() {
+    let map: EnumMap<u8, String> = enum_map! { i => i.to_string() };
+    map.map(|k, v| {
+        if k == 2 {
+            panic!("Intentional panic");
+        }
+        v + " modified"
+    });
+}
