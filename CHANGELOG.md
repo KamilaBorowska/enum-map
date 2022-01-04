@@ -1,3 +1,12 @@
+# Version 2.0.0-2
+
+## New features
+
+- Implemented `FromIterator` for `EnumMap` (implemented by @micycle
+  on GitLab).
+
+- Implemented `EnumMap::map`.
+
 # Version 2.0.0-1
 
 ## New features
