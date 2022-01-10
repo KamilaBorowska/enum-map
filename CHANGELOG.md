@@ -1,4 +1,4 @@
-# Version 2.0.0-2
+# Version 2.0.0
 
 ## New features
 
@@ -6,10 +6,6 @@
   on GitLab).
 
 - Implemented `EnumMap::map`.
-
-# Version 2.0.0-1
-
-## New features
 
 - Derives support product types in addition to sum types (implemented
   by @bzim on GitLab).
