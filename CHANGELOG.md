@@ -2,7 +2,7 @@
 
 ## New features
 
-- Implemented `FromIterator` for `EnumMap` (implemented by @micycle
+- Implemented `FromIterator` for `EnumMap` (implemented by @bit_network
   on GitLab).
 
 - Implemented `EnumMap::map`.
