@@ -9,10 +9,6 @@ test:stable:
   script: *test_script
   image: rust
 
-test:beta:
-  script: *test_script
-  image: liuchong/rustup:beta
-
 test:nightly:
   script: *test_script
   image: rustlang/rust:nightly
