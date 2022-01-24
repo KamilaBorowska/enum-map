@@ -59,7 +59,7 @@ impl Enum for bool {
     }
     #[inline]
     fn into_usize(self) -> usize {
-        self as usize
+        usize::from(self)
     }
 }
 
