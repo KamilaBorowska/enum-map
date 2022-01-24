@@ -1,3 +1,5 @@
+#![allow(clippy::module_name_repetitions)]
+
 use crate::{EnumArray, EnumMap};
 use core::iter::{Enumerate, FusedIterator};
 use core::marker::PhantomData;

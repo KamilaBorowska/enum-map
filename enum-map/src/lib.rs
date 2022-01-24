@@ -32,6 +32,7 @@
 
 #![no_std]
 #![deny(missing_docs)]
+#![warn(clippy::pedantic)]
 
 #[cfg(feature = "arbitrary")]
 mod arbitrary;
@@ -66,6 +67,7 @@ where
     K: EnumArray<V>,
 {
     #[doc(hidden)]
+    #[must_use]
     // This function is marked as unsafe to prevent user from causing unsafety
     // by using undocumented ArrayVec.
     pub unsafe fn new() -> Self {
@@ -76,7 +78,8 @@ where
     }
 
     #[doc(hidden)]
-    pub fn storage_length(&self) -> usize {
+    #[must_use]
+    pub fn storage_length(_: &Self) -> usize {
         K::LENGTH
     }
 
@@ -105,7 +108,7 @@ where
         // This is safe as arr[..len] is initialized due to
         // __ArrayVecInner's type invariant.
         unsafe {
-            ptr::slice_from_raw_parts_mut(self.array.as_mut_ptr() as *mut V, self.length)
+            ptr::slice_from_raw_parts_mut(self.array.as_mut_ptr().cast::<V>(), self.length)
                 .drop_in_place();
         }
     }
@@ -172,9 +175,9 @@ macro_rules! enum_map {
             // Safe because we just wrote to array_vec field.
             let mut vec = $crate::ManuallyDrop::into_inner(unsafe { type_equalizer.array_vec });
             for _ in 0..$crate::ArrayVec::storage_length(&vec) {
+                struct __PleaseDoNotUseBreakWithoutLabel;
                 let _please_do_not_use_continue_without_label;
                 let value;
-                struct __PleaseDoNotUseBreakWithoutLabel;
                 #[allow(unreachable_code)]
                 loop {
                     _please_do_not_use_continue_without_label = ();
@@ -300,7 +303,7 @@ impl<K: EnumArray<V>, V> EnumMap<K, V> {
     /// ```
     #[inline]
     pub fn swap(&mut self, a: K, b: K) {
-        self.as_mut_slice().swap(a.into_usize(), b.into_usize())
+        self.as_mut_slice().swap(a.into_usize(), b.into_usize());
     }
 
     /// Converts an enum map to a slice representing values.

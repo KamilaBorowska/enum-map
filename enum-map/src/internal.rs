@@ -72,7 +72,7 @@ impl Enum for u8 {
 
     #[inline]
     fn from_usize(value: usize) -> Self {
-        value as u8
+        value.try_into().unwrap()
     }
     #[inline]
     fn into_usize(self) -> usize {
