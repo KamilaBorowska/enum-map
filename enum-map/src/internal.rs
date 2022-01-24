@@ -76,7 +76,7 @@ impl Enum for u8 {
     }
     #[inline]
     fn into_usize(self) -> usize {
-        self as usize
+        usize::from(self)
     }
 }
 
