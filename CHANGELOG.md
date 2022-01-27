@@ -1,3 +1,9 @@
+# Version 2.0.1
+
+## Other changes
+
+- Adjusted crate metadata to avoid lib.rs warnings.
+
 # Version 2.0.0
 
 ## New features
