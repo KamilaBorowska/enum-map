@@ -1,6 +1,6 @@
 [package]
 name = "enum-map-derive"
-version = "0.7.0"
+version = "0.8.0"
 authors = ["Konrad Borowski <konrad@borowski.pw>"]
 edition = "2018"
 repository = "https://gitlab.com/KonradBorowski/enum-map"
