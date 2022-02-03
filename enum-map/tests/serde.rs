@@ -1,16 +1,7 @@
 #![cfg(feature = "serde")]
 
-extern crate bincode;
-#[macro_use]
-extern crate enum_map;
-extern crate serde;
-#[macro_use]
-extern crate serde_derive;
-extern crate serde_json;
-extern crate serde_test;
-
-use enum_map::EnumMap;
-
+use enum_map::{enum_map, Enum, EnumMap};
+use serde::{Deserialize, Serialize};
 use serde_test::{assert_de_tokens_error, assert_tokens, Compact, Configure, Token};
 
 #[derive(Debug, Enum, Deserialize, Serialize)]
