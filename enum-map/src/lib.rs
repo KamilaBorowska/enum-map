@@ -80,7 +80,9 @@ where
     #[doc(hidden)]
     #[must_use]
     pub fn storage_length(_: &Self) -> usize {
-        K::LENGTH
+        // SAFETY: We need to use LENGTH from K::Array, as K::LENGTH is
+        // untrustworthy.
+        K::Array::LENGTH
     }
 
     #[doc(hidden)]

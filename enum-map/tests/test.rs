@@ -523,3 +523,49 @@ fn map_panic() {
         v + " modified"
     });
 }
+
+macro_rules! make_enum_map_macro_safety_test {
+    ($a:tt $b:tt) => {
+        // This is misuse of an API, however we need to test that to ensure safety
+        // as we use unsafe code.
+        enum E {
+            A,
+            B,
+            C,
+        }
+
+        impl Enum for E {
+            const LENGTH: usize = $a;
+
+            fn from_usize(value: usize) -> E {
+                match value {
+                    0 => E::A,
+                    1 => E::B,
+                    2 => E::C,
+                    _ => unimplemented!(),
+                }
+            }
+
+            fn into_usize(self) -> usize {
+                self as usize
+            }
+        }
+
+        impl<V> EnumArray<V> for E {
+            type Array = [V; $b];
+        }
+
+        let map: EnumMap<E, String> = enum_map! { _ => "Hello, world!".into() };
+        map.into_iter();
+    };
+}
+
+#[test]
+fn enum_map_macro_safety_under() {
+    make_enum_map_macro_safety_test!(2 3);
+}
+
+#[test]
+fn enum_map_macro_safety_over() {
+    make_enum_map_macro_safety_test!(3 2);
+}

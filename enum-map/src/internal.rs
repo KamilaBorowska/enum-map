@@ -29,7 +29,11 @@ pub trait EnumArray<V>: Enum {
 /// Array for enum-map storage.
 ///
 /// This trait is inteded for primitive array types (with fixed length).
-pub trait Array<V> {
+pub unsafe trait Array<V> {
+    // This is necessary duplication because the length in Enum trait can be
+    // provided by user and may not be trustworthy for unsafe code.
+    const LENGTH: usize;
+
     /// Coerces a reference to the array into a reference to a slice.
     fn slice(&self) -> &[V];
 
@@ -37,7 +41,8 @@ pub trait Array<V> {
     fn slice_mut(&mut self) -> &mut [V];
 }
 
-impl<V, const N: usize> Array<V> for [V; N] {
+unsafe impl<V, const N: usize> Array<V> for [V; N] {
+    const LENGTH: usize = N;
     fn slice(&self) -> &[V] {
         self
     }
