@@ -1,3 +1,10 @@
+# Version 2.0.2
+
+## Other changes
+
+- Fixed safety problem when using `enum_map!` macro with enums that
+  incorrectly implemented `Enum` trait.
+
 # Version 2.0.1
 
 ## Other changes
