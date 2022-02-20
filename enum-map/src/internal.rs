@@ -2,10 +2,7 @@ use core::convert::Infallible;
 
 /// Enum mapping type
 ///
-/// This trait is internally used by `#[derive(Enum)]`. `Enum<T>` is
-/// implemented by any enum type where V is a generic type representing a
-/// value. The purpose of this generic type is to allow providing a value
-/// type for arrays, as Rust currently does not support higher kinded types.
+/// This trait is internally used by `#[derive(Enum)]`.
 ///
 /// This trait is also implemented by `bool` and `u8`. While `u8` is
 /// strictly speaking not an actual enum, there are good reasons to consider
