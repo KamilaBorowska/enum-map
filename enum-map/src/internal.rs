@@ -1,8 +1,8 @@
 use core::convert::Infallible;
 
-/// Enum mapping type
+/// Enum mapping type.
 ///
-/// This trait is internally used by `#[derive(Enum)]`.
+/// This trait is implemented by `#[derive(Enum)]`.
 ///
 /// This trait is also implemented by `bool` and `u8`. While `u8` is
 /// strictly speaking not an actual enum, there are good reasons to consider
@@ -17,7 +17,11 @@ pub trait Enum: Sized {
     fn into_usize(self) -> usize;
 }
 
-/// Trait associating
+/// Trait associating enum with an array.
+///
+/// This exists due to limitations of Rust compiler that prevent arrays from using
+/// associated constants in structures. The array length must match `LENGTH` of an
+/// `Enum`.
 pub trait EnumArray<V>: Enum {
     /// Representation of an enum map for type `V`.
     type Array: Array<V>;
