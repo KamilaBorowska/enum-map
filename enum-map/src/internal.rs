@@ -29,6 +29,10 @@ pub trait EnumArray<V>: Enum {
 /// Array for enum-map storage.
 ///
 /// This trait is inteded for primitive array types (with fixed length).
+///
+/// # Safety
+///
+/// The array length needs to match actual storage.
 pub unsafe trait Array<V> {
     // This is necessary duplication because the length in Enum trait can be
     // provided by user and may not be trustworthy for unsafe code.
