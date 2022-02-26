@@ -1,5 +1,7 @@
 # Version 2.0.3
 
+## Other changes
+
 - Optimized performance of `enum_map!` macro.
 
 # Version 2.0.2
