@@ -51,79 +51,77 @@ use internal::Array;
 pub use internal::{Enum, EnumArray};
 pub use iter::{IntoIter, Iter, IterMut, Values, ValuesMut};
 
-// Type invariant: arr[..len] must be initialized
+// SAFETY: initialized needs to represent number of initialized elements
 #[doc(hidden)]
-#[non_exhaustive]
-pub struct ArrayVec<K, V>
+pub struct Guard<'a, K, V>
 where
     K: EnumArray<V>,
 {
-    pub array: MaybeUninit<K::Array>,
-    pub length: usize,
+    array_mut: &'a mut MaybeUninit<K::Array>,
+    initialized: usize,
 }
 
-impl<K, V> ArrayVec<K, V>
+impl<K, V> Drop for Guard<'_, K, V>
+where
+    K: EnumArray<V>,
+{
+    fn drop(&mut self) {
+        // This is safe as arr[..len] is initialized due to
+        // Guard's type invariant.
+        unsafe {
+            ptr::slice_from_raw_parts_mut(self.as_mut_ptr(), self.initialized).drop_in_place();
+        }
+    }
+}
+
+impl<'a, K, V> Guard<'a, K, V>
 where
     K: EnumArray<V>,
 {
     #[doc(hidden)]
+    pub fn as_mut_ptr(&mut self) -> *mut V {
+        self.array_mut.as_mut_ptr().cast::<V>()
+    }
+
+    #[doc(hidden)]
     #[must_use]
-    // This function is marked as unsafe to prevent user from causing unsafety
-    // by using undocumented ArrayVec.
-    pub unsafe fn new() -> Self {
-        ArrayVec {
-            array: MaybeUninit::uninit(),
-            length: 0,
+    pub fn new(array_mut: &'a mut MaybeUninit<K::Array>) -> Self {
+        Self {
+            array_mut,
+            initialized: 0,
         }
     }
 
     #[doc(hidden)]
     #[must_use]
-    pub fn storage_length(_: &Self) -> usize {
+    #[allow(clippy::unused_self)]
+    pub fn storage_length(&self) -> usize {
         // SAFETY: We need to use LENGTH from K::Array, as K::LENGTH is
         // untrustworthy.
         K::Array::LENGTH
     }
 
     #[doc(hidden)]
+    #[must_use]
     pub fn get_key(&self) -> K {
-        K::from_usize(self.length)
+        K::from_usize(self.initialized)
     }
 
     #[doc(hidden)]
     // Unsafe as it can write out of bounds.
     pub unsafe fn push(&mut self, value: V) {
-        self.array
-            .as_mut_ptr()
-            .cast::<V>()
-            .add(self.length)
-            .write(value);
-        self.length += 1;
-    }
-}
-
-impl<K, V> Drop for ArrayVec<K, V>
-where
-    K: EnumArray<V>,
-{
-    fn drop(&mut self) {
-        // This is safe as arr[..len] is initialized due to
-        // __ArrayVecInner's type invariant.
-        unsafe {
-            ptr::slice_from_raw_parts_mut(self.array.as_mut_ptr().cast::<V>(), self.length)
-                .drop_in_place();
-        }
+        self.as_mut_ptr().add(self.initialized).write(value);
+        self.initialized += 1;
     }
 }
 
 #[doc(hidden)]
-pub union TypeEqualizer<K, V>
+pub struct TypeEqualizer<'a, K, V>
 where
     K: EnumArray<V>,
 {
-    pub init: (),
-    pub enum_map: ManuallyDrop<EnumMap<K, V>>,
-    pub array_vec: ManuallyDrop<ArrayVec<K, V>>,
+    pub enum_map: [EnumMap<K, V>; 0],
+    pub guard: Guard<'a, K, V>,
 }
 
 /// Enum map constructor.
@@ -164,34 +162,31 @@ where
 #[macro_export]
 macro_rules! enum_map {
     {$($t:tt)*} => {{
-        let mut type_equalizer = $crate::TypeEqualizer { init: () };
+        let mut uninit = $crate::MaybeUninit::uninit();
+        let mut eq = $crate::TypeEqualizer {
+            enum_map: [],
+            guard: $crate::Guard::new(&mut uninit),
+        };
         if false {
             // Safe because this code is unreachable
-            unsafe {
-                type_equalizer.enum_map = $crate::MaybeUninit::assume_init($crate::MaybeUninit::uninit());
-                $crate::ManuallyDrop::into_inner(type_equalizer.enum_map)
-            }
+            unsafe { (&mut eq.enum_map).as_mut_ptr().read() }
         } else {
-            // Safe because we are going to follow ArrayVec invariant
-            type_equalizer.array_vec = $crate::ManuallyDrop::new(unsafe { $crate::ArrayVec::new() });
-            // Safe because we just wrote to array_vec field.
-            let mut vec = $crate::ManuallyDrop::into_inner(unsafe { type_equalizer.array_vec });
-            for _ in 0..$crate::ArrayVec::storage_length(&vec) {
+            for _ in 0..(&eq.guard).storage_length() {
                 struct __PleaseDoNotUseBreakWithoutLabel;
                 let _please_do_not_use_continue_without_label;
                 let value;
                 #[allow(unreachable_code)]
                 loop {
                     _please_do_not_use_continue_without_label = ();
-                    value = match $crate::ArrayVec::get_key(&vec) { $($t)* };
+                    value = match (&eq.guard).get_key() { $($t)* };
                     break __PleaseDoNotUseBreakWithoutLabel;
                 };
-                // Safe because this method will be called at most storage_length times.
-                unsafe { $crate::ArrayVec::push(&mut vec, value); }
+
+                unsafe { (&mut eq.guard).push(value); }
             }
-            vec.length = 0;
+            $crate::mem::forget(eq);
             // Safe because the array was fully initialized.
-            $crate::EnumMap::from_array(unsafe { $crate::ptr::read($crate::MaybeUninit::as_ptr(&vec.array)) })
+            $crate::EnumMap::from_array(unsafe { uninit.assume_init() })
         }
     }};
 }
