@@ -351,6 +351,16 @@ fn into_iter_drop() {
 }
 
 #[test]
+fn into_iter_double_ended_iterator() {
+    let mut iter = enum_map! { 0 => 5, 255 => 7, _ => 0 }.into_iter();
+    assert_eq!(iter.next(), Some((0, 5)));
+    assert_eq!(iter.next_back(), Some((255, 7)));
+    assert_eq!(iter.next(), Some((1, 0)));
+    assert_eq!(iter.next_back(), Some((254, 0)));
+    assert!(iter.rev().eq((2..254).rev().map(|i| (i, 0))));
+}
+
+#[test]
 fn values_rev_collect() {
     assert_eq!(
         vec![3, 2, 1],
