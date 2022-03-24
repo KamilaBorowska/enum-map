@@ -16,7 +16,6 @@ use syn::{Data, DeriveInput, Type};
 ///
 /// ## Enums Without Payload
 /// ```
-/// # extern crate enum_map;
 /// use enum_map::Enum;
 ///
 /// #[derive(Enum, Debug, PartialEq, Eq)]
@@ -38,7 +37,6 @@ use syn::{Data, DeriveInput, Type};
 /// ## Enums With Payload
 ///
 /// ```
-/// # extern crate enum_map;
 /// use enum_map::Enum;
 ///
 /// #[derive(Enum, Debug, PartialEq, Eq)]
@@ -84,7 +82,6 @@ use syn::{Data, DeriveInput, Type};
 /// ## Structs
 ///
 /// ```
-/// # extern crate enum_map;
 /// use enum_map::Enum;
 ///
 /// #[derive(Enum, Debug, PartialEq, Eq)]
@@ -121,7 +118,6 @@ use syn::{Data, DeriveInput, Type};
 /// ## Tuple Structs
 ///
 /// ```
-/// # extern crate enum_map;
 /// use enum_map::Enum;
 ///
 /// #[derive(Enum, Debug, PartialEq, Eq)]

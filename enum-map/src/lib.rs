@@ -138,7 +138,6 @@ where
 /// # Examples
 ///
 /// ```
-/// # extern crate enum_map;
 /// use enum_map::{enum_map, Enum};
 ///
 /// #[derive(Enum)]
@@ -207,7 +206,6 @@ macro_rules! enum_map {
 /// # Examples
 ///
 /// ```
-/// # extern crate enum_map;
 /// use enum_map::{enum_map, Enum, EnumMap};
 ///
 /// #[derive(Enum)]
@@ -236,7 +234,6 @@ impl<K: EnumArray<V>, V: Default> EnumMap<K, V> {
     /// # Examples
     ///
     /// ```
-    /// # extern crate enum_map;
     /// use enum_map::{Enum, EnumMap};
     ///
     /// #[derive(Enum)]
@@ -290,7 +287,6 @@ impl<K: EnumArray<V>, V> EnumMap<K, V> {
     /// # Examples
     ///
     /// ```
-    /// # extern crate enum_map;
     /// use enum_map::enum_map;
     ///
     /// let mut map = enum_map! { false => 0, true => 1 };
