@@ -4,6 +4,7 @@ use crate::{EnumArray, EnumMap};
 use core::iter::{Enumerate, FusedIterator};
 use core::marker::PhantomData;
 use core::mem::ManuallyDrop;
+use core::ops::Range;
 use core::ptr;
 use core::slice;
 
@@ -200,28 +201,30 @@ impl<'a, K: EnumArray<V>, V> IntoIterator for &'a mut EnumMap<K, V> {
 /// ```
 pub struct IntoIter<K: EnumArray<V>, V> {
     map: ManuallyDrop<EnumMap<K, V>>,
-    position: usize,
+    alive: Range<usize>,
 }
 
 impl<K: EnumArray<V>, V> Iterator for IntoIter<K, V> {
     type Item = (K, V);
     fn next(&mut self) -> Option<(K, V)> {
-        let slice = self.map.as_slice();
-        if self.position < slice.len() {
-            let key = K::from_usize(self.position);
-            let result = Some((key, unsafe { ptr::read(&slice[self.position]) }));
-            self.position += 1;
-            result
-        } else {
-            None
-        }
+        let position = self.alive.next()?;
+        Some((K::from_usize(position), unsafe {
+            ptr::read(&self.map.as_slice()[position])
+        }))
     }
 
     #[inline]
     fn size_hint(&self) -> (usize, Option<usize>) {
-        let slice = self.map.as_slice();
-        let diff = slice.len() - self.position;
-        (diff, Some(diff))
+        self.alive.size_hint()
+    }
+}
+
+impl<K: EnumArray<V>, V> DoubleEndedIterator for IntoIter<K, V> {
+    fn next_back(&mut self) -> Option<(K, V)> {
+        let position = self.alive.next_back()?;
+        Some((K::from_usize(position), unsafe {
+            ptr::read(&self.map.as_slice()[position])
+        }))
     }
 }
 
@@ -241,9 +244,10 @@ impl<K: EnumArray<V>, V> IntoIterator for EnumMap<K, V> {
     type IntoIter = IntoIter<K, V>;
     #[inline]
     fn into_iter(self) -> Self::IntoIter {
+        let len = self.len();
         IntoIter {
             map: ManuallyDrop::new(self),
-            position: 0,
+            alive: 0..len,
         }
     }
 }

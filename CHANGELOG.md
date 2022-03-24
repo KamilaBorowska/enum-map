@@ -1,3 +1,9 @@
+# Version 2.1.0
+
+## New features
+
+- Implemented `DoubleEndedIterator` for `IntoIter`.
+
 # Version 2.0.3
 
 ## Other changes
