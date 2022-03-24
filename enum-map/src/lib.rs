@@ -49,7 +49,7 @@ pub use core::ptr;
 pub use enum_map_derive::Enum;
 use internal::Array;
 pub use internal::{Enum, EnumArray};
-pub use iter::{IntoIter, Iter, IterMut, Values, ValuesMut};
+pub use iter::{IntoIter, IntoValues, Iter, IterMut, Values, ValuesMut};
 
 // SAFETY: initialized needs to represent number of initialized elements
 #[doc(hidden)]

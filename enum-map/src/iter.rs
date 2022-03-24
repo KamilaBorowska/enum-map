@@ -293,6 +293,16 @@ impl<K: EnumArray<V>, V> EnumMap<K, V> {
     pub fn values_mut(&mut self) -> ValuesMut<V> {
         ValuesMut(self.as_mut_slice().iter_mut())
     }
+
+    /// Creates a consuming iterator visiting all the values. The map
+    /// cannot be used after calling this. The iterator element type
+    /// is `V`.
+    #[inline]
+    pub fn into_values(self) -> IntoValues<K, V> {
+        IntoValues {
+            inner: self.into_iter(),
+        }
+    }
 }
 
 /// An iterator over the values of `EnumMap`.
@@ -360,3 +370,36 @@ impl<'a, V: 'a> DoubleEndedIterator for ValuesMut<'a, V> {
 impl<'a, V: 'a> ExactSizeIterator for ValuesMut<'a, V> {}
 
 impl<'a, V: 'a> FusedIterator for ValuesMut<'a, V> {}
+
+/// An owning iterator over the values of an `EnumMap`.
+///
+/// This `struct` is created by the `into_values` method of `EnumMap`.
+/// See its documentation for more.
+pub struct IntoValues<K: EnumArray<V>, V> {
+    inner: IntoIter<K, V>,
+}
+
+impl<K, V> Iterator for IntoValues<K, V>
+where
+    K: EnumArray<V>,
+{
+    type Item = V;
+
+    fn next(&mut self) -> Option<V> {
+        Some(self.inner.next()?.1)
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.inner.size_hint()
+    }
+}
+
+impl<K: EnumArray<V>, V> DoubleEndedIterator for IntoValues<K, V> {
+    fn next_back(&mut self) -> Option<V> {
+        Some(self.inner.next_back()?.1)
+    }
+}
+
+impl<K, V> ExactSizeIterator for IntoValues<K, V> where K: EnumArray<V> {}
+
+impl<K, V> FusedIterator for IntoValues<K, V> where K: EnumArray<V> {}

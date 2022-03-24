@@ -4,6 +4,8 @@
 
 - Implemented `DoubleEndedIterator` for `IntoIter`.
 
+- Implemented `EnumMap::into_values`.
+
 ## Other changes
 
 - Changed behavior of `IntoIter` so that it drops rest of the elements

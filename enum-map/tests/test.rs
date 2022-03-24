@@ -379,6 +379,22 @@ fn values_len() {
 }
 
 #[test]
+fn into_values_rev_collect() {
+    assert_eq!(
+        vec![3, 2, 1],
+        enum_map! { Example::A => 1, Example::B => 2, Example::C => 3 }
+            .into_values()
+            .rev()
+            .collect::<Vec<_>>()
+    );
+}
+
+#[test]
+fn into_values_len() {
+    assert_eq!(enum_map! { false => 0, true => 1 }.into_values().len(), 2);
+}
+
+#[test]
 fn values_mut_next_back() {
     let mut map = enum_map! { false => 0, true => 1 };
     assert_eq!(map.values_mut().next_back(), Some(&mut 1));
