@@ -297,6 +297,15 @@ impl<K: EnumArray<V>, V> EnumMap<K, V> {
     /// Creates a consuming iterator visiting all the values. The map
     /// cannot be used after calling this. The iterator element type
     /// is `V`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use enum_map::enum_map;
+    ///
+    /// let mut map = enum_map! { false => "hello", true => "goodbye" };
+    /// assert_eq!(map.into_values().collect::<Vec<_>>(), ["hello", "goodbye"]);
+    /// ```
     #[inline]
     pub fn into_values(self) -> IntoValues<K, V> {
         IntoValues {
