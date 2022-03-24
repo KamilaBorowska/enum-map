@@ -4,6 +4,11 @@
 
 - Implemented `DoubleEndedIterator` for `IntoIter`.
 
+## Other changes
+
+- Changed behavior of `IntoIter` so that it drops rest of the elements
+  when one destructor panics.
+
 # Version 2.0.3
 
 ## Other changes

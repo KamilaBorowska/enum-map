@@ -8,6 +8,7 @@ use std::collections::HashSet;
 use std::convert::Infallible;
 use std::marker::PhantomData;
 use std::num::ParseIntError;
+use std::panic::{catch_unwind, UnwindSafe};
 
 trait From<T>: Sized {
     fn from(_: T) -> Self {
@@ -578,4 +579,35 @@ fn enum_map_macro_safety_under() {
 #[test]
 fn enum_map_macro_safety_over() {
     make_enum_map_macro_safety_test!(3 2);
+}
+
+#[test]
+fn drop_panic_into_iter() {
+    struct DropHandler<'a>(&'a Cell<usize>);
+    impl Drop for DropHandler<'_> {
+        fn drop(&mut self) {
+            self.0.set(self.0.get() + 1);
+        }
+    }
+    impl UnwindSafe for DropHandler<'_> {}
+    struct Storage<'a> {
+        should_panic: bool,
+        _drop_handler: DropHandler<'a>,
+    }
+    impl Drop for Storage<'_> {
+        fn drop(&mut self) {
+            if self.should_panic {
+                panic!();
+            }
+        }
+    }
+    let cell = Cell::new(0);
+    let map: EnumMap<Example, _> = enum_map! {
+        v => Storage { should_panic: v == Example::B, _drop_handler: DropHandler(&cell) },
+    };
+    assert!(catch_unwind(|| {
+        map.into_iter();
+    })
+    .is_err());
+    assert_eq!(cell.get(), 3);
 }

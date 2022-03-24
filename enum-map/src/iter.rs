@@ -235,7 +235,9 @@ impl<K: EnumArray<V>, V> FusedIterator for IntoIter<K, V> {}
 impl<K: EnumArray<V>, V> Drop for IntoIter<K, V> {
     #[inline]
     fn drop(&mut self) {
-        for _item in self {}
+        unsafe {
+            ptr::drop_in_place(&mut self.map.as_mut_slice()[self.alive.clone()]);
+        }
     }
 }
 
