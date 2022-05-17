@@ -627,3 +627,12 @@ fn drop_panic_into_iter() {
     .is_err());
     assert_eq!(cell.get(), 3);
 }
+
+#[test]
+fn test_const_enum_map_from_array() {
+    const CONST_ENUM_MAP_FROM_ARRAY: EnumMap<bool, u32> = EnumMap::from_array([4, 8]);
+    assert_eq!(
+        CONST_ENUM_MAP_FROM_ARRAY,
+        enum_map! { false => 4, true => 8 },
+    );
+}
