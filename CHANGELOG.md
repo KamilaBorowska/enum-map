@@ -1,3 +1,9 @@
+# Version 2.2.0
+
+## New features
+
+- `EnumMap::from_array` is now usable in const contexts.
+
 # Version 2.1.0
 
 ## New features
