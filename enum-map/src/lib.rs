@@ -260,7 +260,7 @@ impl<K: EnumArray<V>, V: Default> EnumMap<K, V> {
 impl<K: EnumArray<V>, V> EnumMap<K, V> {
     /// Creates an enum map from array.
     #[inline]
-    pub fn from_array(array: K::Array) -> EnumMap<K, V> {
+    pub const fn from_array(array: K::Array) -> EnumMap<K, V> {
         EnumMap { array }
     }
 
