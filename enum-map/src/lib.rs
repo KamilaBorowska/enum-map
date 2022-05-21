@@ -279,8 +279,8 @@ impl<K: EnumArray<V>, V> EnumMap<K, V> {
 
     /// Returns number of elements in enum map.
     #[inline]
-    pub fn len(&self) -> usize {
-        self.as_slice().len()
+    pub const fn len(&self) -> usize {
+        K::Array::LENGTH
     }
 
     /// Swaps two indexes.
