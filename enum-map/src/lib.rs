@@ -46,6 +46,7 @@ mod serde;
 pub use core::mem::{self, ManuallyDrop, MaybeUninit};
 #[doc(hidden)]
 pub use core::ptr;
+use core::slice;
 pub use enum_map_derive::Enum;
 use internal::Array;
 pub use internal::{Enum, EnumArray};
@@ -302,13 +303,13 @@ impl<K: EnumArray<V>, V> EnumMap<K, V> {
     /// Converts an enum map to a slice representing values.
     #[inline]
     pub fn as_slice(&self) -> &[V] {
-        self.array.slice()
+        unsafe { slice::from_raw_parts(ptr::addr_of!(self.array).cast(), K::Array::LENGTH) }
     }
 
     /// Converts a mutable enum map to a mutable slice representing values.
     #[inline]
     pub fn as_mut_slice(&mut self) -> &mut [V] {
-        self.array.slice_mut()
+        unsafe { slice::from_raw_parts_mut(ptr::addr_of_mut!(self.array).cast(), K::Array::LENGTH) }
     }
 
     /// Returns an enum map with function `f` applied to each element in order.

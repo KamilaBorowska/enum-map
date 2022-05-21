@@ -38,22 +38,10 @@ pub unsafe trait Array<V> {
     // This is necessary duplication because the length in Enum trait can be
     // provided by user and may not be trustworthy for unsafe code.
     const LENGTH: usize;
-
-    /// Coerces a reference to the array into a reference to a slice.
-    fn slice(&self) -> &[V];
-
-    /// Coerces a mutable reference to the array into a mutable reference to a slice.
-    fn slice_mut(&mut self) -> &mut [V];
 }
 
 unsafe impl<V, const N: usize> Array<V> for [V; N] {
     const LENGTH: usize = N;
-    fn slice(&self) -> &[V] {
-        self
-    }
-    fn slice_mut(&mut self) -> &mut [V] {
-        self
-    }
 }
 
 impl Enum for bool {
