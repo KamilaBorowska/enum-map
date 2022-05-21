@@ -1,5 +1,7 @@
 # Version 2.3.0
 
+## New features
+
 - `EnumMap::len` is now usable in const contexts.
 
 # Version 2.2.0
