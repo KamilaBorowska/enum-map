@@ -10,7 +10,11 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use syn::{Data, DeriveInput, Type};
 
-/// Procedural derive generating `enum_map::Enum` implementation.
+/// Derive macro generating an implementation of trait `Enum`.
+///
+/// When using a derive, enum maps are maintained in the order in which
+/// enum variants are declared. This is reflected in the iterators of
+/// enum map as well as its `as_slice` method.
 ///
 /// # Examples
 ///

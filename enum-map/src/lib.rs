@@ -266,6 +266,25 @@ impl<K: EnumArray<V>, V> EnumMap<K, V> {
     }
 
     /// Returns an iterator over enum map.
+    ///
+    /// The iteration order is deterministic, and when using [macro@Enum] derive
+    /// it will be the order in which enum variants are declared.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use enum_map::{enum_map, Enum};
+    ///
+    /// #[derive(Enum, PartialEq)]
+    /// enum E {
+    ///     A,
+    ///     B,
+    ///     C,
+    /// }
+    ///
+    /// let map = enum_map! { E::A => 1, E::B => 2, E::C => 3};
+    /// assert!(map.iter().eq([(E::A, &1), (E::B, &2), (E::C, &3)]));
+    /// ```
     #[inline]
     pub fn iter(&self) -> Iter<K, V> {
         self.into_iter()
@@ -301,6 +320,25 @@ impl<K: EnumArray<V>, V> EnumMap<K, V> {
     }
 
     /// Converts an enum map to a slice representing values.
+    ///
+    /// The order of elements is deterministic, and when using [macro@Enum]
+    /// derive it will be the order in which enum variants are declared.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use enum_map::{enum_map, Enum};
+    ///
+    /// #[derive(Enum, PartialEq)]
+    /// enum E {
+    ///     A,
+    ///     B,
+    ///     C,
+    /// }
+    ///
+    /// let map = enum_map! { E::A => 1, E::B => 2, E::C => 3};
+    /// assert_eq!(map.as_slice(), &[1, 2, 3]);
+    /// ```
     #[inline]
     pub fn as_slice(&self) -> &[V] {
         unsafe { slice::from_raw_parts(ptr::addr_of!(self.array).cast(), K::Array::LENGTH) }
