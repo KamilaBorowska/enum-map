@@ -13,8 +13,9 @@ use syn::{Data, DeriveInput, Type};
 /// Derive macro generating an implementation of trait `Enum`.
 ///
 /// When using a derive, enum maps are maintained in the order in which
-/// enum variants are declared. This is reflected in the iterators of
-/// enum map as well as its `as_slice` method.
+/// enum variants are declared. This is reflected in the value returned
+/// by `Enum::into_usize`, iterators of enum map as well as
+/// `EnumMap::as_slice` method.
 ///
 /// # Examples
 ///
