@@ -102,15 +102,15 @@ impl StructGenerator {
         quote! {
             #[automatically_derived]
             impl ::enum_map::Enum for #name {
-                const LENGTH: usize = #length;
+                const LENGTH: ::enum_map::usize = #length;
 
                 #[inline]
-                fn from_usize(value: usize) -> Self {
+                fn from_usize(value: ::enum_map::usize) -> Self {
                     #from_usize
                 }
 
                 #[inline]
-                fn into_usize(self) -> usize {
+                fn into_usize(self) -> ::enum_map::usize {
                     #into_usize
                 }
             }

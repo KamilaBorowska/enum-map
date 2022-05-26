@@ -4,6 +4,11 @@
 
 - `EnumMap::len` is now usable in const contexts.
 
+## Other changes
+
+- `Enum` derive now can deal with re-definitions of `usize` and
+  `unimplemented`.
+
 # Version 2.2.0
 
 ## New features

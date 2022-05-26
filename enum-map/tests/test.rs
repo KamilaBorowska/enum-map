@@ -636,3 +636,14 @@ fn test_const_enum_map_from_array() {
         enum_map! { false => 4, true => 8 },
     );
 }
+
+#[test]
+fn usize_override() {
+    #[allow(non_camel_case_types, dead_code)]
+    type usize = ();
+    #[derive(Enum)]
+    enum X {
+        A,
+        B,
+    }
+}

@@ -45,8 +45,10 @@ mod serde;
 #[doc(hidden)]
 pub use core::mem::{self, ManuallyDrop, MaybeUninit};
 #[doc(hidden)]
-pub use core::ptr;
+pub use core::primitive::usize;
 use core::slice;
+#[doc(hidden)]
+pub use core::{ptr, unreachable};
 pub use enum_map_derive::Enum;
 use internal::Array;
 pub use internal::{Enum, EnumArray};

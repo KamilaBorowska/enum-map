@@ -37,17 +37,17 @@ impl EnumGenerator {
         quote! {
             #[automatically_derived]
             impl ::enum_map::Enum for #name {
-                const LENGTH: usize = #length;
+                const LENGTH: ::enum_map::usize = #length;
 
                 #[inline]
-                fn from_usize(value: usize) -> Self {
+                fn from_usize(value: ::enum_map::usize) -> Self {
                     #from_usize_arms {
-                        unreachable!()
+                        ::enum_map::unreachable!()
                     }
                 }
 
                 #[inline]
-                fn into_usize(self) -> usize {
+                fn into_usize(self) -> ::enum_map::usize {
                     match self {
                         #into_usize_arms
                     }
