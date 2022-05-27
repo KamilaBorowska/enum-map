@@ -2,7 +2,7 @@
 name = "enum-map-derive"
 version = "0.8.0"
 authors = ["Konrad Borowski <konrad@borowski.pw>"]
-edition = "2018"
+edition = "2021"
 repository = "https://gitlab.com/KonradBorowski/enum-map"
 license = "MIT OR Apache-2.0"
 description = "Macros 1.1 implementation of #[derive(Enum)]"
