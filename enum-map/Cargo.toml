@@ -13,7 +13,6 @@ documentation = "https://docs.rs/enum-map"
 readme = "README.md"
 
 [badges]
-gitlab = { repository = "KonradBorowski/enum-map" }
 maintenance = { status = "actively-developed" }
 
 [dependencies]
