@@ -1,5 +1,7 @@
 # Version 2.4.0
 
+## New features
+
 - Implemented `EnumMap::into_array`.
 
 # Version 2.3.0
