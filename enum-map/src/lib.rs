@@ -321,6 +321,30 @@ impl<K: EnumArray<V>, V> EnumMap<K, V> {
         self.as_mut_slice().swap(a.into_usize(), b.into_usize());
     }
 
+    /// Consumes an enum map and returns the underlying array.
+    ///
+    /// The order of elements is deterministic, and when using [macro@Enum]
+    /// derive it will be the order in which enum variants are declared.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use enum_map::{enum_map, Enum};
+    ///
+    /// #[derive(Enum, PartialEq)]
+    /// enum E {
+    ///     A,
+    ///     B,
+    ///     C,
+    /// }
+    ///
+    /// let map = enum_map! { E::A => 1, E::B => 2, E::C => 3};
+    /// assert_eq!(map.into_array(), [1, 2, 3]);
+    /// ```
+    pub fn into_array(self) -> K::Array {
+        self.array
+    }
+
     /// Converts an enum map to a slice representing values.
     ///
     /// The order of elements is deterministic, and when using [macro@Enum]
