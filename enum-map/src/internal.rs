@@ -65,6 +65,26 @@ impl<T> EnumArray<T> for bool {
     type Array = [T; Self::LENGTH];
 }
 
+impl Enum for () {
+    const LENGTH: usize = 1;
+
+    #[inline]
+    fn from_usize(value: usize) -> Self {
+        match value {
+            0 => (),
+            _ => unreachable!(),
+        }
+    }
+    #[inline]
+    fn into_usize(self) -> usize {
+        0
+    }
+}
+
+impl<T> EnumArray<T> for () {
+    type Array = [T; Self::LENGTH];
+}
+
 impl Enum for u8 {
     const LENGTH: usize = 256;
 
