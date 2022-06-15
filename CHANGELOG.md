@@ -5,10 +5,6 @@
 - Implemented `Enum` for `()` (unit type) `core::cmp::Ordering`
   (implemented by [@phimuemue](https://github.com/phimuemue)).
 
-# Version 2.4.0
-
-## New features
-
 - Implemented `EnumMap::into_array`.
 
 # Version 2.3.0
