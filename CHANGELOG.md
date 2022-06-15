@@ -1,3 +1,10 @@
+# Version 2.5.0
+
+## New features
+
+- Implemented `Enum` for `()` (unit type) `core::cmp::Ordering`
+  (implemented by [@phimuemue](https://github.com/phimuemue)).
+
 # Version 2.4.0
 
 ## New features
