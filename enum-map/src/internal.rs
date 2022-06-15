@@ -65,6 +65,26 @@ impl<T> EnumArray<T> for bool {
     type Array = [T; Self::LENGTH];
 }
 
+impl Enum for () {
+    const LENGTH: usize = 1;
+
+    #[inline]
+    fn from_usize(value: usize) -> Self {
+        match value {
+            0 => (),
+            _ => unreachable!(),
+        }
+    }
+    #[inline]
+    fn into_usize(self) -> usize {
+        0
+    }
+}
+
+impl<T> EnumArray<T> for () {
+    type Array = [T; Self::LENGTH];
+}
+
 impl Enum for u8 {
     const LENGTH: usize = 256;
 
@@ -96,5 +116,31 @@ impl Enum for Infallible {
 }
 
 impl<T> EnumArray<T> for Infallible {
+    type Array = [T; Self::LENGTH];
+}
+
+impl Enum for core::cmp::Ordering {
+    const LENGTH: usize = 3;
+
+    #[inline]
+    fn from_usize(value: usize) -> Self {
+        match value {
+            0 => core::cmp::Ordering::Less,
+            1 => core::cmp::Ordering::Equal,
+            2 => core::cmp::Ordering::Greater,
+            _ => unreachable!(),
+        }
+    }
+    #[inline]
+    fn into_usize(self) -> usize {
+        match self {
+            core::cmp::Ordering::Less => 0,
+            core::cmp::Ordering::Equal => 1,
+            core::cmp::Ordering::Greater => 2,
+        }
+    }
+}
+
+impl<T> EnumArray<T> for core::cmp::Ordering {
     type Array = [T; Self::LENGTH];
 }
