@@ -1,3 +1,4 @@
+use core::cmp::Ordering;
 use core::convert::Infallible;
 
 /// Enum mapping type.
@@ -119,28 +120,28 @@ impl<T> EnumArray<T> for Infallible {
     type Array = [T; Self::LENGTH];
 }
 
-impl Enum for core::cmp::Ordering {
+impl Enum for Ordering {
     const LENGTH: usize = 3;
 
     #[inline]
     fn from_usize(value: usize) -> Self {
         match value {
-            0 => core::cmp::Ordering::Less,
-            1 => core::cmp::Ordering::Equal,
-            2 => core::cmp::Ordering::Greater,
+            0 => Ordering::Less,
+            1 => Ordering::Equal,
+            2 => Ordering::Greater,
             _ => unreachable!(),
         }
     }
     #[inline]
     fn into_usize(self) -> usize {
         match self {
-            core::cmp::Ordering::Less => 0,
-            core::cmp::Ordering::Equal => 1,
-            core::cmp::Ordering::Greater => 2,
+            Ordering::Less => 0,
+            Ordering::Equal => 1,
+            Ordering::Greater => 2,
         }
     }
 }
 
-impl<T> EnumArray<T> for core::cmp::Ordering {
+impl<T> EnumArray<T> for Ordering {
     type Array = [T; Self::LENGTH];
 }
