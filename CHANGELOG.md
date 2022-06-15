@@ -2,7 +2,7 @@
 
 ## New features
 
-- Implemented `Enum` for `()` (unit type) `core::cmp::Ordering`
+- Implemented `Enum` for `()` (unit type) and `core::cmp::Ordering`
   (implemented by [@phimuemue](https://github.com/phimuemue)).
 
 - Implemented `EnumMap::into_array`.
