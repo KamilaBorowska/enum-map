@@ -463,7 +463,7 @@ fn assert_enum_map_does_not_copy_sync_send_dependency_of_keys() {
     assert_sync_send(map.iter());
     assert_sync_send(map.iter_mut());
     assert_sync_send(map.into_iter());
-    assert_eq!(map[X::A(PhantomData)], true);
+    assert!(map[X::A(PhantomData)]);
 }
 
 #[test]

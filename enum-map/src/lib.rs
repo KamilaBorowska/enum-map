@@ -300,6 +300,7 @@ impl<K: EnumArray<V>, V> EnumMap<K, V> {
 
     /// Returns number of elements in enum map.
     #[inline]
+    #[allow(clippy::unused_self)]
     pub const fn len(&self) -> usize {
         K::Array::LENGTH
     }
