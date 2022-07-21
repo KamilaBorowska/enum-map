@@ -8,11 +8,7 @@ use serde::ser::{Serialize, SerializeMap, SerializeTuple, Serializer};
 impl<K: EnumArray<V> + Serialize, V: Serialize> Serialize for EnumMap<K, V> {
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         if serializer.is_human_readable() {
-            let mut map = serializer.serialize_map(Some(self.len()))?;
-            for (key, value) in self {
-                map.serialize_entry(&key, value)?;
-            }
-            map.end()
+            serializer.collect_map(self)
         } else {
             let mut tup = serializer.serialize_tuple(self.len())?;
             for value in self.values() {
