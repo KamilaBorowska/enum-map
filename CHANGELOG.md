@@ -1,3 +1,10 @@
+# Version 2.4.1
+
+## Other changes
+
+- Improved performance of code generated for `from_usize` when
+  deriving `Enum`.
+
 # Version 2.4.0
 
 ## New features
