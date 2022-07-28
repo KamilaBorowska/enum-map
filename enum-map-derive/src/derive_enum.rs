@@ -74,15 +74,13 @@ impl EnumGenerator {
         let into_arms = &self.into_usize_arms;
         let length = &self.length;
         self.into_usize_arms = quote! { #into_arms Self::#variant => #length, };
-        self.length = quote! { (#length + 1) };
-
         let from_arms = &self.from_usize_arms;
-        let length = &self.length;
         self.from_usize_arms = quote! {
-            #from_arms if value < #length {
+            #from_arms if value == #length {
                 Self::#variant
             } else
         };
+        self.length = quote! { (#length + 1) };
     }
 
     /// Its size is the product of the sizes of its members. To represent this variant, one can
