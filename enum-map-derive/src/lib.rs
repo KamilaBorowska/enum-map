@@ -165,6 +165,6 @@ pub fn derive_enum_map(input: proc_macro::TokenStream) -> proc_macro::TokenStrea
 
 fn type_length(ty: &Type) -> TokenStream {
     quote! {
-        <#ty as ::enum_map::Enum>::LENGTH
+        ::enum_map::enum_len::<#ty>()
     }
 }

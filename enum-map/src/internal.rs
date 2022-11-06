@@ -9,23 +9,19 @@ use core::convert::Infallible;
 /// strictly speaking not an actual enum, there are good reasons to consider
 /// it like one, as array of `u8` keys is a relatively common pattern.
 pub trait Enum: Sized {
-    /// Length of the enum.
-    const LENGTH: usize;
+    /// Representation of an enum.
+    ///
+    /// For an enum with four elements it looks like this.
+    ///
+    /// ```
+    /// type Array<V> = [V; 4];
+    /// ```
+    type Array<V>: Array;
 
     /// Takes an usize, and returns an element matching `into_usize` function.
     fn from_usize(value: usize) -> Self;
     /// Returns an unique identifier for a value within range of `0..Array::LENGTH`.
     fn into_usize(self) -> usize;
-}
-
-/// Trait associating enum with an array.
-///
-/// This exists due to limitations of Rust compiler that prevent arrays from using
-/// associated constants in structures. The array length must match `LENGTH` of an
-/// `Enum`.
-pub trait EnumArray<V>: Enum {
-    /// Representation of an enum map for type `V`.
-    type Array: Array<V>;
 }
 
 /// Array for enum-map storage.
@@ -35,13 +31,13 @@ pub trait EnumArray<V>: Enum {
 /// # Safety
 ///
 /// The array length needs to match actual storage.
-pub unsafe trait Array<V> {
+pub unsafe trait Array {
     // This is necessary duplication because the length in Enum trait can be
     // provided by user and may not be trustworthy for unsafe code.
     const LENGTH: usize;
 }
 
-unsafe impl<V, const N: usize> Array<V> for [V; N] {
+unsafe impl<V, const N: usize> Array for [V; N] {
     const LENGTH: usize = N;
 }
 
@@ -52,7 +48,7 @@ pub fn out_of_bounds() -> ! {
 }
 
 impl Enum for bool {
-    const LENGTH: usize = 2;
+    type Array<V> = [V; 2];
 
     #[inline]
     fn from_usize(value: usize) -> Self {
@@ -68,12 +64,8 @@ impl Enum for bool {
     }
 }
 
-impl<T> EnumArray<T> for bool {
-    type Array = [T; Self::LENGTH];
-}
-
 impl Enum for () {
-    const LENGTH: usize = 1;
+    type Array<V> = [V; 1];
 
     #[inline]
     fn from_usize(value: usize) -> Self {
@@ -88,12 +80,8 @@ impl Enum for () {
     }
 }
 
-impl<T> EnumArray<T> for () {
-    type Array = [T; Self::LENGTH];
-}
-
 impl Enum for u8 {
-    const LENGTH: usize = 256;
+    type Array<V> = [V; 256];
 
     #[inline]
     fn from_usize(value: usize) -> Self {
@@ -105,12 +93,8 @@ impl Enum for u8 {
     }
 }
 
-impl<T> EnumArray<T> for u8 {
-    type Array = [T; Self::LENGTH];
-}
-
 impl Enum for Infallible {
-    const LENGTH: usize = 0;
+    type Array<V> = [V; 0];
 
     #[inline]
     fn from_usize(_: usize) -> Self {
@@ -122,12 +106,8 @@ impl Enum for Infallible {
     }
 }
 
-impl<T> EnumArray<T> for Infallible {
-    type Array = [T; Self::LENGTH];
-}
-
 impl Enum for Ordering {
-    const LENGTH: usize = 3;
+    type Array<V> = [V; 3];
 
     #[inline]
     fn from_usize(value: usize) -> Self {
@@ -146,8 +126,4 @@ impl Enum for Ordering {
             Ordering::Greater => 2,
         }
     }
-}
-
-impl<T> EnumArray<T> for Ordering {
-    type Array = [T; Self::LENGTH];
 }

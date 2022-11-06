@@ -1,11 +1,12 @@
-use crate::{enum_map, EnumArray, EnumMap};
+use crate::internal::Array;
+use crate::{enum_map, Enum, EnumMap};
 use core::fmt;
 use core::marker::PhantomData;
 use serde::de::{self, Deserialize, Deserializer, Error, MapAccess, SeqAccess};
 use serde::ser::{Serialize, SerializeTuple, Serializer};
 
 /// Requires crate feature `"serde"`
-impl<K: EnumArray<V> + Serialize, V: Serialize> Serialize for EnumMap<K, V> {
+impl<K: Enum + Serialize, V: Serialize> Serialize for EnumMap<K, V> {
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         if serializer.is_human_readable() {
             serializer.collect_map(self)
@@ -22,14 +23,14 @@ impl<K: EnumArray<V> + Serialize, V: Serialize> Serialize for EnumMap<K, V> {
 /// Requires crate feature `"serde"`
 impl<'de, K, V> Deserialize<'de> for EnumMap<K, V>
 where
-    K: EnumArray<V> + EnumArray<Option<V>> + Deserialize<'de>,
+    K: Enum + Deserialize<'de>,
     V: Deserialize<'de>,
 {
     fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
         if deserializer.is_human_readable() {
             deserializer.deserialize_map(HumanReadableVisitor(PhantomData))
         } else {
-            deserializer.deserialize_tuple(K::LENGTH, CompactVisitor(PhantomData))
+            deserializer.deserialize_tuple(K::Array::<V>::LENGTH, CompactVisitor(PhantomData))
         }
     }
 }
@@ -38,7 +39,7 @@ struct HumanReadableVisitor<K, V>(PhantomData<(K, V)>);
 
 impl<'de, K, V> de::Visitor<'de> for HumanReadableVisitor<K, V>
 where
-    K: EnumArray<V> + EnumArray<Option<V>> + Deserialize<'de>,
+    K: Enum + Deserialize<'de>,
     V: Deserialize<'de>,
 {
     type Value = EnumMap<K, V>;
@@ -65,7 +66,7 @@ struct CompactVisitor<K, V>(PhantomData<(K, V)>);
 
 impl<'de, K, V> de::Visitor<'de> for CompactVisitor<K, V>
 where
-    K: EnumArray<V> + EnumArray<Option<V>> + Deserialize<'de>,
+    K: Enum + Deserialize<'de>,
     V: Deserialize<'de>,
 {
     type Value = EnumMap<K, V>;

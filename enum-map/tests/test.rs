@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate enum_map;
 
-use enum_map::{Enum, EnumArray, EnumMap, IntoIter};
+use enum_map::{Enum, EnumMap, IntoIter};
 
 use std::cell::{Cell, RefCell};
 use std::collections::HashSet;
@@ -436,7 +436,7 @@ enum X {
 }
 
 impl Enum for X {
-    const LENGTH: usize = 1;
+    type Array<V> = [V; 1];
 
     fn from_usize(arg: usize) -> X {
         assert_eq!(arg, 0);
@@ -446,10 +446,6 @@ impl Enum for X {
     fn into_usize(self) -> usize {
         0
     }
-}
-
-impl<V> EnumArray<V> for X {
-    type Array = [V; Self::LENGTH];
 }
 
 fn assert_sync_send<T: Sync + Send>(_: T) {}
@@ -562,7 +558,7 @@ macro_rules! make_enum_map_macro_safety_test {
         }
 
         impl Enum for E {
-            const LENGTH: usize = $a;
+            type Array<V> = [V; $a];
 
             fn from_usize(value: usize) -> E {
                 match value {
@@ -576,10 +572,6 @@ macro_rules! make_enum_map_macro_safety_test {
             fn into_usize(self) -> usize {
                 self as usize
             }
-        }
-
-        impl<V> EnumArray<V> for E {
-            type Array = [V; $b];
         }
 
         let map: EnumMap<E, String> = enum_map! { _ => "Hello, world!".into() };

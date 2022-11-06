@@ -54,22 +54,22 @@ pub use enum_map_derive::Enum;
 #[doc(hidden)]
 pub use internal::out_of_bounds;
 use internal::Array;
-pub use internal::{Enum, EnumArray};
+pub use internal::Enum;
 pub use iter::{IntoIter, IntoValues, Iter, IterMut, Values, ValuesMut};
 
 // SAFETY: initialized needs to represent number of initialized elements
 #[doc(hidden)]
 pub struct Guard<'a, K, V>
 where
-    K: EnumArray<V>,
+    K: Enum,
 {
-    array_mut: &'a mut MaybeUninit<K::Array>,
+    array_mut: &'a mut MaybeUninit<K::Array<V>>,
     initialized: usize,
 }
 
 impl<K, V> Drop for Guard<'_, K, V>
 where
-    K: EnumArray<V>,
+    K: Enum,
 {
     fn drop(&mut self) {
         // This is safe as arr[..len] is initialized due to
@@ -82,7 +82,7 @@ where
 
 impl<'a, K, V> Guard<'a, K, V>
 where
-    K: EnumArray<V>,
+    K: Enum,
 {
     #[doc(hidden)]
     pub fn as_mut_ptr(&mut self) -> *mut V {
@@ -91,7 +91,7 @@ where
 
     #[doc(hidden)]
     #[must_use]
-    pub fn new(array_mut: &'a mut MaybeUninit<K::Array>) -> Self {
+    pub fn new(array_mut: &'a mut MaybeUninit<K::Array<V>>) -> Self {
         Self {
             array_mut,
             initialized: 0,
@@ -104,7 +104,7 @@ where
     pub fn storage_length(&self) -> usize {
         // SAFETY: We need to use LENGTH from K::Array, as K::LENGTH is
         // untrustworthy.
-        K::Array::LENGTH
+        K::Array::<V>::LENGTH
     }
 
     #[doc(hidden)]
@@ -124,7 +124,7 @@ where
 #[doc(hidden)]
 pub struct TypeEqualizer<'a, K, V>
 where
-    K: EnumArray<V>,
+    K: Enum,
 {
     pub enum_map: [EnumMap<K, V>; 0],
     pub guard: Guard<'a, K, V>,
@@ -230,11 +230,11 @@ macro_rules! enum_map {
 ///
 /// [reverse-complement in benchmark game]:
 ///     http://benchmarksgame.alioth.debian.org/u64q/program.php?test=revcomp&lang=rust&id=2
-pub struct EnumMap<K: EnumArray<V>, V> {
-    array: K::Array,
+pub struct EnumMap<K: Enum, V> {
+    array: K::Array<V>,
 }
 
-impl<K: EnumArray<V>, V: Default> EnumMap<K, V> {
+impl<K: Enum, V: Default> EnumMap<K, V> {
     /// Clear enum map with default values.
     ///
     /// # Examples
@@ -263,10 +263,10 @@ impl<K: EnumArray<V>, V: Default> EnumMap<K, V> {
 }
 
 #[allow(clippy::len_without_is_empty)]
-impl<K: EnumArray<V>, V> EnumMap<K, V> {
+impl<K: Enum, V> EnumMap<K, V> {
     /// Creates an enum map from array.
     #[inline]
-    pub const fn from_array(array: K::Array) -> EnumMap<K, V> {
+    pub const fn from_array(array: K::Array<V>) -> EnumMap<K, V> {
         EnumMap { array }
     }
 
@@ -305,7 +305,7 @@ impl<K: EnumArray<V>, V> EnumMap<K, V> {
     #[inline]
     #[allow(clippy::unused_self)]
     pub const fn len(&self) -> usize {
-        K::Array::LENGTH
+        K::Array::<V>::LENGTH
     }
 
     /// Swaps two indexes.
@@ -345,7 +345,7 @@ impl<K: EnumArray<V>, V> EnumMap<K, V> {
     /// let map = enum_map! { E::A => 1, E::B => 2, E::C => 3};
     /// assert_eq!(map.into_array(), [1, 2, 3]);
     /// ```
-    pub fn into_array(self) -> K::Array {
+    pub fn into_array(self) -> K::Array<V> {
         self.array
     }
 
@@ -369,7 +369,7 @@ impl<K: EnumArray<V>, V> EnumMap<K, V> {
     /// let map = enum_map! { E::A => 1, E::B => 2, E::C => 3};
     /// assert_eq!(map.as_array(), &[1, 2, 3]);
     /// ```
-    pub const fn as_array(&self) -> &K::Array {
+    pub const fn as_array(&self) -> &K::Array<V> {
         &self.array
     }
 
@@ -394,7 +394,7 @@ impl<K: EnumArray<V>, V> EnumMap<K, V> {
     /// map.as_mut_array()[1] = 42;
     /// assert_eq!(map.as_array(), &[1, 42, 3]);
     /// ```
-    pub fn as_mut_array(&mut self) -> &mut K::Array {
+    pub fn as_mut_array(&mut self) -> &mut K::Array<V> {
         &mut self.array
     }
 
@@ -420,13 +420,15 @@ impl<K: EnumArray<V>, V> EnumMap<K, V> {
     /// ```
     #[inline]
     pub fn as_slice(&self) -> &[V] {
-        unsafe { slice::from_raw_parts(ptr::addr_of!(self.array).cast(), K::Array::LENGTH) }
+        unsafe { slice::from_raw_parts(ptr::addr_of!(self.array).cast(), K::Array::<V>::LENGTH) }
     }
 
     /// Converts a mutable enum map to a mutable slice representing values.
     #[inline]
     pub fn as_mut_slice(&mut self) -> &mut [V] {
-        unsafe { slice::from_raw_parts_mut(ptr::addr_of_mut!(self.array).cast(), K::Array::LENGTH) }
+        unsafe {
+            slice::from_raw_parts_mut(ptr::addr_of_mut!(self.array).cast(), K::Array::<V>::LENGTH)
+        }
     }
 
     /// Returns an enum map with function `f` applied to each element in order.
@@ -443,18 +445,18 @@ impl<K: EnumArray<V>, V> EnumMap<K, V> {
     pub fn map<F, T>(self, mut f: F) -> EnumMap<K, T>
     where
         F: FnMut(K, V) -> T,
-        K: EnumArray<T>,
+        K: Enum,
     {
         struct DropOnPanic<K, V>
         where
-            K: EnumArray<V>,
+            K: Enum,
         {
             position: usize,
             map: ManuallyDrop<EnumMap<K, V>>,
         }
         impl<K, V> Drop for DropOnPanic<K, V>
         where
-            K: EnumArray<V>,
+            K: Enum,
         {
             fn drop(&mut self) {
                 unsafe {
@@ -474,4 +476,10 @@ impl<K: EnumArray<V>, V> EnumMap<K, V> {
             }
         }
     }
+}
+
+#[doc(hidden)]
+#[must_use]
+pub const fn enum_len<E: Enum>() -> usize {
+    E::Array::<()>::LENGTH
 }
