@@ -1,3 +1,9 @@
+# Version 2.4.2
+
+## Other changes
+
+- Added license files to crate tarball.
+
 # Version 2.4.1
 
 ## Other changes
