@@ -3,6 +3,7 @@
 ## Other changes
 
 - Added license files to crate tarball.
+- Added changelog to crate tarball.
 
 # Version 2.4.1
 
