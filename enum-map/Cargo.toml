@@ -1,6 +1,6 @@
 [package]
 name = "enum-map"
-version = "2.4.1"
+version = "2.4.2"
 authors = ["Konrad Borowski <konrad@borowski.pw>"]
 edition = "2021"
 rust-version = "1.61"
