@@ -102,7 +102,7 @@ impl StructGenerator {
         quote! {
             #[automatically_derived]
             impl ::enum_map::Enum for #name {
-                type Array<V> = [V; #length];
+                type Array<__EnumMapInternalV> = [__EnumMapInternalV; #length];
 
                 #[inline]
                 fn from_usize(value: ::enum_map::usize) -> Self {

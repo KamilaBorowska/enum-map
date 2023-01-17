@@ -639,3 +639,12 @@ fn usize_override() {
         B,
     }
 }
+
+#[derive(Enum)]
+enum V {
+    V,
+}
+#[derive(Enum)]
+struct StructureCanHoldV {
+    v: V,
+}
