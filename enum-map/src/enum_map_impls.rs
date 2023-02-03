@@ -94,3 +94,15 @@ impl<K: EnumArray<V>, V: Default> Default for EnumMap<K, V> {
         enum_map! { _ => V::default() }
     }
 }
+
+impl<K: EnumArray<V>, V: PartialOrd> PartialOrd for EnumMap<K, V> {
+    fn partial_cmp(&self, other: &Self) -> Option<core::cmp::Ordering> {
+        self.as_slice().partial_cmp(other.as_slice())
+    }
+}
+
+impl<K: EnumArray<V>, V: Ord> Ord for EnumMap<K, V> {
+    fn cmp(&self, other: &Self) -> core::cmp::Ordering {
+        self.as_slice().cmp(other.as_slice())
+    }
+}
