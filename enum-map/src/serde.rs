@@ -2,7 +2,7 @@ use crate::{enum_map, EnumArray, EnumMap};
 use core::fmt;
 use core::marker::PhantomData;
 use serde::de::{self, Deserialize, Deserializer, Error, MapAccess, SeqAccess};
-use serde::ser::{Serialize, SerializeMap, SerializeTuple, Serializer};
+use serde::ser::{Serialize, SerializeTuple, Serializer};
 
 /// Requires crate feature `"serde"`
 impl<K: EnumArray<V> + Serialize, V: Serialize> Serialize for EnumMap<K, V> {
