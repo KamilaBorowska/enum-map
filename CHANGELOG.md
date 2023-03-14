@@ -1,3 +1,13 @@
+# Version 2.5.0
+
+## New features
+
+- Implemented `EnumMap::as_array` and `EnumMap::as_mut_array`
+  (implemented by [@Fuuzetsu](https://github.com/Fuuzetsu)).
+
+- Implemented `PartialOrd` and `Ord` for `EnumMap` (implemented by
+  [@nicarran](https://github.com/nicarran)).
+
 # Version 2.4.2
 
 ## Other changes
