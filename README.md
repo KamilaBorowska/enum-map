@@ -4,8 +4,8 @@ A library providing enum map providing type safe enum array. It is
 implemented using regular Rust arrays, so using them is as fast
 as using regular Rust arrays.
 
-This library doesn't provide Minimum Supported Rust Version (MSRV).
-If you find having MSRV valuable, please use enum-map 0.6 instead.
+This crate follows the "N minus two" MSRV policy. This means that it
+supports the current Rust release, as well as the two before that.
 
 ## Examples
 
