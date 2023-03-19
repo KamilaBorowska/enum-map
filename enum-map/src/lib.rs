@@ -366,7 +366,7 @@ impl<K: EnumArray<V>, V> EnumMap<K, V> {
     /// let map = enum_map! { E::A => 1, E::B => 2, E::C => 3};
     /// assert_eq!(map.as_array(), &[1, 2, 3]);
     /// ```
-    pub fn as_array(&self) -> &K::Array {
+    pub const fn as_array(&self) -> &K::Array {
         &self.array
     }
 
