@@ -11,7 +11,7 @@ keywords = ["data-structure", "no_std", "enum"]
 categories = ["data-structures", "no-std"]
 
 [badges]
-maintenance = { status = "actively-developed" }
+maintenance = { status = "passively-maintained" }
 
 [lib]
 proc-macro = true
