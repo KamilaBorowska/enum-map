@@ -1,3 +1,17 @@
+# Version 2.6.0
+
+## New features
+
+- `EnumMap::as_array` is now usable in const contexts.
+
+## Other changes
+
+- This crate now follows "N minus two" MSRV policy. This means that
+  it supports the current Rust release, as well as the two before
+  that.
+
+- Upgraded syn to 2.0.0.
+
 # Version 2.5.0
 
 ## New features
