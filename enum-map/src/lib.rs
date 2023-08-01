@@ -48,10 +48,11 @@ pub use core::mem::{self, ManuallyDrop, MaybeUninit};
 pub use core::primitive::usize;
 use core::slice;
 #[doc(hidden)]
-pub use core::{ptr, unreachable};
+// unreachable needs to be exported for compatibility with older versions of enum-map-derive
+pub use core::{panic, ptr, unreachable};
 pub use enum_map_derive::Enum;
 use internal::Array;
-pub use internal::{Enum, EnumArray};
+pub use internal::{out_of_bounds, Enum, EnumArray};
 pub use iter::{IntoIter, IntoValues, Iter, IterMut, Values, ValuesMut};
 
 // SAFETY: initialized needs to represent number of initialized elements

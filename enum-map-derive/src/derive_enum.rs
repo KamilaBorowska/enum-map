@@ -42,7 +42,7 @@ impl EnumGenerator {
                 #[inline]
                 fn from_usize(value: ::enum_map::usize) -> Self {
                     #from_usize_arms {
-                        ::enum_map::unreachable!()
+                        ::enum_map::out_of_bounds()
                     }
                 }
 

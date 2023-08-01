@@ -45,6 +45,12 @@ unsafe impl<V, const N: usize> Array<V> for [V; N] {
     const LENGTH: usize = N;
 }
 
+#[doc(hidden)]
+#[inline]
+pub fn out_of_bounds() -> ! {
+    panic!("index out of range for Enum::from_usize");
+}
+
 impl Enum for bool {
     const LENGTH: usize = 2;
 
@@ -53,7 +59,7 @@ impl Enum for bool {
         match value {
             0 => false,
             1 => true,
-            _ => unreachable!(),
+            _ => out_of_bounds(),
         }
     }
     #[inline]
@@ -73,7 +79,7 @@ impl Enum for () {
     fn from_usize(value: usize) -> Self {
         match value {
             0 => (),
-            _ => unreachable!(),
+            _ => out_of_bounds(),
         }
     }
     #[inline]
@@ -108,7 +114,7 @@ impl Enum for Infallible {
 
     #[inline]
     fn from_usize(_: usize) -> Self {
-        unreachable!();
+        out_of_bounds();
     }
     #[inline]
     fn into_usize(self) -> usize {
@@ -129,7 +135,7 @@ impl Enum for Ordering {
             0 => Ordering::Less,
             1 => Ordering::Equal,
             2 => Ordering::Greater,
-            _ => unreachable!(),
+            _ => out_of_bounds(),
         }
     }
     #[inline]
