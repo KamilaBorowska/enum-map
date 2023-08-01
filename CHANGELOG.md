@@ -1,3 +1,10 @@
+# Version 2.6.1
+
+## Other changes
+
+- Provide better panic message when providing out-of-bounds index
+  to `Enum::from_usize``.
+
 # Version 2.6.0
 
 ## New features
