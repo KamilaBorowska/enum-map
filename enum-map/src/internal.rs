@@ -97,7 +97,7 @@ impl Enum for u8 {
 
     #[inline]
     fn from_usize(value: usize) -> Self {
-        value.try_into().unwrap()
+        value.try_into().unwrap_or_else(|_| out_of_bounds())
     }
     #[inline]
     fn into_usize(self) -> usize {
