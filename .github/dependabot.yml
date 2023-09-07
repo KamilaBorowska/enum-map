@@ -5,9 +5,9 @@ updates:
     schedule:
       interval: daily
     ignore:
-      update-types:
-        - "version-update:semver-minor"
-        - "version-update:semver-patch"
+      - update-types:
+          - "version-update:semver-minor"
+          - "version-update:semver-patch"
   - package-ecosystem: github-actions
     directory: /
     schedule:
