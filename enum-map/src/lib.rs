@@ -51,8 +51,10 @@ use core::slice;
 // unreachable needs to be exported for compatibility with older versions of enum-map-derive
 pub use core::{panic, ptr, unreachable};
 pub use enum_map_derive::Enum;
+#[doc(hidden)]
+pub use internal::out_of_bounds;
 use internal::Array;
-pub use internal::{out_of_bounds, Enum, EnumArray};
+pub use internal::{Enum, EnumArray};
 pub use iter::{IntoIter, IntoValues, Iter, IterMut, Values, ValuesMut};
 
 // SAFETY: initialized needs to represent number of initialized elements
