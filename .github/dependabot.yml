@@ -5,7 +5,8 @@ updates:
     schedule:
       interval: daily
     ignore:
-      - update-types:
+      - dependency-name: "*"
+        update-types:
           - "version-update:semver-minor"
           - "version-update:semver-patch"
   - package-ecosystem: github-actions
