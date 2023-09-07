@@ -1,3 +1,9 @@
+# Version 2.6.2
+
+## Other changes
+
+- Hide `out_of_bounds` reexport from documentation.
+
 # Version 2.6.1
 
 ## Other changes
