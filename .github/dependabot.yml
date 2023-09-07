@@ -4,7 +4,10 @@ updates:
     directory: /
     schedule:
       interval: daily
-    versioning-strategy: increase-if-necessary
+    ignore:
+      update-types:
+        - "version-update:semver-minor"
+        - "version-update:semver-patch"
   - package-ecosystem: github-actions
     directory: /
     schedule:
