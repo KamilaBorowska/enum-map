@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2017 - 2023 Konrad Borowski <konrad@borowski.pw>
+
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
+
 # enum-map
 
 A library providing enum map providing type safe enum array. It is

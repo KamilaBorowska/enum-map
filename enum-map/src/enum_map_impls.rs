@@ -1,3 +1,10 @@
+// SPDX-FileCopyrightText: 2017 - 2021 Konrad Borowski <konrad@borowski.pw>
+// SPDX-FileCopyrightText: 2021 Bruno Corrêa Zimmermann <brunoczim@gmail.com>
+// SPDX-FileCopyrightText: 2021 micycle
+// SPDX-FileCopyrightText: 2023 Nicolas Carranza <nicarran@yandex.com>
+//
+// SPDX-License-Identifier: MIT OR Apache-2.0
+
 use crate::{enum_map, EnumArray, EnumMap};
 use core::fmt::{self, Debug, Formatter};
 use core::hash::{Hash, Hasher};

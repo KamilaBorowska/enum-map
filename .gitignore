@@ -1,2 +1,6 @@
+# SPDX-FileCopyrightText: 2017 - 2023 Konrad Borowski <konrad@borowski.pw>
+#
+# SPDX-License-Identifier: CC0-1.0 or MIT OR Apache-2.0
+
 target/
 **/*.rs.bk

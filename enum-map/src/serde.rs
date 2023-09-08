@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2017 - 2023 Konrad Borowski <konrad@borowski.pw>
+// SPDX-FileCopyrightText: 2021 Bruno Corrêa Zimmermann <brunoczim@gmail.com>
+//
+// SPDX-License-Identifier: MIT OR Apache-2.0
+
 use crate::{enum_map, EnumArray, EnumMap};
 use core::fmt;
 use core::marker::PhantomData;

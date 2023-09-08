@@ -1,3 +1,9 @@
+// SPDX-FileCopyrightText: 2017 - 2023 Konrad Borowski <konrad@borowski.pw>
+// SPDX-FileCopyrightText: 2021 Bruno Corrêa Zimmermann <brunoczim@gmail.com>
+// SPDX-FileCopyrightText: 2022 philipp <descpl@yahoo.de>
+//
+// SPDX-License-Identifier: MIT OR Apache-2.0
+
 use core::cmp::Ordering;
 use core::convert::Infallible;
 

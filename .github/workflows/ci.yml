@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2022 - 2023 Konrad Borowski <konrad@borowski.pw>
+#
+# SPDX-License-Identifier: MIT OR Apache-2.0
+
 name: CI
 
 on:
@@ -44,3 +48,10 @@ jobs:
       - run: nix-env -iA cargo-msrv -f '<nixpkgs>'
       - run: cargo msrv --path=enum-map verify
       - run: cargo msrv --path=enum-map-derive verify
+
+  reuse-lint:
+    name: Verify REUSE compliance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: fsfe/reuse-action@v2

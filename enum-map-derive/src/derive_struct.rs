@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2021 - 2022 Konrad Borowski <konrad@borowski.pw>
+// SPDX-FileCopyrightText: 2021 Bruno Corrêa Zimmermann <brunoczim@gmail.com>
+//
+// SPDX-License-Identifier: MIT OR Apache-2.0
+
 use crate::type_length;
 use proc_macro2::TokenStream;
 use quote::quote;
