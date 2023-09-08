@@ -1,3 +1,10 @@
+<!--
+SPDX-FileCopyrightText: 2018 - 2023 Konrad Borowski <konrad@borowski.pw>
+SPDX-FileCopyrightText: 2021 Alex Sayers <alex@asayers.com>
+
+SPDX-License-Identifier: MIT OR Apache-2.0
+-->
+
 # Version 2.6.2
 
 ## Other changes

@@ -1,5 +1,10 @@
 #![cfg(feature = "serde")]
 
+// SPDX-FileCopyrightText: 2017 - 2022 Konrad Borowski <konrad@borowski.pw>
+// SPDX-FileCopyrightText: 2022 Cass Fridkin <cass@cloudflare.com>
+//
+// SPDX-License-Identifier: MIT OR Apache-2.0
+
 use enum_map::{enum_map, Enum, EnumMap};
 use serde::{Deserialize, Serialize};
 use serde_test::{assert_de_tokens_error, assert_tokens, Compact, Configure, Token};

@@ -1,3 +1,12 @@
+// SPDX-FileCopyrightText: 2017 - 2023 Konrad Borowski <konrad@borowski.pw>
+// SPDX-FileCopyrightText: 2019 Riey <creeper844@gmail.com>
+// SPDX-FileCopyrightText: 2021 Alex Sayers <alex@asayers.com>
+// SPDX-FileCopyrightText: 2021 Bruno Corrêa Zimmermann <brunoczim@gmail.com>
+// SPDX-FileCopyrightText: 2022 Cass Fridkin <cass@cloudflare.com>
+// SPDX-FileCopyrightText: 2022 Mateusz Kowalczyk <fuuzetsu@fuuzetsu.co.uk>
+//
+// SPDX-License-Identifier: MIT OR Apache-2.0
+
 //! An enum mapping type.
 //!
 //! It is implemented using an array type, so using it is as fast as using Rust

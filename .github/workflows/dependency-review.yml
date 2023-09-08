@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2022 Konrad Borowski <konrad@borowski.pw>
+#
+# SPDX-License-Identifier: MIT OR Apache-2.0
+
 name: Dependency Review
 on: [pull_request]
 jobs:

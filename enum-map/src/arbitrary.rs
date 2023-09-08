@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2021 Bruno Corrêa Zimmermann <brunoczim@gmail.com>
+// SPDX-FileCopyrightText: 2021 Konrad Borowski <konrad@borowski.pw>
+//
+// SPDX-License-Identifier: MIT OR Apache-2.0
+
 use crate::{enum_map, EnumArray, EnumMap};
 use arbitrary::{Arbitrary, Result, Unstructured};
 

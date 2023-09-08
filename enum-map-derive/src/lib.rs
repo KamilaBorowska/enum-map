@@ -1,3 +1,11 @@
+// SPDX-FileCopyrightText: 2017 - 2022 Konrad Borowski <konrad@borowski.pw>
+// SPDX-FileCopyrightText: 2018 hcpl <hcpl.prog@gmail.com>
+// SPDX-FileCopyrightText: 2019 mara <vmedea@protonmail.com>
+// SPDX-FileCopyrightText: 2021 Bruno Corrêa Zimmermann <brunoczim@gmail.com>
+// SPDX-FileCopyrightText: 2021 Dietrich <dietrich@teilgedanken.de>
+//
+// SPDX-License-Identifier: MIT OR Apache-2.0
+
 //! Procedural macro implementing `#[derive(Enum)]`
 //!
 //! This is supposed to used with `enum-map` crate, which provides the
